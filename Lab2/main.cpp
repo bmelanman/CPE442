@@ -4,21 +4,21 @@
 #include <iostream>
 #include <string>
 
+// Namespace nullifies the use of cv::function();
+using namespace std;
+using namespace cv;
+
 int main(int argc, char const *argv[])
 {
     // Check for valid input
     if (argc != 2)
     {
-        std::cout << "Invalid input, please try again\n";
+        cout << "Invalid input, please try again\n";
         return 0;
     }
 
     // Get the name of the image the user is requesting
-    std::string usr_arg = argv[1];
-
-    // Namespace nullifies the use of cv::function();
-    using namespace std;
-    using namespace cv;
+    string usr_arg = argv[1];
 
     // Check to make sure the file exsists
     ifstream ifile;
@@ -39,6 +39,6 @@ int main(int argc, char const *argv[])
     }
     else
     {
-        std::cout << "The specified file does not exist";
+        cout << "The specified file does not exist";
     }
 }
