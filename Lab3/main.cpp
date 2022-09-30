@@ -8,30 +8,47 @@
 using namespace std;
 using namespace cv;
 
+Mat getNextMat(int row, int col, Mat image)
+{
+    // might want to check if the Mat is big enough for this process
+
+    Mat mat = Mat(3, 3, CV_8U);
+
+    for (int r = 0; r < 3; r++)
+    {
+        for (int c = 0; c < 3; c++)
+        {
+            mat.at<int>(r, c) = image.at<int>(col + c, row + r);
+        }
+    }
+
+    return mat;
+}
+
 int main(int argc, char const *argv[])
 {
-    int x[3][3] = {
-        {-1, 0, 1},
-        {-2, 0, 2},
-        {-1, 0, 1}};
+    // Constructing Filters
+    // int x[3][3] = {
+    //     {1, 0, -1},
+    //     {2, 0, -2},
+    //     {1, 0, -1}};
 
-    int y[3][3] = {
-        {1, 2, 1},
-        {0, 0, 0},
-        {-1, -2, -1}};
+    // int y[3][3] = {
+    //     {-1, -2, -1},
+    //     {0, 0, 0},
+    //     {1, 2, 1}};
 
-    Mat Gx(3, 3, CV_64U, x);
+    // Mat Gx = Mat(3, 3, CV_32S);
+    // Mat Gy = Mat(3, 3, CV_32S);
 
-    Mat Gy(3, 3, CV_64S, y);
-
-    cout << x;
-    cout << Gx;
-
-    Mat test = Gx * Gy;
-
-    Scalar tester = sum(test);
-
-    cout << tester;
+    // for (int i = 0; i < 3; i++)
+    // {
+    //     for (int j = 0; j < 3; j++)
+    //     {
+    //         Gx.at<int>(j, i) = x[i][j];
+    //         Gy.at<int>(j, i) = y[i][j];
+    //     }
+    // }
 
     // Check for valid input
     if (argc != 2)
@@ -51,11 +68,11 @@ int main(int argc, char const *argv[])
     if (!ifile)
     {
         cout << "The specified file does not exist";
-        exit(0);
+        return 0;
     }
 
     // Read the image
-    Mat usr_img = imread(usr_arg, IMREAD_UNCHANGED);
+    Mat usr_img = imread(usr_arg);
 
     // Split the image into three color channels
     Mat img_planes[3];
@@ -64,19 +81,22 @@ int main(int argc, char const *argv[])
     // Implement the ITU-R (BT.709) algorithm
     Mat img_grayscale = (0.2126 * img_planes[2] + 0.7152 * img_planes[1] + 0.0722 * img_planes[0]);
 
-    for (int i = 0; i < img_grayscale.cols; i++)
-    {
+    Mat cropedImage = img_grayscale(Rect(100, 100, 5, 5));
+    Mat test = getNextMat(1, 1, cropedImage);
 
-        for (int j = 0; j < img_grayscale.rows; j++)
-        {
-        }
-    }
+    cout << "\n\n\n";
+    cout << cropedImage;
+    cout << "\n";
 
-    imshow("gray", img_grayscale);
+    cout << "\n";
+    cout << test;
+    cout << "\n\n";
 
-    // Wait for a keystroke
-    waitKey(0);
+    // imshow("gray", img_grayscale);
 
-    // Destroy the window created
-    destroyAllWindows();
+    // // Wait for a keystroke
+    // waitKey(0);
+
+    // // Destroy the window created
+    // destroyAllWindows();
 }
