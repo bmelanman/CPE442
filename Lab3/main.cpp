@@ -1,5 +1,5 @@
 // Include Libraries
-#include "opencv2/opencv.hpp"
+#include <opencv2/opencv.hpp>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -36,6 +36,7 @@ Mat grayscale_img(Mat image) {
             grayscale.at<int>(j, i) = (0.0722 * (int)BGR[0] + 0.7152 * (int)BGR[1] + 0.2126 * (int)BGR[2]);
         }
     }
+
 
     return grayscale;
 }

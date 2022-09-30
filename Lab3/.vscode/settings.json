@@ -9,5 +9,9 @@
             "binaryArgs": []
         }
     ],
-    "C_Cpp.errorSquiggles": "Enabled"
+    "C_Cpp.errorSquiggles": "EnabledIfIncludesResolve",
+    "outline.problems.enabled": true,
+    "outline.problems.colors": true,
+    "outline.problems.badges": true,
+    "problems.decorations.enabled": true
 }
