@@ -5,14 +5,14 @@
 #include <string>
 #include <math.h>
 
-// Namespace nullifies the use of cv::function();
+// Namespace nullifies the use of std::fucntion() and cv::function();
 using namespace std;
 using namespace cv;
 
 Mat getNextMat(int starting_col, int starting_row, Mat image) {
     // might want to check if the Mat is big enough for this process?
 
-    Mat mat = Mat(3, 3, CV_32S);
+    Mat mat(3, 3, CV_32S);
 
     for (int col = 0; col < 3; col++) {
         for (int row = 0; row < 3; row++) {
@@ -28,17 +28,12 @@ Mat grayscale_img(Mat image) {
     int row_size = image.rows;
     int col_size = image.cols;
     int depth = image.depth();
-    Vec3b BGR;
-    Mat grayscale = Mat(row_size, col_size, depth);
-    Mat img_planes[3] = {
-        Mat(row_size, col_size, depth),
-        Mat(row_size, col_size, depth),
-        Mat(row_size, col_size, depth)
-    };
+    Vec3i BGR;
+    Mat grayscale(row_size, col_size, CV_8U);
 
     for (int i = 0; i < row_size; i++) {
         for (int j = 0; j < col_size; j++) {
-            BGR = image.at<Vec3b>(j, i);
+            BGR = image.at<Vec3i>(j, i);
             grayscale.at<int>(j, i) = (0.0722 * (int)BGR[0] + 0.7152 * (int)BGR[1] + 0.2126 * (int)BGR[2]);
         }
     }
@@ -46,12 +41,14 @@ Mat grayscale_img(Mat image) {
     return grayscale;
 }
 
-Mat sobel_filter(Mat gray_image) {
-    int row_size = gray_image.rows - 2;
-    int col_size = gray_image.cols - 2;
+Mat sobel_filter(Mat grayscale_image) {
+
+    // Scanning with a 3x3 matrix which means we can stop at the 3rd last row and col
+    int row_size = grayscale_image.rows - 2;
+    int col_size = grayscale_image.cols - 2;
 
     // Output image
-    Mat sobel_img = Mat(row_size, col_size, CV_8U);
+    Mat sobel_img(row_size, col_size, CV_8U);
 
     // Constructing Filters
     int x[3][3] = {
@@ -64,8 +61,8 @@ Mat sobel_filter(Mat gray_image) {
         {0, 0, 0},
         {1, 2, 1} };
 
-    Mat Gx = Mat(3, 3, CV_32S);
-    Mat Gy = Mat(3, 3, CV_32S);
+    Mat Gx(3, 3, CV_32S);
+    Mat Gy(3, 3, CV_32S);
 
     for (int col = 0; col < 3; col++) {
         for (int row = 0; row < 3; row++) {
@@ -74,9 +71,10 @@ Mat sobel_filter(Mat gray_image) {
         }
     }
 
+    // Apply the sobel filer 
     for (int i = 0; i < row_size; i++) {
         for (int j = 0; j < col_size; j++) {
-            Mat img_box = getNextMat(i, j, gray_image);
+            Mat img_box = getNextMat(i, j, grayscale_image);
             sobel_img.at<int>(j, i) = abs(sum(img_box.mul(Gx))[0]) + abs(sum(img_box.mul(Gy))[0]);
         }
     }

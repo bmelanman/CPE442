@@ -1,5 +1,12 @@
 {
     "files.associations": {
         "iostream": "cpp"
-    }
+    },
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "/Users/brycemelander/Documents/GitHub/CPE442/Lab3",
+            "binaryPath": "/Users/brycemelander/Documents/GitHub/CPE442/Lab3/main",
+            "binaryArgs": []
+        }
+    ]
 }
