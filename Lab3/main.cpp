@@ -27,7 +27,6 @@ Mat grayscale_img(Mat image) {
 
     int row_size = image.rows;
     int col_size = image.cols;
-    int depth = image.depth();
     Vec3i BGR;
     Mat grayscale(row_size, col_size, CV_8U);
 
@@ -61,15 +60,8 @@ Mat sobel_filter(Mat grayscale_image) {
         {0, 0, 0},
         {1, 2, 1} };
 
-    Mat Gx(3, 3, CV_32S);
-    Mat Gy(3, 3, CV_32S);
-
-    for (int col = 0; col < 3; col++) {
-        for (int row = 0; row < 3; row++) {
-            Gx.at<int>(row, col) = x[col][row];
-            Gy.at<int>(row, col) = y[col][row];
-        }
-    }
+    Mat Gx(3, 3, CV_32S, x);
+    Mat Gy(3, 3, CV_32S, y);
 
     // Apply the sobel filer 
     for (int i = 0; i < row_size; i++) {
