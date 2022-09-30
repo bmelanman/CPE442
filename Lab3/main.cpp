@@ -9,18 +9,41 @@
 using namespace std;
 using namespace cv;
 
-Mat getNextMat(int row, int col, Mat image) {
+Mat getNextMat(int starting_col, int starting_row, Mat image) {
     // might want to check if the Mat is big enough for this process?
 
     Mat mat = Mat(3, 3, CV_32S);
 
-    for (int r = 0; r < 3; r++) {
-        for (int c = 0; c < 3; c++) {
-            mat.at<int>(c, r) = image.at<int>(col + c, row + r);
+    for (int col = 0; col < 3; col++) {
+        for (int row = 0; row < 3; row++) {
+            mat.at<int>(row, col) = image.at<int>(starting_row + row, starting_col + col);
         }
     }
 
     return mat;
+}
+
+Mat grayscale_img(Mat image) {
+
+    int row_size = image.rows;
+    int col_size = image.cols;
+    int depth = image.depth();
+    Vec3b BGR;
+    Mat grayscale = Mat(row_size, col_size, depth);
+    Mat img_planes[3] = {
+        Mat(row_size, col_size, depth),
+        Mat(row_size, col_size, depth),
+        Mat(row_size, col_size, depth)
+    };
+
+    for (int i = 0; i < row_size; i++) {
+        for (int j = 0; j < col_size; j++) {
+            BGR = image.at<Vec3b>(j, i);
+            grayscale.at<int>(j, i) = (0.0722 * (int)BGR[0] + 0.7152 * (int)BGR[1] + 0.2126 * (int)BGR[2]);
+        }
+    }
+
+    return grayscale;
 }
 
 Mat sobel_filter(Mat gray_image) {
@@ -44,17 +67,16 @@ Mat sobel_filter(Mat gray_image) {
     Mat Gx = Mat(3, 3, CV_32S);
     Mat Gy = Mat(3, 3, CV_32S);
 
-    for (int i = 0; i < 3; i++) {
-        for (int j = 0; j < 3; j++) {
-            Gx.at<int>(j, i) = x[i][j];
-            Gy.at<int>(j, i) = y[i][j];
+    for (int col = 0; col < 3; col++) {
+        for (int row = 0; row < 3; row++) {
+            Gx.at<int>(row, col) = x[col][row];
+            Gy.at<int>(row, col) = y[col][row];
         }
     }
 
     for (int i = 0; i < row_size; i++) {
         for (int j = 0; j < col_size; j++) {
             Mat img_box = getNextMat(i, j, gray_image);
-
             sobel_img.at<int>(j, i) = abs(sum(img_box.mul(Gx))[0]) + abs(sum(img_box.mul(Gy))[0]);
         }
     }
@@ -85,16 +107,15 @@ int main(int argc, char const* argv[]) {
     // Read the image
     Mat usr_img = imread(usr_arg);
 
-    // Split the image into three color channels
-    Mat img_planes[3];
-    split(usr_img, img_planes);
-
-    // Implement the ITU-R (BT.709) algorithm
-    Mat img_grayscale = (0.2126 * img_planes[2] + 0.7152 * img_planes[1] + 0.0722 * img_planes[0]);
+    // Convert to grayscale
+    Mat img_grayscale = grayscale_img(usr_img);
 
     // Apply the sobel filter
     Mat img_sobel = sobel_filter(img_grayscale);
 
+    // Display the image
+    imshow(usr_arg, usr_img);
+    imshow("grayscale", img_grayscale);
     imshow("sobel filter", img_sobel);
 
     // Wait for a keystroke
