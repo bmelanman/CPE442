@@ -67,7 +67,7 @@ Mat sobel_filter(Mat grayscale_image) {
     for (int i = 0; i < row_size; i++) {
         for (int j = 0; j < col_size; j++) {
             img_box = getNextMat(i, j, grayscale_image);
-            sobel_img.at<uchar>(i, j) = abs(sum(img_box.mul(Gx))[0]) + abs(sum(img_box.mul(Gy))[0]);
+            sobel_img.at<uchar>(i, j) = (sum(img_box.mul(Gx))[0]) + (sum(img_box.mul(Gy))[0]);
         }
     }
 
