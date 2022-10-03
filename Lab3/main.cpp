@@ -1,4 +1,3 @@
-// Include Libraries
 #include <opencv2/opencv.hpp>
 #include <fstream>
 #include <iostream>
@@ -27,16 +26,24 @@ Mat grayscale_img(Mat image) {
 
     int row_size = image.rows;
     int col_size = image.cols;
+    int pixel;
     Vec3i BGR;
     Mat grayscale(row_size, col_size, CV_8U);
 
     for (int i = 0; i < row_size; i++) {
         for (int j = 0; j < col_size; j++) {
-            BGR = image.at<Vec3i>(j, i);
-            grayscale.at<int>(j, i) = (0.0722 * (int)BGR[0] + 0.7152 * (int)BGR[1] + 0.2126 * (int)BGR[2]);
+            BGR = image.at<Vec3i>(i, j);
+            pixel = (0.0722 * BGR[0] + 0.7152 * BGR[1] + 0.2126 * BGR[2]);
+
+            grayscale.at<int>(i, j) = pixel;
         }
     }
 
+    cout << grayscale.at<int>(1, 1);
+
+    // Mat img_planes[3];
+    // split(image, img_planes);
+    // grayscale = (0.2126 * img_planes[2] + 0.7152 * img_planes[1] + 0.0722 * img_planes[0]);
 
     return grayscale;
 }
@@ -52,9 +59,9 @@ Mat sobel_filter(Mat grayscale_image) {
 
     // Constructing Filters
     int x[3][3] = {
-        {1, 0, -1},
-        {2, 0, -2},
-        {1, 0, -1} };
+        {-1, 0, 1},
+        {-2, 0, 2},
+        {-1, 0, 1} };
 
     int y[3][3] = {
         {-1, -2, -1},
@@ -63,12 +70,21 @@ Mat sobel_filter(Mat grayscale_image) {
 
     Mat Gx(3, 3, CV_32S, x);
     Mat Gy(3, 3, CV_32S, y);
+    Mat img_box(3, 3, CV_8U);
 
     // Apply the sobel filer 
     for (int i = 0; i < row_size; i++) {
         for (int j = 0; j < col_size; j++) {
-            Mat img_box = getNextMat(i, j, grayscale_image);
+            img_box = getNextMat(i, j, grayscale_image);
+
             sobel_img.at<int>(j, i) = abs(sum(img_box.mul(Gx))[0]) + abs(sum(img_box.mul(Gy))[0]);
+
+            // if (pixel > 1000000000) {
+            //     sobel_img.at<int>(j, i) = 255;
+            // }
+            // else {
+            //     sobel_img.at<int>(j, i) = 0;
+            // }
         }
     }
 
@@ -76,6 +92,7 @@ Mat sobel_filter(Mat grayscale_image) {
 }
 
 int main(int argc, char const* argv[]) {
+
     // Check for valid input
     if (argc != 2) {
         cout << "Invalid input, please try again\n";
@@ -105,9 +122,9 @@ int main(int argc, char const* argv[]) {
     Mat img_sobel = sobel_filter(img_grayscale);
 
     // Display the image
-    imshow(usr_arg, usr_img);
+    // imshow(usr_arg, usr_img);
     imshow("grayscale", img_grayscale);
-    imshow("sobel filter", img_sobel);
+    // imshow("sobel filter", img_sobel);
 
     // Wait for a keystroke
     waitKey(0);
