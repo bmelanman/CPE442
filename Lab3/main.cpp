@@ -105,8 +105,8 @@ int main(int argc, char const* argv[]) {
     Mat img_sobel = sobel_filter(img_grayscale);
 
     // Display the image
-    // imshow(usr_arg, usr_img);
-    // imshow("grayscale", img_grayscale);
+    imshow(usr_arg, usr_img);
+    imshow("grayscale", img_grayscale);
     imshow("sobel filter", img_sobel);
 
     // Wait for a keystroke
