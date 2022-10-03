@@ -8,20 +8,6 @@
 using namespace std;
 using namespace cv;
 
-Mat getNextMat(int starting_row, int starting_col, Mat grayscale_img) {
-    // might want to check if the Mat is big enough for this process?
-
-    Mat mat(3, 3, CV_8SC1);
-
-    for (int i = 0; i < 3; i++) {
-        for (int j = 0; j < 3; j++) {
-            mat.at<uchar>(i, j) = grayscale_img.at<uchar>(starting_row + i, starting_col + j);
-        }
-    }
-
-    return mat;
-}
-
 Mat grayscale_img(Mat image) {
 
     Mat grayscale(image.rows, image.cols, CV_8UC1);
@@ -46,28 +32,40 @@ Mat sobel_filter(Mat grayscale_image) {
     int col_size = grayscale_image.cols - 2;
 
     // Output image
-    Mat sobel_img(row_size, col_size, CV_8SC1);
-
-    // Constructing Filters
-    int x[3][3] = {
-        {-1, 0, 1},
-        {-2, 0, 2},
-        {-1, 0, 1} };
-
-    int y[3][3] = {
-        {-1, -2, -1},
-        {0, 0, 0},
-        {1, 2, 1} };
-
-    Mat Gx(3, 3, CV_8SC1, x);
-    Mat Gy(3, 3, CV_8SC1, y);
-    Mat img_box(3, 3, CV_8SC1);
+    Mat sobel_img(row_size, col_size, CV_8UC1);
 
     // Apply the sobel filer 
     for (int i = 0; i < row_size; i++) {
         for (int j = 0; j < col_size; j++) {
-            img_box = getNextMat(i, j, grayscale_image);
-            sobel_img.at<uchar>(i, j) = (sum(img_box.mul(Gx))[0]) + (sum(img_box.mul(Gy))[0]);
+            // Gx Filter:
+            // [-1, 0, 1]
+            // [-2, 0, 2]
+            // [-1, 0, 1]
+
+            int8_t Gx = (
+                - grayscale_image.at<uchar>(i    , j)
+                + grayscale_image.at<uchar>(i    , j + 2)
+                - grayscale_image.at<uchar>(i + 1, j) * 2
+                + grayscale_image.at<uchar>(i + 1, j + 2) * 2
+                - grayscale_image.at<uchar>(i + 2, j)
+                + grayscale_image.at<uchar>(i + 2, j + 2)
+            );
+
+            // Gy Filter:
+            // [-1, -2, -1]
+            // [0, 0, 0]
+            // [1, 2, 1]
+            int8_t Gy = (
+                - grayscale_image.at<uchar>(i    , j)
+                - grayscale_image.at<uchar>(i    , j + 1) * 2
+                - grayscale_image.at<uchar>(i    , j + 2)
+                + grayscale_image.at<uchar>(i + 2, j)
+                + grayscale_image.at<uchar>(i + 2, j + 1) * 2
+                + grayscale_image.at<uchar>(i + 2, j + 2)                
+            );
+
+            // G = |Gx| + |Gy|
+            sobel_img.at<uchar>(i, j) = abs(Gx) + abs(Gy);
         }
     }
 
