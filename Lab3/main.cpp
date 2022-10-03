@@ -1,4 +1,3 @@
-// Include Libraries
 #include <opencv2/opencv.hpp>
 #include <fstream>
 #include <iostream>
@@ -25,18 +24,17 @@ Mat getNextMat(int starting_col, int starting_row, Mat image) {
 
 Mat grayscale_img(Mat image) {
 
-    int row_size = image.rows;
-    int col_size = image.cols;
-    Vec3i BGR;
-    Mat grayscale(row_size, col_size, CV_8U);
+    Mat grayscale(image.rows, image.cols, CV_8UC1);
 
-    for (int i = 0; i < row_size; i++) {
-        for (int j = 0; j < col_size; j++) {
-            BGR = image.at<Vec3i>(j, i);
-            grayscale.at<int>(j, i) = (0.0722 * (int)BGR[0] + 0.7152 * (int)BGR[1] + 0.2126 * (int)BGR[2]);
+    for (int i = 0; i < image.rows; i++) {
+        for (int j = 0; j < image.cols; j++) {
+            grayscale.at<uchar>(i, j) = (
+                0.0722 * image.at<Vec3b>(i, j)[0] +
+                0.7152 * image.at<Vec3b>(i, j)[1] +
+                0.2126 * image.at<Vec3b>(i, j)[2]
+                );
         }
     }
-
 
     return grayscale;
 }
@@ -48,13 +46,13 @@ Mat sobel_filter(Mat grayscale_image) {
     int col_size = grayscale_image.cols - 2;
 
     // Output image
-    Mat sobel_img(row_size, col_size, CV_8U);
+    Mat sobel_img(row_size, col_size, CV_8UC1);
 
     // Constructing Filters
     int x[3][3] = {
-        {1, 0, -1},
-        {2, 0, -2},
-        {1, 0, -1} };
+        {-1, 0, 1},
+        {-2, 0, 2},
+        {-1, 0, 1} };
 
     int y[3][3] = {
         {-1, -2, -1},
@@ -63,12 +61,13 @@ Mat sobel_filter(Mat grayscale_image) {
 
     Mat Gx(3, 3, CV_32S, x);
     Mat Gy(3, 3, CV_32S, y);
+    Mat img_box(3, 3, CV_8UC1);
 
     // Apply the sobel filer 
     for (int i = 0; i < row_size; i++) {
         for (int j = 0; j < col_size; j++) {
-            Mat img_box = getNextMat(i, j, grayscale_image);
-            sobel_img.at<int>(j, i) = abs(sum(img_box.mul(Gx))[0]) + abs(sum(img_box.mul(Gy))[0]);
+            img_box = getNextMat(i, j, grayscale_image);
+            sobel_img.at<uint>(j, i) = abs(sum(img_box.mul(Gx))[0]) + abs(sum(img_box.mul(Gy))[0]);
         }
     }
 
@@ -76,6 +75,7 @@ Mat sobel_filter(Mat grayscale_image) {
 }
 
 int main(int argc, char const* argv[]) {
+
     // Check for valid input
     if (argc != 2) {
         cout << "Invalid input, please try again\n";
@@ -105,8 +105,8 @@ int main(int argc, char const* argv[]) {
     Mat img_sobel = sobel_filter(img_grayscale);
 
     // Display the image
-    imshow(usr_arg, usr_img);
-    imshow("grayscale", img_grayscale);
+    // imshow(usr_arg, usr_img);
+    // imshow("grayscale", img_grayscale);
     imshow("sobel filter", img_sobel);
 
     // Wait for a keystroke
