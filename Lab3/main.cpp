@@ -10,10 +10,13 @@ using namespace cv;
 
 Mat grayscale_img(Mat image) {
 
-    Mat grayscale(image.rows, image.cols, CV_8UC1);
+    rows = image.rows;
+    cols = image.cols;
 
-    for (int i = 0; i < image.rows; i++) {
-        for (int j = 0; j < image.cols; j++) {
+    Mat grayscale(rows, cols, CV_8UC1);
+
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
             grayscale.at<uchar>(i, j) = (
                 0.0722 * image.at<Vec3b>(i, j)[0] +
                 0.7152 * image.at<Vec3b>(i, j)[1] +
@@ -37,29 +40,29 @@ Mat sobel_filter(Mat grayscale_image) {
     // Apply the sobel filer 
     for (int i = 0; i < row_size; i++) {
         for (int j = 0; j < col_size; j++) {
-            // Gx Filter:
-            // [-1, 0, 1]
-            // [-2, 0, 2]
-            // [-1, 0, 1]
 
+            // Gx Filter:
+            // [-1,  0,  1]
+            // [-2,  0,  2]
+            // [-1,  0,  1]
             int8_t Gx = (
-                - grayscale_image.at<uchar>(i    , j)
+                - grayscale_image.at<uchar>(i    , j    )
                 + grayscale_image.at<uchar>(i    , j + 2)
-                - grayscale_image.at<uchar>(i + 1, j) * 2
+                - grayscale_image.at<uchar>(i + 1, j    ) * 2
                 + grayscale_image.at<uchar>(i + 1, j + 2) * 2
-                - grayscale_image.at<uchar>(i + 2, j)
+                - grayscale_image.at<uchar>(i + 2, j    )
                 + grayscale_image.at<uchar>(i + 2, j + 2)
             );
 
             // Gy Filter:
             // [-1, -2, -1]
-            // [0, 0, 0]
-            // [1, 2, 1]
+            // [ 0,  0,  0]
+            // [ 1,  2,  1]
             int8_t Gy = (
-                - grayscale_image.at<uchar>(i    , j)
+                - grayscale_image.at<uchar>(i    , j    )
                 - grayscale_image.at<uchar>(i    , j + 1) * 2
                 - grayscale_image.at<uchar>(i    , j + 2)
-                + grayscale_image.at<uchar>(i + 2, j)
+                + grayscale_image.at<uchar>(i + 2, j    )
                 + grayscale_image.at<uchar>(i + 2, j + 1) * 2
                 + grayscale_image.at<uchar>(i + 2, j + 2)                
             );
