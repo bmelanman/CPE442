@@ -15,8 +15,11 @@ Mat grayscale_img(Mat image) {
 
     Mat grayscale(rows, cols, CV_8UC1);
 
+    // Iterate through each pixel in the image
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
+
+            // Apply the ITU-R (BT.709) algorithm to each pixel
             grayscale.at<uchar>(i, j) = (
                 0.0722 * image.at<Vec3b>(i, j)[0] +
                 0.7152 * image.at<Vec3b>(i, j)[1] +
@@ -80,7 +83,7 @@ int main(int argc, char const* argv[]) {
     // Check for valid input
     if (argc != 2) {
         cout << "Invalid input, please try again\n";
-        return 0;
+        return -1;
     }
 
     // Get the name of the file the user is requesting
@@ -91,7 +94,7 @@ int main(int argc, char const* argv[]) {
     ifile.open(usr_arg);
     if (!ifile) {
         cout << "The specified file does not exist";
-        return 0;
+        return -1;
     }
 
     // Check if the files is an image or a video
@@ -115,6 +118,8 @@ int main(int argc, char const* argv[]) {
 
         // Destroy the window created
         destroyAllWindows();
+
+        return 0;
     }
     else if (usr_arg.substr(usr_arg.size() - 4) == ".mp4") {
         // Read the video
@@ -154,9 +159,9 @@ int main(int argc, char const* argv[]) {
     }
     else {
         cout << "This file is not supported";
-        return 0;
+        return -1;
     }
 
     cout << "Breakout!\n";
-    return 0;
+    return -1;
 }
