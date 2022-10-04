@@ -119,12 +119,44 @@ int main(int argc, char const* argv[]) {
     else if (usr_arg.substr(usr_arg.size() - 4) == ".mp4") {
         // Read the video
         VideoCapture usr_vid = VideoCapture(usr_arg);
+
+        Mat frame;
+
+        // Loop through the image file
+        while (1) {
+            // Get a frame from the video
+            usr_vid >> frame;
+
+            // If we're all out of frames, the video is over
+            if (frame.empty()) {
+                break;
+            }
+
+            // Process the image
+            Mat gray_frame = grayscale_img(frame);
+            Mat sobel_frame = sobel_filter(gray_frame);
+
+            // Dislplay the frame
+            imshow(usr_arg, sobel_frame);
+
+            // Hold ESC to exit the video early
+            char c = (char) waitKey(25);
+            if (c == 27) {
+                break;
+            }
+        }
+
+        // Clean up
+        usr_vid.release();
+        destroyAllWindows();
+
+        return 0;
     }
     else {
         cout << "This file is not supported";
         return 0;
     }
 
-    cout << "Breakout!\n"
+    cout << "Breakout!\n";
     return 0;
 }
