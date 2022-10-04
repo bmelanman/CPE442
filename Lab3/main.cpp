@@ -10,8 +10,8 @@ using namespace cv;
 
 Mat grayscale_img(Mat image) {
 
-    rows = image.rows;
-    cols = image.cols;
+    int rows = image.rows;
+    int cols = image.cols;
 
     Mat grayscale(rows, cols, CV_8UC1);
 
@@ -46,26 +46,26 @@ Mat sobel_filter(Mat grayscale_image) {
             // [-2,  0,  2]
             // [-1,  0,  1]
             int8_t Gx = (
-                - grayscale_image.at<uchar>(i    , j    )
-                + grayscale_image.at<uchar>(i    , j + 2)
-                - grayscale_image.at<uchar>(i + 1, j    ) * 2
+                -grayscale_image.at<uchar>(i, j)
+                + grayscale_image.at<uchar>(i, j + 2)
+                - grayscale_image.at<uchar>(i + 1, j) * 2
                 + grayscale_image.at<uchar>(i + 1, j + 2) * 2
-                - grayscale_image.at<uchar>(i + 2, j    )
+                - grayscale_image.at<uchar>(i + 2, j)
                 + grayscale_image.at<uchar>(i + 2, j + 2)
-            );
+                );
 
             // Gy Filter:
             // [-1, -2, -1]
             // [ 0,  0,  0]
             // [ 1,  2,  1]
             int8_t Gy = (
-                - grayscale_image.at<uchar>(i    , j    )
-                - grayscale_image.at<uchar>(i    , j + 1) * 2
-                - grayscale_image.at<uchar>(i    , j + 2)
-                + grayscale_image.at<uchar>(i + 2, j    )
+                -grayscale_image.at<uchar>(i, j)
+                - grayscale_image.at<uchar>(i, j + 1) * 2
+                - grayscale_image.at<uchar>(i, j + 2)
+                + grayscale_image.at<uchar>(i + 2, j)
                 + grayscale_image.at<uchar>(i + 2, j + 1) * 2
-                + grayscale_image.at<uchar>(i + 2, j + 2)                
-            );
+                + grayscale_image.at<uchar>(i + 2, j + 2)
+                );
 
             // G = |Gx| + |Gy|
             sobel_img.at<uchar>(i, j) = abs(Gx) + abs(Gy);
@@ -83,36 +83,48 @@ int main(int argc, char const* argv[]) {
         return 0;
     }
 
-    // Get the name of the image the user is requesting
+    // Get the name of the file the user is requesting
     string usr_arg = argv[1];
 
-    // Check to make sure the file exsists
+    // Check to make sure the file exsists, quit if it does not
     ifstream ifile;
     ifile.open(usr_arg);
-
-    // If the file doesn't exist, quit
     if (!ifile) {
         cout << "The specified file does not exist";
         return 0;
     }
 
-    // Read the image
-    Mat usr_img = imread(usr_arg);
+    // Check if the files is an image or a video
+    if (usr_arg.substr(usr_arg.size() - 4) != ".mp4") {
+        // Read the image
+        Mat usr_img = imread(usr_arg);
 
-    // Convert to grayscale
-    Mat img_grayscale = grayscale_img(usr_img);
+        // Convert to grayscale
+        Mat img_grayscale = grayscale_img(usr_img);
 
-    // Apply the sobel filter
-    Mat img_sobel = sobel_filter(img_grayscale);
+        // Apply the sobel filter
+        Mat img_sobel = sobel_filter(img_grayscale);
 
-    // Display the image
-    imshow(usr_arg, usr_img);
-    imshow("grayscale", img_grayscale);
-    imshow("sobel filter", img_sobel);
+        // Display the image
+        imshow(usr_arg, usr_img);
+        imshow("grayscale", img_grayscale);
+        imshow("sobel filter", img_sobel);
 
-    // Wait for a keystroke
-    waitKey(0);
+        // Wait for a keystroke
+        waitKey(0);
 
-    // Destroy the window created
-    destroyAllWindows();
+        // Destroy the window created
+        destroyAllWindows();
+    }
+    else if (usr_arg.substr(usr_arg.size() - 4) == ".mp4") {
+        // Read the video
+        VideoCapture usr_vid = VideoCapture(usr_arg);
+    }
+    else {
+        cout << "This file is not supported";
+        return 0;
+    }
+
+    cout << "Breakout!\n"
+    return 0;
 }
