@@ -16,6 +16,9 @@
   default: $(TARGET).cpp
 	$(CC) $(TARGET).cpp -o $(TARGET) $(CFLAGS)  
 
+  pi:
+	$(CC) $(TARGET).cpp -o $(TARGET) $(PKG_MNG)  
+
   clean:
 	$(RM) $(TARGET)
 
