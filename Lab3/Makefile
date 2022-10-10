@@ -18,3 +18,5 @@
 
   clean:
 	$(RM) $(TARGET)
+
+  # g++ `pkg-config --cflags --libs opencv4` -std=c++11 -g -Wall -o main main.cpp

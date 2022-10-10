@@ -1,3 +1,17 @@
+/*********************************************************
+* File: main.cpp
+*
+* Description: This program converts images and videos from
+*               full color RGB to grayscale and then applies
+*               a Sobel filter before displaying the final
+*               image.
+*
+* Author: Bryce Melander
+* Co-Authors: Blase Parker, Johnathan Espiritu
+* 
+* Revisions: V1.1
+*
+**********************************************************/
 #include <opencv2/opencv.hpp>
 #include <fstream>
 #include <iostream>
@@ -8,6 +22,16 @@
 using namespace std;
 using namespace cv;
 
+/*-----------------------------------------------------
+* Function: grayscale_img
+* 
+* Description: Converts an RGB image to grayscale using 
+*               the ITU-R (BT.709) algorithm
+* 
+* param image: Mat: An RGB image in a cv::Mat
+* 
+* return: Mat
+*--------------------------------------------------------*/ 
 Mat grayscale_img(Mat image) {
 
     int rows = image.rows;
@@ -31,6 +55,16 @@ Mat grayscale_img(Mat image) {
     return grayscale;
 }
 
+/*-----------------------------------------------------
+* Function: grayscale_img
+* 
+* Description: Applies the Sobel algorithm to a 
+*               grayscale image
+* 
+* param image: Mat: A grayscale image in a cv::Mat
+* 
+* return: Mat
+*--------------------------------------------------------*/ 
 Mat sobel_filter(Mat grayscale_image) {
 
     // Scanning with a 3x3 matrix which means we can stop at the 3rd last row and col
@@ -48,11 +82,11 @@ Mat sobel_filter(Mat grayscale_image) {
             // [-1,  0,  1]
             // [-2,  0,  2]
             // [-1,  0,  1]
-            int8_t Gx = (
+            int16_t Gx = (
                 -grayscale_image.at<uchar>(i, j)
                 + grayscale_image.at<uchar>(i, j + 2)
-                - grayscale_image.at<uchar>(i + 1, j) * 2
-                + grayscale_image.at<uchar>(i + 1, j + 2) * 2
+                - (grayscale_image.at<uchar>(i + 1, j) << 1)
+                + (grayscale_image.at<uchar>(i + 1, j + 2) << 1)
                 - grayscale_image.at<uchar>(i + 2, j)
                 + grayscale_image.at<uchar>(i + 2, j + 2)
                 );
@@ -61,17 +95,24 @@ Mat sobel_filter(Mat grayscale_image) {
             // [-1, -2, -1]
             // [ 0,  0,  0]
             // [ 1,  2,  1]
-            int8_t Gy = (
+            int16_t Gy = (
                 -grayscale_image.at<uchar>(i, j)
-                - grayscale_image.at<uchar>(i, j + 1) * 2
+                - (grayscale_image.at<uchar>(i, j + 1) << 1)
                 - grayscale_image.at<uchar>(i, j + 2)
                 + grayscale_image.at<uchar>(i + 2, j)
-                + grayscale_image.at<uchar>(i + 2, j + 1) * 2
+                + (grayscale_image.at<uchar>(i + 2, j + 1) << 1)
                 + grayscale_image.at<uchar>(i + 2, j + 2)
                 );
 
             // G = |Gx| + |Gy|
-            sobel_img.at<uchar>(i, j) = abs(Gx) + abs(Gy);
+            int16_t G = abs(Gx) + abs(Gy);
+            if (G > 255){
+                sobel_img.at<uchar>(i, j) = 255;
+            }
+            else {
+                sobel_img.at<uchar>(i, j) = G;
+            }
+             
         }
     }
 
