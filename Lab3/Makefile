@@ -8,15 +8,15 @@
   #  -g    			adds debugging information to the executable file
   #  -Wall 			turns on most, but not all, compiler warnings
   #  -std=c++11 	implements all of the major features of the C++11 standard
-  CFLAGS  = $(PKG_MNG) -std=c++11 -g -Wall
+  # CFLAGS  = $(PKG_MNG) -std=c++11 -g -Wall
 
   # Target build executable:
   TARGET = main
 
   default: $(TARGET).cpp
-	$(CC) $(CFLAGS) -o $(TARGET) $(TARGET).cpp
+	$(CC) $(TARGET).cpp -o $(TARGET) $(PKG_MNG)  
 
   clean:
 	$(RM) $(TARGET)
 
-  # g++ `pkg-config --cflags --libs opencv4` -std=c++11 -g -Wall -o main main.cpp
+  # g++ main.cpp -o main `pkg-config --cflags --libs opencv4`
