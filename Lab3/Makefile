@@ -8,13 +8,13 @@
   #  -g    			adds debugging information to the executable file
   #  -Wall 			turns on most, but not all, compiler warnings
   #  -std=c++11 	implements all of the major features of the C++11 standard
-  # CFLAGS  = $(PKG_MNG) -std=c++11 -g -Wall
+  CFLAGS  = $(PKG_MNG) -std=c++11 -g -Wall
 
   # Target build executable:
   TARGET = main
 
   default: $(TARGET).cpp
-	$(CC) $(TARGET).cpp -o $(TARGET) $(PKG_MNG)  
+	$(CC) $(TARGET).cpp -o $(TARGET) $(CFLAGS)  
 
   clean:
 	$(RM) $(TARGET)
