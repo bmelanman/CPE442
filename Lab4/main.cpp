@@ -9,7 +9,7 @@
 * Author: Bryce Melander
 * Co-Authors: Blase Parker, Johnathan Espiritu
 *
-* Revisions: V1.2
+* Revisions: V1.3
 *
 **********************************************************/
 
@@ -23,8 +23,9 @@
 #define G_CONST 0.2126
 #define B_CONST 0.7152
 #define R_CONST 0.0722
+#define NUM_THREADS 4
 
-// Namespace nullifies the use of std::fucntion() and cv::function();
+// Namespaces
 using namespace std;
 using namespace cv;
 
@@ -127,75 +128,67 @@ int main(int argc, char const* argv[]) {
         cout << "The specified file does not exist";
         exit(-1);
     }
-
-    if (usr_arg.substr(usr_arg.size() - 4) == ".mp4") {
-        // Read the video
-        VideoCapture usr_vid = VideoCapture(usr_arg);
-        int usr_vid_rows = usr_vid.get(4);
-        int usr_vid_cols = usr_vid.get(3);
-
-        // init the Mats for each image
-        Mat frame;
-        Mat gray_frame(usr_vid_rows, usr_vid_cols, CV_8UC1);
-        Mat sobel_frame(usr_vid_rows - 2, usr_vid_cols - 2, CV_8UC1);
-
-        // init pThreads
-        pthread_t thread1, thread2;
-
-        // init data used by threads
-        struct thread_data in_out1;
-        struct thread_data in_out2;
-        in_out1.input = in_out2.input = &gray_frame;
-        in_out1.output = in_out2.input = &sobel_frame;
-        in_out1.step = in_out2.step = 2;
-        in_out1.start = 0;
-        in_out2.start = 1;
-
-        // Loop through the image file
-        while (1) {
-            // Get a frame from the video
-            usr_vid >> frame;
-
-            // If we're all out of frames, the video is over
-            if (frame.empty()) {
-                break;
-            }
-
-            // Process the image
-            grayscale_filter(&frame, &gray_frame);
-
-            // Each thread processes half of the image
-            pthread_create(&thread1, NULL, threaded_sobel, (void*)&in_out1);    // Even pixels
-            pthread_create(&thread2, NULL, threaded_sobel, (void*)&in_out2);    // Odd pixels
-
-            // threaded_sobel(&gray_frame, &sobel_frame, 0, 2);
-            // threaded_sobel(&gray_frame, &sobel_frame, 1, 2);
-
-            // Wait for the threads to finish before displaying 
-            pthread_join(thread1, NULL);
-            pthread_join(thread2, NULL);
-
-            // Dislplay the frame
-            imshow(usr_arg, sobel_frame);
-
-            // Hold ESC to exit the video early
-            char c = (char)waitKey(25);
-            if (c == 27) {
-                break;
-            }
-        }
-
-        // Clean up
-        usr_vid.release();
-        destroyAllWindows();
-
-        return 0;
-    }
-    else {
+    else if (usr_arg.substr(usr_arg.size() - 4) != ".mp4") {
         cout << "This file is not supported";
         exit(-1);
     }
 
-    cout << "Breakout!\n";
-    return -1;
+    // Read the video
+    VideoCapture usr_vid = VideoCapture(usr_arg);
+    int usr_vid_rows = usr_vid.get(4);
+    int usr_vid_cols = usr_vid.get(3);
+
+    // init the Mats for each image
+    Mat frame;
+    Mat gray_frame(usr_vid_rows, usr_vid_cols, CV_8UC1);
+    Mat sobel_frame(usr_vid_rows - 2, usr_vid_cols - 2, CV_8UC1);
+
+    // init pThreads
+    pthread_t threads[NUM_THREADS];
+
+    // init data used by threads
+    struct thread_data in_out;
+    in_out.input = &gray_frame;
+    in_out.output = &sobel_frame;
+    in_out.step = NUM_THREADS;
+
+    // Loop through the image file
+    while (1) {
+        // Get a frame from the video
+        usr_vid >> frame;
+
+        // If we're all out of frames, the video is over
+        if (frame.empty()) {
+            break;
+        }
+
+        // Process the image
+        grayscale_filter(&frame, &gray_frame);
+
+        // Each thread processes half of the image
+        for (int i = 0; i < NUM_THREADS; i++) {
+            in_out.start = i;
+            pthread_create(&threads[i], NULL, threaded_sobel, (void*)&in_out);
+        }
+
+        // Wait for the threads to finish before displaying 
+        for (int j = 0; j < NUM_THREADS; j++) {
+            pthread_join(threads[j], NULL);
+        }
+
+        // Dislplay the frame
+        imshow(usr_arg, sobel_frame);
+
+        // Hold ESC to exit the video early
+        char c = (char)waitKey(25);
+        if (c == 27) {
+            break;
+        }
+    }
+
+    // Clean up
+    usr_vid.release();
+    destroyAllWindows();
+
+    return 0;
 }
