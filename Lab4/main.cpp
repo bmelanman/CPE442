@@ -19,22 +19,26 @@
 #include <string>
 #include <math.h>
 #include <pthread.h>
+#include "pthread_barrier.h"
 
 #define G_CONST 0.2126
 #define B_CONST 0.7152
 #define R_CONST 0.0722
-#define NUM_THREADS 4
+#define NUM_THREADS 100
+#define PTHREAD_BARRIER_SERIAL_THREAD 1
+
+pthread_barrier_t barrier;
 
 // Namespaces
 using namespace std;
 using namespace cv;
 
-struct thread_data {
+typedef struct thread_data {
     Mat* input;
     Mat* output;
     int start;
     int step;
-};
+} in_out;
 
 void grayscale_filter(Mat* image, Mat* grayscale) {
     uchar* image_data = image->data;
@@ -47,33 +51,24 @@ void grayscale_filter(Mat* image, Mat* grayscale) {
             (image_data[3 * pos + 2] * R_CONST)
             );
     }
-
 }
 
 void* threaded_sobel(void* threadArgs) {
 
     // init thread variables
     struct thread_data* thread_data = (struct thread_data*)threadArgs;
-    Mat* grayscale_img = thread_data->input;
-    Mat* sobel_img = thread_data->output;
     int start = thread_data->start;
     int step = thread_data->step;
 
     // init function varaibles 
-    int numRows = grayscale_img->rows;
-    int numCols = grayscale_img->cols;
+    int numRows = thread_data->input->rows;
+    int numCols = thread_data->input->cols;
     int16_t Gx, Gy, G;
-    uchar* grayscale_data = grayscale_img->data;
-    uchar* sobel_data = sobel_img->data;
-
-    // Make sure start and step aren't big enough to get out of bounds
-    if (start > numRows - 2 || step > numRows) {
-        cout << "Invalid threaded_sobel() configuration";
-        exit(-1);
-    }
+    uchar* grayscale_data = thread_data->input->data;
+    uchar* sobel_data = thread_data->output->data;
 
     // Loop through the rows and cols of the image and apply the sobel filter
-    for (int row = start; row < (numRows - 2 - step); row += step) {
+    for (int row = start; row < numRows - 2; row += step) {
         for (int col = 0; col < numCols - 2; col++) {
 
             // Convolve Gx
@@ -99,15 +94,71 @@ void* threaded_sobel(void* threadArgs) {
 
             // Overflow check
             if (G > 255) {
-                sobel_data[(sobel_img->cols * (row - 1) + (col - 1))] = 255;
+                sobel_data[(thread_data->output->cols * (row) + (col))] = 255;
             }
             else {
-                sobel_data[(sobel_img->cols * (row - 1) + (col - 1))] = (uchar)G;
+                sobel_data[(thread_data->output->cols * (row) + (col))] = (uchar)G;
             }
         }
     }
-
+    pthread_barrier_wait(&barrier);
     pthread_exit(NULL);
+}
+
+void video_processor(String video_file) {
+    // Read the video
+    VideoCapture usr_vid(video_file);
+    int usr_vid_rows = usr_vid.get(4);
+    int usr_vid_cols = usr_vid.get(3);
+
+    // init image Mats 
+    Mat frame;
+    Mat gray_frame(usr_vid_rows, usr_vid_cols, CV_8UC1);
+    Mat sobel_frame(usr_vid_rows - 2, usr_vid_cols - 2, CV_8UC1);
+
+    // init pThreads
+    pthread_t threads[NUM_THREADS];
+
+    // init data used by threads
+    struct thread_data in_out[NUM_THREADS];
+
+    for (int i = 0; i < NUM_THREADS; i++) {
+        in_out[i].input = &gray_frame;
+        in_out[i].output = &sobel_frame;
+        in_out[i].step = NUM_THREADS;
+        in_out[i].start = i;
+    }
+
+    // Loop through the image file
+    while (usr_vid.isOpened()) {
+        // Get a frame from the video
+        usr_vid >> frame;
+
+        // If we're all out of frames, the video is over
+        if (frame.empty()) {
+            break;
+        }
+
+        // Process the image
+        grayscale_filter(&frame, &gray_frame);
+
+        pthread_barrier_init(&barrier, NULL, NUM_THREADS);
+
+        // Each thread processes half of the image
+        for (int i = 0; i < NUM_THREADS; i++) {
+            pthread_create(&threads[i], NULL, &threaded_sobel, (void*)&in_out[i]);
+        }
+
+        // Dislplay the frame
+        imshow(video_file, sobel_frame);
+
+        // Hold ESC to exit the video early
+        if ((char)waitKey(25) == 27) break;
+    }
+
+    // Clean up
+    usr_vid.release();
+    destroyAllWindows();
 }
 
 int main(int argc, char const* argv[]) {
@@ -133,62 +184,7 @@ int main(int argc, char const* argv[]) {
         exit(-1);
     }
 
-    // Read the video
-    VideoCapture usr_vid = VideoCapture(usr_arg);
-    int usr_vid_rows = usr_vid.get(4);
-    int usr_vid_cols = usr_vid.get(3);
-
-    // init the Mats for each image
-    Mat frame;
-    Mat gray_frame(usr_vid_rows, usr_vid_cols, CV_8UC1);
-    Mat sobel_frame(usr_vid_rows - 2, usr_vid_cols - 2, CV_8UC1);
-
-    // init pThreads
-    pthread_t threads[NUM_THREADS];
-
-    // init data used by threads
-    struct thread_data in_out;
-    in_out.input = &gray_frame;
-    in_out.output = &sobel_frame;
-    in_out.step = NUM_THREADS;
-
-    // Loop through the image file
-    while (1) {
-        // Get a frame from the video
-        usr_vid >> frame;
-
-        // If we're all out of frames, the video is over
-        if (frame.empty()) {
-            break;
-        }
-
-        // Process the image
-        grayscale_filter(&frame, &gray_frame);
-
-        // Each thread processes half of the image
-        for (int i = 0; i < NUM_THREADS; i++) {
-            in_out.start = i;
-            pthread_create(&threads[i], NULL, threaded_sobel, (void*)&in_out);
-        }
-
-        // Wait for the threads to finish before displaying 
-        for (int j = 0; j < NUM_THREADS; j++) {
-            pthread_join(threads[j], NULL);
-        }
-
-        // Dislplay the frame
-        imshow(usr_arg, sobel_frame);
-
-        // Hold ESC to exit the video early
-        char c = (char)waitKey(25);
-        if (c == 27) {
-            break;
-        }
-    }
-
-    // Clean up
-    usr_vid.release();
-    destroyAllWindows();
+    video_processor(usr_arg);
 
     return 0;
 }

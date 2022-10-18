@@ -1,0 +1,11 @@
+{
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "/Users/brycemelander/Documents/GitHub/CPE442/Lab4",
+            "binaryPath": "/Users/brycemelander/Documents/GitHub/CPE442/Lab4/main",
+            "binaryArgs": ["small_coffee.mp4"]
+        }
+    ],
+    "C_Cpp.default.configurationProvider": "ms-vscode.makefile-tools",
+    "C_Cpp.errorSquiggles": "Enabled"
+}
