@@ -25,7 +25,6 @@
 #define G_CONST 0.2126
 #define B_CONST 0.7152
 #define R_CONST 0.0722
-// #define PTHREAD_BARRIER_SERIAL_THREAD -1
 
 // Namespaces
 using namespace std;
@@ -36,22 +35,27 @@ typedef struct thread_data {
     Mat* input;
     Mat* output;
     int start;
-    int step;
+    int stop;
 } in_out;
 
-// typedef struct {
-//     pthread_mutex_t mutex;
-//     pthread_cond_t condition_variable;
-//     int threads_required;
-//     int threads_left;
-//     unsigned int cycle;
-// } pthread_barrier_t;
-
-// Global Variables
-pthread_barrier_t barrier;
+typedef struct process_data {
+    String file_name;
+    int num_threads;
+} vid_data;
 
 // Re-implementation of pThread barrier functions
-/*
+// Check if they're implemented before using them
+#ifndef PTHREAD_BARRIER_SERIAL_THREAD
+#define PTHREAD_BARRIER_SERIAL_THREAD -1
+
+typedef struct {
+    pthread_mutex_t mutex;
+    pthread_cond_t condition_variable;
+    int threads_required;
+    int threads_left;
+    unsigned int cycle;
+} pthread_barrier_t;
+
 int pthread_barrier_init(pthread_barrier_t* barrier, void* attr, int count) {
     barrier->threads_required = count;
     barrier->threads_left = count;
@@ -89,7 +93,10 @@ int pthread_barrier_destroy(pthread_barrier_t* barrier) {
     pthread_mutex_destroy(&barrier->mutex);
     return 0;
 }
-*/
+#endif
+
+// Global Variables
+pthread_barrier_t barrier;
 
 // Project Functions 
 void grayscale_filter(Mat* image, Mat* grayscale) {
@@ -110,17 +117,17 @@ void* threaded_sobel(void* threadArgs) {
     // init thread variables
     struct thread_data* thread_data = (struct thread_data*)threadArgs;
     int start = thread_data->start;
-    int step = thread_data->step;
+    int stop = thread_data->stop;
 
     // init function varaibles 
-    int numRows = thread_data->input->rows;
+    // int numRows = thread_data->input->rows;
     int numCols = thread_data->input->cols;
     int16_t Gx, Gy, G;
     uchar* grayscale_data = thread_data->input->data;
     uchar* sobel_data = thread_data->output->data;
 
     // Loop through the rows and cols of the image and apply the sobel filter
-    for (int row = start; row < numRows - 2; row += step) {
+    for (int row = start; row < (start + stop); row++) {
         for (int col = 0; col < numCols - 2; col++) {
 
             // Convolve Gx
@@ -161,11 +168,10 @@ void* threaded_sobel(void* threadArgs) {
 
 void video_processor(String video_file, int num_threads) {
 
-    // init pThreads
+    // init pthreads
     pthread_t threads[num_threads];
-
-    // init data used by threads
     struct thread_data in_out[num_threads];
+    pthread_barrier_init(&barrier, NULL, num_threads);
 
     // Read the video
     VideoCapture usr_vid(video_file);
@@ -176,13 +182,6 @@ void video_processor(String video_file, int num_threads) {
     Mat frame;
     Mat gray_frame(usr_vid_rows, usr_vid_cols, CV_8UC1);
     Mat sobel_frame(usr_vid_rows - 2, usr_vid_cols - 2, CV_8UC1);
-
-    for (int i = 0; i < num_threads; i++) {
-        in_out[i].input = &gray_frame;
-        in_out[i].output = &sobel_frame;
-        in_out[i].step = num_threads;
-        in_out[i].start = i;
-    }
 
     // Loop through the image file
     while (usr_vid.isOpened()) {
@@ -197,10 +196,22 @@ void video_processor(String video_file, int num_threads) {
         // Process the image
         grayscale_filter(&frame, &gray_frame);
 
-        pthread_barrier_init(&barrier, NULL, num_threads);
-
         // Each thread processes half of the image
         for (int i = 0; i < num_threads; i++) {
+
+            // init thread variables
+            in_out[i].input = &gray_frame;
+            in_out[i].output = &sobel_frame;
+            in_out[i].start = i * ((usr_vid_rows - 2) / num_threads);
+
+            if ((i * ((usr_vid_rows - 2) * 10 / num_threads)) % 10 == 0) {
+                in_out[i].stop = (usr_vid_rows - 2) / num_threads;
+            }
+            else {
+                in_out[i].stop = ((usr_vid_rows - 2) / num_threads) + 1;
+            }
+
+            // run the threads
             pthread_create(&threads[i], NULL, &threaded_sobel, (void*)&in_out[i]);
         }
 
@@ -213,7 +224,7 @@ void video_processor(String video_file, int num_threads) {
 
     // Clean up
     usr_vid.release();
-    destroyAllWindows();
+    cv::destroyAllWindows();
     pthread_barrier_destroy(&barrier);
 }
 
@@ -254,4 +265,5 @@ int main(int argc, char const* argv[]) {
     video_processor(usr_arg, num_threads);
 
     return 0;
+
 }
