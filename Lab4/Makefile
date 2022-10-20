@@ -17,10 +17,6 @@
     # g++ main.cpp -o main `pkg-config --cflags --libs opencv4` -std=c++11 -g -Wall
 	$(CC) $(TARGET).cpp -o $(TARGET) $(CFLAGS)  
 
-  pi:
-    # g++ main.cpp -o main `pkg-config --cflags --libs opencv4`
-	$(CC) $(TARGET).cpp -o $(TARGET) $(PKG_MNG)  
-
   clean:
 	$(RM) $(TARGET)
 

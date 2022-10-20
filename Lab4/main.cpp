@@ -35,7 +35,7 @@ typedef struct thread_data {
     Mat* input;
     Mat* output;
     int start;
-    int stop;
+    int step;
 } in_out;
 
 typedef struct process_data {
@@ -117,17 +117,17 @@ void* threaded_sobel(void* threadArgs) {
     // init thread variables
     struct thread_data* thread_data = (struct thread_data*)threadArgs;
     int start = thread_data->start;
-    int stop = thread_data->stop;
+    int step = thread_data->step;
 
     // init function varaibles 
-    // int numRows = thread_data->input->rows;
+    int numRows = thread_data->input->rows;
     int numCols = thread_data->input->cols;
     int16_t Gx, Gy, G;
     uchar* grayscale_data = thread_data->input->data;
     uchar* sobel_data = thread_data->output->data;
 
     // Loop through the rows and cols of the image and apply the sobel filter
-    for (int row = start; row < (start + stop); row++) {
+    for (int row = start; row < numRows - 2; row += step) {
         for (int col = 0; col < numCols - 2; col++) {
 
             // Convolve Gx
@@ -202,14 +202,8 @@ void video_processor(String video_file, int num_threads) {
             // init thread variables
             in_out[i].input = &gray_frame;
             in_out[i].output = &sobel_frame;
-            in_out[i].start = i * ((usr_vid_rows - 2) / num_threads);
-
-            if ((i * ((usr_vid_rows - 2) * 10 / num_threads)) % 10 == 0) {
-                in_out[i].stop = (usr_vid_rows - 2) / num_threads;
-            }
-            else {
-                in_out[i].stop = ((usr_vid_rows - 2) / num_threads) + 1;
-            }
+            in_out[i].step = num_threads;
+            in_out[i].start = i;
 
             // run the threads
             pthread_create(&threads[i], NULL, &threaded_sobel, (void*)&in_out[i]);
