@@ -25,7 +25,6 @@
 #define G_CONST 0.2126
 #define B_CONST 0.7152
 #define R_CONST 0.0722
-#define NUM_THREADS 4
 #define PTHREAD_BARRIER_SERIAL_THREAD -1
 
 // Namespaces
@@ -158,13 +157,13 @@ void* threaded_sobel(void* threadArgs) {
     pthread_exit(NULL);
 }
 
-void video_processor(String video_file) {
+void video_processor(String video_file, int num_threads) {
 
     // init pThreads
-    pthread_t threads[NUM_THREADS];
+    pthread_t threads[num_threads];
 
     // init data used by threads
-    struct thread_data in_out[NUM_THREADS];
+    struct thread_data in_out[num_threads];
 
     // Read the video
     VideoCapture usr_vid(video_file);
@@ -176,10 +175,10 @@ void video_processor(String video_file) {
     Mat gray_frame(usr_vid_rows, usr_vid_cols, CV_8UC1);
     Mat sobel_frame(usr_vid_rows - 2, usr_vid_cols - 2, CV_8UC1);
 
-    for (int i = 0; i < NUM_THREADS; i++) {
+    for (int i = 0; i < num_threads; i++) {
         in_out[i].input = &gray_frame;
         in_out[i].output = &sobel_frame;
-        in_out[i].step = NUM_THREADS;
+        in_out[i].step = num_threads;
         in_out[i].start = i;
     }
 
@@ -196,10 +195,10 @@ void video_processor(String video_file) {
         // Process the image
         grayscale_filter(&frame, &gray_frame);
 
-        pthread_barrier_init(&barrier, NULL, NUM_THREADS);
+        pthread_barrier_init(&barrier, NULL, num_threads);
 
         // Each thread processes half of the image
-        for (int i = 0; i < NUM_THREADS; i++) {
+        for (int i = 0; i < num_threads; i++) {
             pthread_create(&threads[i], NULL, &threaded_sobel, (void*)&in_out[i]);
         }
 
@@ -219,17 +218,17 @@ void video_processor(String video_file) {
 int main(int argc, char const* argv[]) {
 
     // Check for valid input
-    if (argc != 2) {
+    if (2 > argc || argc > 3) {
         cout << "Invalid input, please try again\n";
         exit(-1);
     }
 
-    // Get the name of the file the user is requesting
+    // Get the file the user is requesting
     string usr_arg = argv[1];
-
-    // Check to make sure the file exsists, quit if it does not
     ifstream ifile;
     ifile.open(usr_arg);
+
+    // Check to make sure the file exsists, quit if it does not
     if (!ifile) {
         cout << "The specified file does not exist";
         exit(-1);
@@ -239,7 +238,18 @@ int main(int argc, char const* argv[]) {
         exit(-1);
     }
 
-    video_processor(usr_arg);
+    // Set the number of threads 
+    int num_threads = 4;
+
+    // Check if the user gave a thread count value
+    if (argc == 3) {
+        num_threads = stoi(argv[2]);
+    }
+    else {
+        cout << "Thread count set to default: 4 threads\n";
+    }
+
+    video_processor(usr_arg, num_threads);
 
     return 0;
 }
