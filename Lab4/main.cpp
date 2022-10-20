@@ -13,26 +13,26 @@
 *
 **********************************************************/
 
+// Includes
 #include <opencv2/opencv.hpp>
 #include <fstream>
 #include <iostream>
 #include <string>
 #include <math.h>
 #include <pthread.h>
-#include "pthread_barrier.h"
 
+// Defines
 #define G_CONST 0.2126
 #define B_CONST 0.7152
 #define R_CONST 0.0722
-#define NUM_THREADS 100
-#define PTHREAD_BARRIER_SERIAL_THREAD 1
-
-pthread_barrier_t barrier;
+#define NUM_THREADS 4
+#define PTHREAD_BARRIER_SERIAL_THREAD -1
 
 // Namespaces
 using namespace std;
 using namespace cv;
 
+// Structures 
 typedef struct thread_data {
     Mat* input;
     Mat* output;
@@ -40,6 +40,57 @@ typedef struct thread_data {
     int step;
 } in_out;
 
+typedef struct {
+    pthread_mutex_t mutex;
+    pthread_cond_t condition_variable;
+    int threads_required;
+    int threads_left;
+    unsigned int cycle;
+} pthread_barrier_t;
+
+// Global Variables
+pthread_barrier_t barrier;
+
+// Re-implementation of pThread barrier functions
+int pthread_barrier_init(pthread_barrier_t* barrier, void* attr, int count) {
+    barrier->threads_required = count;
+    barrier->threads_left = count;
+    barrier->cycle = 0;
+    pthread_mutex_init(&barrier->mutex, NULL);
+    pthread_cond_init(&barrier->condition_variable, NULL);
+    return 0;
+}
+
+int pthread_barrier_wait(pthread_barrier_t* barrier) {
+    pthread_mutex_lock(&barrier->mutex);
+
+    if (--barrier->threads_left == 0) {
+        barrier->cycle++;
+        barrier->threads_left = barrier->threads_required;
+
+        pthread_cond_broadcast(&barrier->condition_variable);
+        pthread_mutex_unlock(&barrier->mutex);
+
+        return PTHREAD_BARRIER_SERIAL_THREAD;
+    }
+    else {
+        unsigned int cycle = barrier->cycle;
+
+        while (cycle == barrier->cycle)
+            pthread_cond_wait(&barrier->condition_variable, &barrier->mutex);
+
+        pthread_mutex_unlock(&barrier->mutex);
+        return 0;
+    }
+}
+
+int pthread_barrier_destroy(pthread_barrier_t* barrier) {
+    pthread_cond_destroy(&barrier->condition_variable);
+    pthread_mutex_destroy(&barrier->mutex);
+    return 0;
+}
+
+// Project Functions 
 void grayscale_filter(Mat* image, Mat* grayscale) {
     uchar* image_data = image->data;
     uchar* grayscale_data = grayscale->data;
@@ -94,18 +145,27 @@ void* threaded_sobel(void* threadArgs) {
 
             // Overflow check
             if (G > 255) {
-                sobel_data[(thread_data->output->cols * (row) + (col))] = 255;
+                sobel_data[(thread_data->output->cols * (row)+(col))] = 255;
             }
             else {
-                sobel_data[(thread_data->output->cols * (row) + (col))] = (uchar)G;
+                sobel_data[(thread_data->output->cols * (row)+(col))] = (uchar)G;
             }
         }
     }
+
+    // pThread return functions 
     pthread_barrier_wait(&barrier);
     pthread_exit(NULL);
 }
 
 void video_processor(String video_file) {
+
+    // init pThreads
+    pthread_t threads[NUM_THREADS];
+
+    // init data used by threads
+    struct thread_data in_out[NUM_THREADS];
+
     // Read the video
     VideoCapture usr_vid(video_file);
     int usr_vid_rows = usr_vid.get(4);
@@ -115,12 +175,6 @@ void video_processor(String video_file) {
     Mat frame;
     Mat gray_frame(usr_vid_rows, usr_vid_cols, CV_8UC1);
     Mat sobel_frame(usr_vid_rows - 2, usr_vid_cols - 2, CV_8UC1);
-
-    // init pThreads
-    pthread_t threads[NUM_THREADS];
-
-    // init data used by threads
-    struct thread_data in_out[NUM_THREADS];
 
     for (int i = 0; i < NUM_THREADS; i++) {
         in_out[i].input = &gray_frame;
@@ -159,6 +213,7 @@ void video_processor(String video_file) {
     // Clean up
     usr_vid.release();
     destroyAllWindows();
+    pthread_barrier_destroy(&barrier);
 }
 
 int main(int argc, char const* argv[]) {
