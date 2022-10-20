@@ -25,7 +25,7 @@
 #define G_CONST 0.2126
 #define B_CONST 0.7152
 #define R_CONST 0.0722
-#define PTHREAD_BARRIER_SERIAL_THREAD -1
+// #define PTHREAD_BARRIER_SERIAL_THREAD -1
 
 // Namespaces
 using namespace std;
@@ -39,18 +39,19 @@ typedef struct thread_data {
     int step;
 } in_out;
 
-typedef struct {
-    pthread_mutex_t mutex;
-    pthread_cond_t condition_variable;
-    int threads_required;
-    int threads_left;
-    unsigned int cycle;
-} pthread_barrier_t;
+// typedef struct {
+//     pthread_mutex_t mutex;
+//     pthread_cond_t condition_variable;
+//     int threads_required;
+//     int threads_left;
+//     unsigned int cycle;
+// } pthread_barrier_t;
 
 // Global Variables
 pthread_barrier_t barrier;
 
 // Re-implementation of pThread barrier functions
+/*
 int pthread_barrier_init(pthread_barrier_t* barrier, void* attr, int count) {
     barrier->threads_required = count;
     barrier->threads_left = count;
@@ -88,6 +89,7 @@ int pthread_barrier_destroy(pthread_barrier_t* barrier) {
     pthread_mutex_destroy(&barrier->mutex);
     return 0;
 }
+*/
 
 // Project Functions 
 void grayscale_filter(Mat* image, Mat* grayscale) {
