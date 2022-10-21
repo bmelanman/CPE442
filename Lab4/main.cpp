@@ -20,6 +20,7 @@
 #include <string>
 #include <math.h>
 #include <pthread.h>
+#include <chrono>
 
 // Defines
 #define G_CONST 0.2126
@@ -29,6 +30,7 @@
 // Namespaces
 using namespace std;
 using namespace cv;
+using namespace chrono;
 
 // Structures 
 typedef struct thread_data {
@@ -248,16 +250,45 @@ int main(int argc, char const* argv[]) {
     // Set the number of threads 
     int num_threads = 4;
 
-    // Check if the user gave a thread count value
-    if (argc == 3) {
-        num_threads = stoi(argv[2]);
+    if (argc == 3 && argv[2][0] == 't') {
+
+        int thread_tests[6] = { 1, 2, 4, 8, 16, 100 };
+
+        for (int test : thread_tests) {
+
+            auto start = high_resolution_clock::now();
+
+            video_processor(usr_arg, test);
+
+            auto stop = high_resolution_clock::now();
+
+            auto duration = duration_cast<microseconds>(stop - start);
+
+            auto time = duration.count();
+
+            cout << test << " threads, time in seconds: " << (time / 1000000) << "." << (time % 1000000) << endl;
+        }
+
+        exit(1);
+    }
+    else if (argc == 3 && argv[2][0] > 0) {
+        num_threads = argv[2][0];
     }
     else {
         cout << "Thread count set to default: 4 threads\n";
     }
 
+    auto start = high_resolution_clock::now();
+
     video_processor(usr_arg, num_threads);
 
-    return 0;
+    auto stop = high_resolution_clock::now();
 
+    auto duration = duration_cast<microseconds>(stop - start);
+
+    auto time = duration.count();
+
+    cout << "Time in seconds: " << (time / 1000000) << "." << (time % 1000000) << endl;
+
+    return 0;
 }
