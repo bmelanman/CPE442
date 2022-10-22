@@ -9,7 +9,7 @@
 * Author: Bryce Melander
 * Co-Authors: Blase Parker, Johnathan Espiritu
 *
-* Revisions: V1.3
+* Revisions: V2.1
 *
 **********************************************************/
 
@@ -18,7 +18,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
-#include <math.h>
+#include <cmath>
 #include <pthread.h>
 #include <chrono>
 
@@ -29,26 +29,22 @@
 
 // Namespaces
 using namespace std;
+namespace cv {}
 using namespace cv;
 using namespace chrono;
 
-// Structures 
-typedef struct thread_data {
-    Mat* input;
-    Mat* output;
-    int start;
-    int step;
-} in_out;
-
-typedef struct process_data {
-    String file_name;
-    int num_threads;
-} vid_data;
+// Structures
+struct thread_data {
+    Mat *input{};
+    Mat *output{};
+    int start{};
+    int step{};
+};
 
 // Re-implementation of pThread barrier functions
 // Check if they're implemented before using them
 #ifndef PTHREAD_BARRIER_SERIAL_THREAD
-#define PTHREAD_BARRIER_SERIAL_THREAD -1
+#define PTHREAD_BARRIER_SERIAL_THREAD (-1)
 
 typedef struct {
     pthread_mutex_t mutex;
@@ -58,16 +54,16 @@ typedef struct {
     unsigned int cycle;
 } pthread_barrier_t;
 
-int pthread_barrier_init(pthread_barrier_t* barrier, void* attr, int count) {
+int pthread_barrier_init(pthread_barrier_t *barrier, void *attr, int count) {
     barrier->threads_required = count;
     barrier->threads_left = count;
     barrier->cycle = 0;
-    pthread_mutex_init(&barrier->mutex, NULL);
-    pthread_cond_init(&barrier->condition_variable, NULL);
+    pthread_mutex_init(&barrier->mutex, nullptr);
+    pthread_cond_init(&barrier->condition_variable, nullptr);
     return 0;
 }
 
-int pthread_barrier_wait(pthread_barrier_t* barrier) {
+int pthread_barrier_wait(pthread_barrier_t *barrier) {
     pthread_mutex_lock(&barrier->mutex);
 
     if (--barrier->threads_left == 0) {
@@ -78,8 +74,7 @@ int pthread_barrier_wait(pthread_barrier_t* barrier) {
         pthread_mutex_unlock(&barrier->mutex);
 
         return PTHREAD_BARRIER_SERIAL_THREAD;
-    }
-    else {
+    } else {
         unsigned int cycle = barrier->cycle;
 
         while (cycle == barrier->cycle)
@@ -90,43 +85,44 @@ int pthread_barrier_wait(pthread_barrier_t* barrier) {
     }
 }
 
-int pthread_barrier_destroy(pthread_barrier_t* barrier) {
+int pthread_barrier_destroy(pthread_barrier_t *barrier) {
     pthread_cond_destroy(&barrier->condition_variable);
     pthread_mutex_destroy(&barrier->mutex);
     return 0;
 }
+
 #endif
 
 // Global Variables
 pthread_barrier_t barrier;
 
 // Project Functions 
-void grayscale_filter(Mat* image, Mat* grayscale) {
-    uchar* image_data = image->data;
-    uchar* grayscale_data = grayscale->data;
+void grayscale_filter(Mat *image, Mat *grayscale) {
+    unsigned char *image_data = image->data;
+    unsigned char *grayscale_data = grayscale->data;
 
     for (int pos = 0; pos < image->rows * image->cols; pos++) {
-        grayscale_data[pos] = (
-            (image_data[3 * pos + 0] * B_CONST) +
-            (image_data[3 * pos + 1] * G_CONST) +
-            (image_data[3 * pos + 2] * R_CONST)
-            );
+        grayscale_data[pos] = (unsigned char) (
+                (image_data[3 * pos + 0] * B_CONST) +
+                (image_data[3 * pos + 1] * G_CONST) +
+                (image_data[3 * pos + 2] * R_CONST)
+        );
     }
 }
 
-void* threaded_sobel(void* threadArgs) {
+void *threaded_sobel(void *threadArgs) {
 
     // init thread variables
-    struct thread_data* thread_data = (struct thread_data*)threadArgs;
+    auto *thread_data = (struct thread_data *) threadArgs;
     int start = thread_data->start;
     int step = thread_data->step;
 
-    // init function varaibles 
+    // init function variables
     int numRows = thread_data->input->rows;
     int numCols = thread_data->input->cols;
-    int16_t Gx, Gy, G;
-    uchar* grayscale_data = thread_data->input->data;
-    uchar* sobel_data = thread_data->output->data;
+    int Gx, Gy, G;
+    unsigned char *grayscale_data = thread_data->input->data;
+    unsigned char *sobel_data = thread_data->output->data;
 
     // Loop through the rows and cols of the image and apply the sobel filter
     for (int row = start; row < numRows - 2; row += step) {
@@ -134,46 +130,46 @@ void* threaded_sobel(void* threadArgs) {
 
             // Convolve Gx
             Gx =
-                (grayscale_data[(numCols * (row + 2) + (col + 2))]) +
-                (grayscale_data[(numCols * (row + 1) + (col + 2))] << 1) +
-                (grayscale_data[(numCols * (row + 0) + (col + 2))]) -
-                (grayscale_data[(numCols * (row + 2) + (col + 0))]) -
-                (grayscale_data[(numCols * (row + 1) + (col + 0))] << 1) -
-                (grayscale_data[(numCols * (row + 0) + (col + 0))]);
+                    (grayscale_data[(numCols * (row + 2) + (col + 2))]) +
+                    (grayscale_data[(numCols * (row + 1) + (col + 2))] << 1) +
+                    (grayscale_data[(numCols * (row + 0) + (col + 2))]) -
+                    (grayscale_data[(numCols * (row + 2) + (col + 0))]) -
+                    (grayscale_data[(numCols * (row + 1) + (col + 0))] << 1) -
+                    (grayscale_data[(numCols * (row + 0) + (col + 0))]);
 
             // Convolve Gy
             Gy =
-                (grayscale_data[(numCols * (row + 0) + (col + 0))]) +
-                (grayscale_data[(numCols * (row + 0) + (col + 1))] << 1) +
-                (grayscale_data[(numCols * (row + 0) + (col + 2))]) -
-                (grayscale_data[(numCols * (row + 2) + (col + 0))]) -
-                (grayscale_data[(numCols * (row + 2) + (col + 1))] << 1) -
-                (grayscale_data[(numCols * (row + 2) + (col + 2))]);
+                    (grayscale_data[(numCols * (row + 0) + (col + 0))]) +
+                    (grayscale_data[(numCols * (row + 0) + (col + 1))] << 1) +
+                    (grayscale_data[(numCols * (row + 0) + (col + 2))]) -
+                    (grayscale_data[(numCols * (row + 2) + (col + 0))]) -
+                    (grayscale_data[(numCols * (row + 2) + (col + 1))] << 1) -
+                    (grayscale_data[(numCols * (row + 2) + (col + 2))]);
 
             // Gradient approximation
             G = abs(Gx) + abs(Gy);
 
             // Overflow check
             if (G > 255) {
-                sobel_data[(thread_data->output->cols * (row)+(col))] = 255;
+                sobel_data[(thread_data->output->cols * (row) + (col))] = 255;
             }
-            else {
-                sobel_data[(thread_data->output->cols * (row)+(col))] = (uchar)G;
-            }
+
+            sobel_data[(thread_data->output->cols * (row) + (col))] = G;
+
         }
     }
 
     // pThread return functions 
     pthread_barrier_wait(&barrier);
-    pthread_exit(NULL);
+    pthread_exit(nullptr);
 }
 
-void video_processor(String video_file, int num_threads) {
+void video_processor(string video_file, int num_threads) {
 
     // init pthreads
     pthread_t threads[num_threads];
     struct thread_data in_out[num_threads];
-    pthread_barrier_init(&barrier, NULL, num_threads);
+    pthread_barrier_init(&barrier, nullptr, num_threads);
 
     // Read the video
     VideoCapture usr_vid(video_file);
@@ -208,14 +204,14 @@ void video_processor(String video_file, int num_threads) {
             in_out[i].start = i;
 
             // run the threads
-            pthread_create(&threads[i], NULL, &threaded_sobel, (void*)&in_out[i]);
+            pthread_create(&threads[i], nullptr, &threaded_sobel, (void *) &in_out[i]);
         }
 
-        // Dislplay the frame
+        // Display the frame
         imshow(video_file, sobel_frame);
 
         // Hold ESC to exit the video early
-        if ((char)waitKey(25) == 27) break;
+        if ((char) waitKey(25) == 27) break;
     }
 
     // Clean up
@@ -224,7 +220,7 @@ void video_processor(String video_file, int num_threads) {
     pthread_barrier_destroy(&barrier);
 }
 
-int main(int argc, char const* argv[]) {
+int main(int argc, char const *argv[]) {
 
     // Check for valid input
     if (2 > argc || argc > 3) {
@@ -237,24 +233,30 @@ int main(int argc, char const* argv[]) {
     ifstream ifile;
     ifile.open(usr_arg);
 
-    // Check to make sure the file exsists, quit if it does not
+    // Check to make sure the file exists, quit if it does not
     if (!ifile) {
         cout << "The specified file does not exist";
         exit(-1);
-    }
-    else if (usr_arg.substr(usr_arg.size() - 4) != ".mp4") {
+    } else if (usr_arg.substr(usr_arg.size() - 4) != ".mp4") {
         cout << "This file is not supported";
         exit(-1);
     }
+
+    // Print how long the video is
+    VideoCapture usr_vid(usr_arg);
+    int fps = usr_vid.get(CAP_PROP_FPS);
+    int frame_count = int(usr_vid.get(CAP_PROP_FRAME_COUNT));
+
+    cout << "Video length in seconds: " << (frame_count / fps) << "." << ((frame_count / fps) % 1) << endl;
 
     // Set the number of threads 
     int num_threads = 4;
 
     if (argc == 3 && argv[2][0] == 't') {
 
-        int thread_tests[6] = { 1, 2, 4, 8, 16, 100 };
+        int thread_tests[8] = {1, 2, 4, 8, 16, 32, 64, 128};
 
-        for (int test : thread_tests) {
+        for (int test: thread_tests) {
 
             auto start = high_resolution_clock::now();
 
@@ -270,11 +272,9 @@ int main(int argc, char const* argv[]) {
         }
 
         exit(1);
-    }
-    else if (argc == 3 && argv[2][0] > 0) {
-        num_threads = argv[2][0];
-    }
-    else {
+    } else if (argc == 3 && argv[2][0] > 0) {
+        num_threads = (u_char) argv[2][0];
+    } else {
         cout << "Thread count set to default: 4 threads\n";
     }
 
@@ -288,7 +288,7 @@ int main(int argc, char const* argv[]) {
 
     auto time = duration.count();
 
-    cout << "Time in seconds: " << (time / 1000000) << "." << (time % 1000000) << endl;
+    cout << "Processing time in seconds: " << (time / 1000000) << "." << (time % 1000000) << endl;
 
     return 0;
 }

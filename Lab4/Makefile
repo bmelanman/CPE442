@@ -13,9 +13,14 @@
   # Target build executable:
   TARGET = main
 
-  default: $(TARGET).cpp
+  all: clean compile run
+
+  compile: clean $(TARGET).cpp
     # g++ main.cpp -o main `pkg-config --cflags --libs opencv4` -std=c++11 -g -Wall
-	$(CC) $(TARGET).cpp -o $(TARGET) $(CFLAGS)  
+	$(CC) $(TARGET).cpp -o $(TARGET) $(CFLAGS)
+
+  run: $(TARGET)
+	./$(TARGET) "small_frog.mp4"
 
   clean:
 	$(RM) $(TARGET)

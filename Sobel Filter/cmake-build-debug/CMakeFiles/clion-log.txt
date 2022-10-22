@@ -1,0 +1,4 @@
+/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/Applications/CLion.app/Contents/bin/ninja/mac/ninja -G Ninja -S "/Users/brycemelander/Documents/GitHub/CPE442/Sobel Filter" -B "/Users/brycemelander/Documents/GitHub/CPE442/Sobel Filter/cmake-build-debug"
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /Users/brycemelander/Documents/GitHub/CPE442/Sobel Filter/cmake-build-debug
