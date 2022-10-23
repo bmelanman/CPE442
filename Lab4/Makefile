@@ -15,12 +15,12 @@
 
   all: clean compile run
 
-  compile: clean $(TARGET).cpp
+  compile: $(TARGET).cpp
     # g++ main.cpp -o main `pkg-config --cflags --libs opencv4` -std=c++11 -g -Wall
 	$(CC) $(TARGET).cpp -o $(TARGET) $(CFLAGS)
 
   run: $(TARGET)
-	./$(TARGET) "small_frog.mp4"
+	./$(TARGET) "../media/small_frog.mp4"
 
   clean:
 	$(RM) $(TARGET)

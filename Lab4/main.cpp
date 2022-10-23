@@ -29,7 +29,6 @@
 
 // Namespaces
 using namespace std;
-namespace cv {}
 using namespace cv;
 using namespace chrono;
 
@@ -263,12 +262,9 @@ int main(int argc, char const *argv[]) {
             video_processor(usr_arg, test);
 
             auto stop = high_resolution_clock::now();
+            float time = (float) (duration_cast<microseconds>(stop - start)).count();
 
-            auto duration = duration_cast<microseconds>(stop - start);
-
-            auto time = duration.count();
-
-            cout << test << " threads, time in seconds: " << (time / 1000000) << "." << (time % 1000000) << endl;
+            cout << test << " threads, time in seconds: " << time << endl;
         }
 
         exit(1);
@@ -283,12 +279,9 @@ int main(int argc, char const *argv[]) {
     video_processor(usr_arg, num_threads);
 
     auto stop = high_resolution_clock::now();
+    float time = (float) (duration_cast<microseconds>(stop - start)).count();
 
-    auto duration = duration_cast<microseconds>(stop - start);
-
-    auto time = duration.count();
-
-    cout << "Processing time in seconds: " << (time / 1000000) << "." << (time % 1000000) << endl;
+    cout << "Processing time in seconds: " << time/1000000 << endl;
 
     return 0;
 }
