@@ -6,7 +6,7 @@ CXX_DEFINES =
 
 CXX_INCLUDES = -isystem /opt/homebrew/Cellar/opencv/4.6.0_1/include/opencv4
 
-CXX_FLAGSarm64 = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.0.sdk -mmacosx-version-min=12.6 -mfpu=neon -std=gnu++11
+CXX_FLAGSarm64 = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.0.sdk -mmacosx-version-min=12.6 -O3 -pthread -std=gnu++11
 
-CXX_FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.0.sdk -mmacosx-version-min=12.6 -mfpu=neon -std=gnu++11
+CXX_FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.0.sdk -mmacosx-version-min=12.6 -O3 -pthread -std=gnu++11
 

@@ -18,16 +18,23 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f377c617-8cf1-4092-91fe-fd16bf49fc42" name="Changes" comment="removed isnumber() reference">
+    <list default="true" id="f377c617-8cf1-4092-91fe-fd16bf49fc42" name="Changes" comment="updated CMake to account for different OS's">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/directory-.-Debug-f5ebdc15457944623624 2.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/target-Sobel_Filter-Debug-96a6153e8caffa769903 2.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/toolchains-v1-690b0266afb2b0a3379c 2.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/Sobel_Filter" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Sobel_Filter" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-default/.cmake/api/v1/reply/directory-.-f5ebdc15457944623624 2.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-default/.cmake/api/v1/reply/toolchains-v1-690b0266afb2b0a3379c 2.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/cmakeFiles-v1-750f335a737519addb48.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/codemodel-v2-16974c6bad44e10f95e8.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/index-2022-10-24T02-48-56-0300.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/target-Sobel_Filter-Debug-96a6153e8caffa769903.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Sobel_Filter.dir/compiler_depend.make" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Sobel_Filter.dir/compiler_depend.make" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Sobel_Filter.dir/flags.make" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Sobel_Filter.dir/flags.make" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-default/.cmake/api/v1/reply/cmakeFiles-v1-118bf181b55cdb0853d9.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-default/.cmake/api/v1/reply/codemodel-v2-92febfc9cf2982210580.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-default/.cmake/api/v1/reply/index-2022-10-24T02-48-56-0300.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-default/.cmake/api/v1/reply/target-Sobel_Filter-a3c98c140f56eb7d808e.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-default/CMakeFiles/Makefile.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-default/CMakeFiles/Makefile.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-default/CMakeFiles/clion-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-default/CMakeFiles/clion-log.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -129,7 +136,7 @@
       <updated>1666413745892</updated>
       <workItem from="1666413747022" duration="7601000" />
       <workItem from="1666466223200" duration="24459000" />
-      <workItem from="1666579736398" duration="924000" />
+      <workItem from="1666579736398" duration="1046000" />
     </task>
     <task id="LOCAL-00001" summary="migrated to CLion">
       <created>1666414107358</created>
@@ -152,7 +159,14 @@
       <option name="project" value="LOCAL" />
       <updated>1666581137535</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="updated CMake to account for different OS's">
+      <created>1666581359239</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1666581359239</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -174,7 +188,8 @@
     <MESSAGE value="migrated to CLion" />
     <MESSAGE value="tune up, beginning vector optimization" />
     <MESSAGE value="removed isnumber() reference" />
-    <option name="LAST_COMMIT_MESSAGE" value="removed isnumber() reference" />
+    <MESSAGE value="updated CMake to account for different OS's" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated CMake to account for different OS's" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
