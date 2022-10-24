@@ -4,6 +4,8 @@
  * for use on MacOS
  */
 
+#if __APPLE__
+
 #include <pthread.h>
 
 #ifndef SOBEL_FILTER_PTHREAD_BARRIER_H
@@ -26,3 +28,4 @@ int pthread_barrier_wait(pthread_barrier_t *barrier);
 int pthread_barrier_destroy(pthread_barrier_t *barrier);
 
 #endif //SOBEL_FILTER_PTHREAD_BARRIER_H
+#endif // __APPLE__

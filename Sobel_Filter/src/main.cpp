@@ -140,7 +140,7 @@ void grayscale_filter(Mat *image, Mat *grayscale) {
  */
 void sobel_filter(Mat *grayscale_img, Mat *sobel_img, int start = 0, int step = 1) {
 
-    // index = [nunCols * (row + x) + (col + y)]
+    // index = [numCols * (row + x) + (col + y)]
     // Convolution = img[index] + (img[index] << 1) + img[index] - img[index] - (img[index] << 1) - img[index]
     // 2 V + S instructions: Vx = (Vx + Sr) & Vy = (Vy + Sy)
     // 1 V * S instruction:  Vx = Vx * Sc
@@ -167,14 +167,13 @@ void sobel_filter(Mat *grayscale_img, Mat *sobel_img, int start = 0, int step = 
         for (int col = 0; col < numCols - 2; col++) {
 
             // Convolve Gx
+            // Calculate [numCols * (row + x) + (col + y)]
             row_vect = vaddq_u16(vdupq_n_u16(row), Gx_row_vect);    // row_sum = (row + Gx[i])
             row_vect = vmulq_n_u16(row_vect, numCols);                  // row_sum *= numCols
             col_vect = vaddq_u16(vdupq_n_u16(col), Gx_col_vect);    // col_sum = (col + Gx[j])
             Gx_vect = vaddq_u16(row_vect, col_vect);                    // Gx_vect = row_sum + col_sum
-
-
-            Gx =
-                    (grayscale_data[vgetq_lane_u16(Gx_vect, 0)]) +
+            
+            Gx =    (grayscale_data[vgetq_lane_u16(Gx_vect, 0)]) +
                     (grayscale_data[vgetq_lane_u16(Gx_vect, 1)] << 1) +
                     (grayscale_data[vgetq_lane_u16(Gx_vect, 2)]) -
                     (grayscale_data[vgetq_lane_u16(Gx_vect, 3)]) -
@@ -187,8 +186,7 @@ void sobel_filter(Mat *grayscale_img, Mat *sobel_img, int start = 0, int step = 
             col_vect = vaddq_u16(vdupq_n_u16(col), Gy_col_vect);
             Gy_vect = vaddq_u16(row_vect, col_vect);
 
-            Gy =
-                    (grayscale_data[vgetq_lane_u16(Gy_vect, 0)]) +
+            Gy =    (grayscale_data[vgetq_lane_u16(Gy_vect, 0)]) +
                     (grayscale_data[vgetq_lane_u16(Gy_vect, 1)] << 1) +
                     (grayscale_data[vgetq_lane_u16(Gy_vect, 2)]) -
                     (grayscale_data[vgetq_lane_u16(Gy_vect, 3)]) -
@@ -201,8 +199,8 @@ void sobel_filter(Mat *grayscale_img, Mat *sobel_img, int start = 0, int step = 
             // Overflow check
             if (G > 255) { G = 255; }
 
+            // Write the pixel to the sobel image
             sobel_data[(sobel_img->cols * (row) + (col))] = G;
-
         }
     }
 }
