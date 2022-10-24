@@ -128,7 +128,6 @@ void sobel_filter(Mat *grayscale_img, Mat *sobel_img, int start = 0, int step = 
                     (grayscale_data[vgetq_lane_u16(Gy_vect, 4)] << 1) -
                     (grayscale_data[vgetq_lane_u16(Gy_vect, 5)]);
 
-
 //            Gx = (grayscale_data[(numCols * (row + 2) + (col + 2))]) +
 //                 (grayscale_data[(numCols * (row + 1) + (col + 2))] << 1) +
 //                 (grayscale_data[(numCols * (row + 0) + (col + 2))]) -
@@ -309,7 +308,7 @@ int main(int argc, char const *argv[]) {
         }
         cout << "Average time: " << (avg / 10) << endl;
 
-    } else if (argc == 3 && isnumber(argv[2][0])) {
+    } else if (argc == 3 && isdigit(argv[2][0])) {
 
         cout << "Processing time: " << time_function(usr_arg, (int) argv[2][0]) << endl;
 
