@@ -15,26 +15,15 @@
     <configurations>
       <configuration PROFILE_NAME="Default" ENABLED="true" NO_GENERATOR="true" />
       <configuration PROFILE_NAME="Debug" ENABLED="true" CONFIG_NAME="Debug" NO_GENERATOR="true" />
+      <configuration PROFILE_NAME="Build &amp; Deploy" ENABLED="true" CONFIG_NAME="Debug" TOOLCHAIN_NAME="Default" GENERATION_OPTIONS="1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 SET(CMAKE_SYSTEM_NAME Linux) SET(CMAKE_SYSTEM_VERSION 1)   # Specify the cross compiler SET(CMAKE_C_COMPILER $ENV{HOME}/SoftwareDevelopment/Libaries/raspberrypi-toolchains/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin/arm-linux-gnueabihf-gcc) SET(CMAKE_CXX_COMPILER $ENV{HOME}/SoftwareDevelopment/Libaries/raspberrypi-toolchains/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin/arm-linux-gnueabihf-g++)   # Where is the target environment SET(CMAKE_FIND_ROOT_PATH $ENV{HOME}/SoftwareDevelopment/Libaries/raspberrypi-toolchains/arm-bcm2708/arm-linux-gnueabihf) #SET(CMAKE_EXE_LINKER_FLAGS &quot;${CMAKE_EXE_LINKER_FLAGS} --sysroot=${CMAKE_FIND_ROOT_PATH}&quot;) #SET(CMAKE_SHARED_LINKER_FLAGS &quot;${CMAKE_SHARED_LINKER_FLAGS} --sysroot=${CMAKE_FIND_ROOT_PATH}&quot;) #SET(CMAKE_MODULE_LINKER_FLAGS &quot;${CMAKE_MODULE_LINKER_FLAGS} --sysroot=${CMAKE_FIND_ROOT_PATH}&quot;)   # Search for programs only in the build host directories SET(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)   # Search for libraries and headers only in the target directories SET(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY) SET(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)" />
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f377c617-8cf1-4092-91fe-fd16bf49fc42" name="Changes" comment="updated CMake to account for different OS's">
+    <list default="true" id="f377c617-8cf1-4092-91fe-fd16bf49fc42" name="Changes" comment="updated">
+      <change afterPath="$PROJECT_DIR$/toolchain/toolchain-rasppi.cmake" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/cmakeFiles-v1-750f335a737519addb48.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/codemodel-v2-16974c6bad44e10f95e8.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/index-2022-10-24T02-48-56-0300.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/target-Sobel_Filter-Debug-96a6153e8caffa769903.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Sobel_Filter.dir/compiler_depend.make" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Sobel_Filter.dir/compiler_depend.make" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Sobel_Filter.dir/flags.make" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Sobel_Filter.dir/flags.make" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-default/.cmake/api/v1/reply/cmakeFiles-v1-118bf181b55cdb0853d9.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-default/.cmake/api/v1/reply/codemodel-v2-92febfc9cf2982210580.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-default/.cmake/api/v1/reply/index-2022-10-24T02-48-56-0300.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-default/.cmake/api/v1/reply/target-Sobel_Filter-a3c98c140f56eb7d808e.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-default/CMakeFiles/Makefile.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-default/CMakeFiles/Makefile.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-default/CMakeFiles/clion-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-default/CMakeFiles/clion-log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,7 +33,7 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Build &amp; Deploy" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
@@ -77,7 +66,7 @@
     "last_opened_file_path": "/Users/brycemelander/Documents/GitHub/CPE442/Sobel_Filter",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
-    "settings.editor.selected.configurable": "preferences.general",
+    "settings.editor.selected.configurable": "reference.settings.deploy.options",
     "structure.view.defaults.are.configured": "true"
   }
 }]]></component>
@@ -91,16 +80,25 @@
       <recent name="$PROJECT_DIR$/cmake-build-default" />
     </key>
   </component>
-  <component name="RunManager" selected="CMake Application.frog">
+  <component name="RunManager" selected="CMake Application.Run on RPi">
     <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="CLION.EXTERNAL.BUILD" enabled="true" />
       </method>
     </configuration>
-    <configuration name="frog" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="small_frog.mp4" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" WORKING_DIR="file://$PROJECT_DIR$/../Media" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Sobel_Filter" TARGET_NAME="Sobel_Filter" CONFIG_NAME="Default" RUN_TARGET_PROJECT_NAME="Sobel_Filter" RUN_TARGET_NAME="Sobel_Filter">
+    <configuration name="Run on RPi" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Sobel_Filter" TARGET_NAME="Sobel_Filter" CONFIG_NAME="Default" RUN_TARGET_PROJECT_NAME="Sobel_Filter" RUN_TARGET_NAME="Sobel_Filter">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="RunConfigurationTask" enabled="false" run_configuration_name="remote frog" run_configuration_type="CMakeRunConfiguration" run_configuration_target="CMakeBuildProfile:Build &amp; Deploy" />
+      </method>
+    </configuration>
+    <configuration name="frog" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="../small_frog.mp4" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" WORKING_DIR="file://$PROJECT_DIR$/../Media" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Sobel_Filter" TARGET_NAME="Sobel_Filter" CONFIG_NAME="Default" RUN_TARGET_PROJECT_NAME="Sobel_Filter" RUN_TARGET_NAME="Sobel_Filter">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
+    </configuration>
+    <configuration name="remote frog" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Sobel_Filter" TARGET_NAME="Sobel_Filter" CONFIG_NAME="Default" RUN_TARGET_PROJECT_NAME="Sobel_Filter" RUN_TARGET_NAME="Sobel_Filter">
+      <method v="2" />
     </configuration>
     <configuration name="thread_avg" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="small_frog.mp4 a" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" WORKING_DIR="file://$PROJECT_DIR$/../Media" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Sobel_Filter" TARGET_NAME="Sobel_Filter" CONFIG_NAME="Default" RUN_TARGET_PROJECT_NAME="Sobel_Filter" RUN_TARGET_NAME="Sobel_Filter">
       <method v="2">
@@ -121,6 +119,8 @@
     </configuration>
     <list>
       <item itemvalue="CMake Application.frog" />
+      <item itemvalue="CMake Application.Run on RPi" />
+      <item itemvalue="CMake Application.remote frog" />
       <item itemvalue="CMake Application.thread_avg" />
       <item itemvalue="Makefile Target.all" />
       <item itemvalue="Makefile Target.clean" />
@@ -136,7 +136,7 @@
       <updated>1666413745892</updated>
       <workItem from="1666413747022" duration="7601000" />
       <workItem from="1666466223200" duration="24459000" />
-      <workItem from="1666579736398" duration="1046000" />
+      <workItem from="1666579736398" duration="3144000" />
     </task>
     <task id="LOCAL-00001" summary="migrated to CLion">
       <created>1666414107358</created>
@@ -166,7 +166,21 @@
       <option name="project" value="LOCAL" />
       <updated>1666581359239</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="added -pthread">
+      <created>1666581461236</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1666581461236</updated>
+    </task>
+    <task id="LOCAL-00006" summary="updated">
+      <created>1666581615992</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1666581615992</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -189,7 +203,9 @@
     <MESSAGE value="tune up, beginning vector optimization" />
     <MESSAGE value="removed isnumber() reference" />
     <MESSAGE value="updated CMake to account for different OS's" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated CMake to account for different OS's" />
+    <MESSAGE value="added -pthread" />
+    <MESSAGE value="updated" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
