@@ -41,8 +41,75 @@ struct thread_data {
     int step{};
 };
 
+/***** Prototypes *****/
+void grayscale_filter(Mat *image, Mat *grayscale);
+void sobel_filter(Mat *grayscale_img, Mat *sobel_img, int start, int step);
+void *thread_sobel_filter(void *threadArgs);
+void video_processor(const string &usr_vid, int num_threads);
+float process_timer(const string &usr_vid, int num_threads);
+
 /***** Global Variables *****/
 pthread_barrier_t barrier;
+
+/***** Main *****/
+int main(int argc, char const *argv[]) {
+
+    // Check for valid input
+    if (argc != 2 && argc != 3) {
+        cout << "Invalid input, please try again\n";
+        exit(-1);
+    }
+
+    // Get the file the user is requesting
+    string usr_arg = argv[1];
+    ifstream ifile;
+    ifile.open(usr_arg);
+
+    // Check to make sure the file exists, quit if it does not
+    if (!ifile) {
+        cout << "The specified file does not exist";
+        exit(-1);
+    } else if (usr_arg.substr(usr_arg.size() - 4) != ".mp4") {
+        cout << "This file is not supported";
+        exit(-1);
+    }
+
+    // Print how long the video is
+    VideoCapture usr_vid(usr_arg);
+    int fps = (int) usr_vid.get(CAP_PROP_FPS);
+    int frame_count = int(usr_vid.get(CAP_PROP_FRAME_COUNT));
+    usr_vid.release();
+
+    cout << "Video length in seconds: " << (frame_count / fps) << "." << ((frame_count / fps) % 1) << endl;
+
+    // Check user options
+    if (argc == 3 && argv[2][0] == 'a') {
+
+        cout << "Thread count set to default: 4 threads" << endl;
+
+        float time;
+        float avg = 0;
+
+        for (int i = 0; i < 10; i++) {
+            time = process_timer(usr_arg, 4);
+            cout << "Processing time: " << time << endl;
+            avg += time;
+        }
+        cout << "Average time: " << (avg / 10) << endl;
+
+    } else if (argc == 3 && isdigit(argv[2][0])) {
+
+        cout << "Processing time: " << process_timer(usr_arg, (int) argv[2][0]) << endl;
+
+    } else {
+
+        cout << "Thread count set to default: 4 threads" << endl;
+        cout << "Processing time: " << process_timer(usr_arg, 4) << endl;
+    }
+    return 0;
+}
+
+/***** Project Functions *****/
 
 /**
  * A grayscale filter for color images, applies the ITU-R (BT.709) grayscale algorithm
@@ -50,12 +117,12 @@ pthread_barrier_t barrier;
  * @param grayscale A grayscale image
  */
 void grayscale_filter(Mat *image, Mat *grayscale) {
-    unsigned char *image_data = image->data;
-    unsigned char *grayscale_data = grayscale->data;
+    uchar *image_data = image->data;
+    uchar *grayscale_data = grayscale->data;
 
     // Apply the ITU-R (BT.709) grayscale algorithm
     for (int pos = 0; pos < image->rows * image->cols; pos++) {
-        grayscale_data[pos] = (unsigned char) (
+        grayscale_data[pos] = (uchar) (
                 (image_data[3 * pos + 0] * B_CONST) +
                 (image_data[3 * pos + 1] * G_CONST) +
                 (image_data[3 * pos + 2] * R_CONST)
@@ -78,17 +145,16 @@ void sobel_filter(Mat *grayscale_img, Mat *sobel_img, int start = 0, int step = 
     // 2 V + S instructions: Vx = (Vx + Sr) & Vy = (Vy + Sy)
     // 1 V * S instruction:  Vx = Vx * Sc
     // 1 V + V instruction:  Vx = Vx + Vy
-    // This is done on 6 different pixels, which are then all added/subtracted together
-    // These operations are per-pixel, meaning that the CPU does 12 * 4 * 10 = 480 operations per sobel pixel
+    // These operations are per-pixel, meaning that the CPU does 4 * 6 * 2 * 5 * 2 = 480 operations per sobel pixel
     // Without converting the 5 addition operations to vectors, we will still be reducing the total number of
-    // operations to (2 + 1 + 1) * 10 = 40 operations -> That's 92% fewer operations!
+    // operations to (2 + 1 + 1) * 5 * 2 = 40 operations -> That's 92% fewer operations!
 
     // init function variables
     int numRows = grayscale_img->rows;
     int numCols = grayscale_img->cols;
     int Gx, Gy, G;
-    unsigned char *grayscale_data = grayscale_img->data;
-    unsigned char *sobel_data = sobel_img->data;
+    uchar *grayscale_data = grayscale_img->data;
+    uchar *sobel_data = sobel_img->data;
 
     uint16x8_t Gx_vect, Gy_vect, row_vect, col_vect;
     uint16x8_t Gx_row_vect = {2, 1, 0, 2, 1, 0};
@@ -101,10 +167,11 @@ void sobel_filter(Mat *grayscale_img, Mat *sobel_img, int start = 0, int step = 
         for (int col = 0; col < numCols - 2; col++) {
 
             // Convolve Gx
-            row_vect = vaddq_u16(vdupq_n_u16(row), Gx_row_vect);      // row_sum = (row + Gx[i])
-            row_vect = vmulq_n_u16(row_vect, numCols);                // row_sum *= numCols
-            col_vect = vaddq_u16(vdupq_n_u16(col), Gx_col_vect);      // col_sum = (col + Gx[j])
-            Gx_vect = vaddq_u16(row_vect, col_vect);                  // Gx_vect = row_sum + col_sum
+            row_vect = vaddq_u16(vdupq_n_u16(row), Gx_row_vect);    // row_sum = (row + Gx[i])
+            row_vect = vmulq_n_u16(row_vect, numCols);                  // row_sum *= numCols
+            col_vect = vaddq_u16(vdupq_n_u16(col), Gx_col_vect);    // col_sum = (col + Gx[j])
+            Gx_vect = vaddq_u16(row_vect, col_vect);                    // Gx_vect = row_sum + col_sum
+
 
             Gx =
                     (grayscale_data[vgetq_lane_u16(Gx_vect, 0)]) +
@@ -127,21 +194,6 @@ void sobel_filter(Mat *grayscale_img, Mat *sobel_img, int start = 0, int step = 
                     (grayscale_data[vgetq_lane_u16(Gy_vect, 3)]) -
                     (grayscale_data[vgetq_lane_u16(Gy_vect, 4)] << 1) -
                     (grayscale_data[vgetq_lane_u16(Gy_vect, 5)]);
-
-//            Gx = (grayscale_data[(numCols * (row + 2) + (col + 2))]) +
-//                 (grayscale_data[(numCols * (row + 1) + (col + 2))] << 1) +
-//                 (grayscale_data[(numCols * (row + 0) + (col + 2))]) -
-//                 (grayscale_data[(numCols * (row + 2) + (col + 0))]) -
-//                 (grayscale_data[(numCols * (row + 1) + (col + 0))] << 1) -
-//                 (grayscale_data[(numCols * (row + 0) + (col + 0))]);
-//
-//            Gy = (grayscale_data[(numCols * (row + 0) + (col + 0))]) +
-//                 (grayscale_data[(numCols * (row + 0) + (col + 1))] << 1) +
-//                 (grayscale_data[(numCols * (row + 0) + (col + 2))]) -
-//                 (grayscale_data[(numCols * (row + 2) + (col + 0))]) -
-//                 (grayscale_data[(numCols * (row + 2) + (col + 1))] << 1) -
-//                 (grayscale_data[(numCols * (row + 2) + (col + 2))]);
-
 
             // Gradient approximation
             G = abs(Gx) + abs(Gy);
@@ -183,7 +235,7 @@ void *thread_sobel_filter(void *threadArgs) {
  * @param video_file The name of a video file
  * @param num_threads A number of threads
  */
-void video_processor(const string &usr_vid, int num_threads = 1) {
+void video_processor(const string &usr_vid, int num_threads) {
 
     // Make sure num_threads is 1 or more
     if (num_threads < 1) {
@@ -250,7 +302,7 @@ void video_processor(const string &usr_vid, int num_threads = 1) {
  * @param usr_vid
  * @param num_threads
  */
-float time_function(const string &usr_vid, int num_threads = 4) {
+float process_timer(const string &usr_vid, int num_threads = 4) {
 
     // Start the timer
     auto start = high_resolution_clock::now();
@@ -261,61 +313,4 @@ float time_function(const string &usr_vid, int num_threads = 4) {
     // Stop the timer and calculate duration
     auto stop = high_resolution_clock::now();
     return (float) (duration_cast<microseconds>(stop - start)).count() / 1000000;
-}
-
-int main(int argc, char const *argv[]) {
-
-    // Check for valid input
-    if (argc != 2 && argc != 3) {
-        cout << "Invalid input, please try again\n";
-        exit(-1);
-    }
-
-    // Get the file the user is requesting
-    string usr_arg = argv[1];
-    ifstream ifile;
-    ifile.open(usr_arg);
-
-    // Check to make sure the file exists, quit if it does not
-    if (!ifile) {
-        cout << "The specified file does not exist";
-        exit(-1);
-    } else if (usr_arg.substr(usr_arg.size() - 4) != ".mp4") {
-        cout << "This file is not supported";
-        exit(-1);
-    }
-
-    // Print how long the video is
-    VideoCapture usr_vid(usr_arg);
-    int fps = (int) usr_vid.get(CAP_PROP_FPS);
-    int frame_count = int(usr_vid.get(CAP_PROP_FRAME_COUNT));
-    usr_vid.release();
-
-    cout << "Video length in seconds: " << (frame_count / fps) << "." << ((frame_count / fps) % 1) << endl;
-
-    // Check user options
-    if (argc == 3 && argv[2][0] == 'a') {
-
-        cout << "Thread count set to default: 4 threads" << endl;
-
-        float time;
-        float avg = 0;
-
-        for (int i = 0; i < 10; i++) {
-            time = time_function(usr_arg, 4);
-            cout << "Processing time: " << time << endl;
-            avg += time;
-        }
-        cout << "Average time: " << (avg / 10) << endl;
-
-    } else if (argc == 3 && isdigit(argv[2][0])) {
-
-        cout << "Processing time: " << time_function(usr_arg, (int) argv[2][0]) << endl;
-
-    } else {
-
-        cout << "Thread count set to default: 4 threads" << endl;
-        cout << "Processing time: " << time_function(usr_arg) << endl;
-    }
-    return 0;
 }

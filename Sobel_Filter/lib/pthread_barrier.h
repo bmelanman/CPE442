@@ -7,10 +7,8 @@
 #include <pthread.h>
 
 #ifndef SOBEL_FILTER_PTHREAD_BARRIER_H
-#define SOBEL_FILTER_PTHREAD_BARRIER_H
 
-// Check if barriers are already defined
-#ifndef PTHREAD_BARRIER_SERIAL_THREAD
+#define SOBEL_FILTER_PTHREAD_BARRIER_H
 #define PTHREAD_BARRIER_SERIAL_THREAD (-1)
 
 typedef struct {
@@ -26,7 +24,5 @@ int pthread_barrier_init(pthread_barrier_t *barrier, __attribute__((unused)) voi
 int pthread_barrier_wait(pthread_barrier_t *barrier);
 
 int pthread_barrier_destroy(pthread_barrier_t *barrier);
-
-#endif //PTHREAD_BARRIER_SERIAL_THREAD
 
 #endif //SOBEL_FILTER_PTHREAD_BARRIER_H
