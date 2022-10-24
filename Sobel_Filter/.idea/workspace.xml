@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakePresetLoader">{
+  &quot;useNewFormat&quot;: true
+}</component>
+  <component name="CMakeReloadState">
+    <option name="reloaded" value="true" />
+  </component>
+  <component name="CMakeRunConfigurationManager">
+    <generated>
+      <config projectName="Sobel_Filter" targetName="Sobel_Filter" />
+    </generated>
+  </component>
+  <component name="CMakeSettings" AUTO_RELOAD="true">
+    <configurations>
+      <configuration PROFILE_NAME="Default" ENABLED="true" NO_GENERATOR="true" />
+      <configuration PROFILE_NAME="Debug" ENABLED="true" CONFIG_NAME="Debug" NO_GENERATOR="true" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="f377c617-8cf1-4092-91fe-fd16bf49fc42" name="Changes" comment="tune up, beginning vector optimization">
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/.idea/.name" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/.idea/Sobel Filter.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Sobel Filter/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/CMakeLists.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-debug/.cmake/api/v1/reply/cmakeFiles-v1-ee748ce14758d5b0ea96.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/.cmake/api/v1/query/cache-v2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/.cmake/api/v1/query/cmakeFiles-v1" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/.cmake/api/v1/query/codemodel-v2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/.cmake/api/v1/query/toolchains-v1" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/.cmake/api/v1/reply/cache-v2-79f854c8d2961c799490.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/.cmake/api/v1/reply/cmakeFiles-v1-e404f2b6e8ec60d4164f.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/.cmake/api/v1/reply/codemodel-v2-9fc534091d8ee35b0bf0.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/.cmake/api/v1/reply/directory-.-f5ebdc15457944623624.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/.cmake/api/v1/reply/target-Sobel_Filter-3effaa3b7eecd12aa373.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/.cmake/api/v1/reply/toolchains-v1-690b0266afb2b0a3379c.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/CMakeCache.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/CMakeFiles/3.23.2/CMakeCCompiler.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/CMakeFiles/3.23.2/CMakeCXXCompiler.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/CMakeFiles/3.23.2/CMakeDetermineCompilerABI_C.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/CMakeFiles/3.23.2/CMakeDetermineCompilerABI_CXX.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/CMakeFiles/3.23.2/CMakeSystem.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/CMakeFiles/3.23.2/CompilerIdC/CMakeCCompilerId.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/CMakeFiles/3.23.2/CompilerIdC/CMakeCCompilerId.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/CMakeFiles/3.23.2/CompilerIdCXX/CMakeCXXCompilerId.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/CMakeFiles/3.23.2/CompilerIdCXX/CMakeCXXCompilerId.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/CMakeFiles/CMakeDirectoryInformation.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/CMakeFiles/CMakeError.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/CMakeFiles/CMakeOutput.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/CMakeFiles/Makefile.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/CMakeFiles/Makefile2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/CMakeFiles/Sobel_Filter.dir/DependInfo.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/CMakeFiles/Sobel_Filter.dir/build.make" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/CMakeFiles/Sobel_Filter.dir/cmake_clean.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/CMakeFiles/Sobel_Filter.dir/compiler_depend.internal" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/CMakeFiles/Sobel_Filter.dir/compiler_depend.make" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/CMakeFiles/Sobel_Filter.dir/compiler_depend.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/CMakeFiles/Sobel_Filter.dir/depend.make" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/CMakeFiles/Sobel_Filter.dir/flags.make" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/CMakeFiles/Sobel_Filter.dir/lib/pthread_barrier.cpp.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/CMakeFiles/Sobel_Filter.dir/lib/pthread_barrier.cpp.o.d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/CMakeFiles/Sobel_Filter.dir/link.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/CMakeFiles/Sobel_Filter.dir/main.cpp.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/CMakeFiles/Sobel_Filter.dir/main.cpp.o.d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/CMakeFiles/Sobel_Filter.dir/progress.make" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/CMakeFiles/Sobel_Filter.dir/src/main.cpp.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/CMakeFiles/Sobel_Filter.dir/src/main.cpp.o.d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/CMakeFiles/TargetDirectories.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/CMakeFiles/clion-environment.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/CMakeFiles/clion-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/CMakeFiles/clion-log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/CMakeFiles/cmake.check_cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/CMakeFiles/progress.marks" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/Makefile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/Sobel_Filter" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/Testing/Temporary/LastTest.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/build.ninja" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/cmake-build-default/cmake_install.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/lib/pthread_barrier.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/lib/pthread_barrier.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel Filter/src/main.cpp" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectApplicationVersion">
+    <option name="ide" value="CLion" />
+    <option name="majorVersion" value="2022" />
+    <option name="minorVersion" value="2.4" />
+  </component>
+  <component name="ProjectId" id="2GTXrUiZO7psrqISXSxvfltosxG" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "last_opened_file_path": "/Users/brycemelander/Documents/GitHub/CPE442/Sobel_Filter",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "settings.editor.selected.configurable": "preferences.general",
+    "structure.view.defaults.are.configured": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/cmake-build-default" />
+      <recent name="$PROJECT_DIR$" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src" />
+      <recent name="$PROJECT_DIR$/cmake-build-default" />
+    </key>
+  </component>
+  <component name="RunManager" selected="CMake Application.frog">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="frog" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="small_frog.mp4" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" WORKING_DIR="file://$PROJECT_DIR$/../Media" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Sobel_Filter" TARGET_NAME="Sobel_Filter" CONFIG_NAME="Default" RUN_TARGET_PROJECT_NAME="Sobel_Filter" RUN_TARGET_NAME="Sobel_Filter">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="thread_avg" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="small_frog.mp4 a" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" WORKING_DIR="file://$PROJECT_DIR$/../Media" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Sobel_Filter" TARGET_NAME="Sobel_Filter" CONFIG_NAME="Default" RUN_TARGET_PROJECT_NAME="Sobel_Filter" RUN_TARGET_NAME="Sobel_Filter">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="all" type="MAKEFILE_TARGET_RUN_CONFIGURATION" factoryName="Makefile">
+      <makefile filename="$PROJECT_DIR$/Makefile" target="all" workingDirectory="" arguments="">
+        <envs />
+      </makefile>
+      <method v="2" />
+    </configuration>
+    <configuration name="clean" type="MAKEFILE_TARGET_RUN_CONFIGURATION" factoryName="Makefile">
+      <makefile filename="$PROJECT_DIR$/Makefile" target="clean" workingDirectory="" arguments="">
+        <envs />
+      </makefile>
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="CMake Application.frog" />
+      <item itemvalue="CMake Application.thread_avg" />
+      <item itemvalue="Makefile Target.all" />
+      <item itemvalue="Makefile Target.clean" />
+    </list>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f377c617-8cf1-4092-91fe-fd16bf49fc42" name="Changes" comment="" />
+      <created>1666413745892</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1666413745892</updated>
+      <workItem from="1666413747022" duration="7601000" />
+      <workItem from="1666466223200" duration="24459000" />
+    </task>
+    <task id="LOCAL-00001" summary="migrated to CLion">
+      <created>1666414107358</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1666414107358</updated>
+    </task>
+    <task id="LOCAL-00002" summary="tune up, beginning vector optimization">
+      <created>1666554838819</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1666554838819</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="migrated to CLion" />
+    <MESSAGE value="tune up, beginning vector optimization" />
+    <option name="LAST_COMMIT_MESSAGE" value="tune up, beginning vector optimization" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>

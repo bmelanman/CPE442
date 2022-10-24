@@ -1,4 +1,0 @@
-/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -S "/Users/brycemelander/Documents/GitHub/CPE442/Sobel Filter" -B "/Users/brycemelander/Documents/GitHub/CPE442/Sobel Filter/cmake-build-default"
--- Configuring done
--- Generating done
--- Build files have been written to: /Users/brycemelander/Documents/GitHub/CPE442/Sobel Filter/cmake-build-default
