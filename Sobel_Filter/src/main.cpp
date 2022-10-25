@@ -82,8 +82,6 @@ int main(int argc, char const *argv[]) {
     Mat gray_frame(usr_vid_rows, usr_vid_cols, CV_8UC1);
     Mat sobel_frame(usr_vid_rows - 2, usr_vid_cols - 2, CV_8UC1);
 
-//    cvtColor(frame, gray_frame, COLOR_BGR2GRAY);
-
     // init pthreads
     pthread_t threads[NUM_THREADS];
     struct thread_data in_out[NUM_THREADS];
