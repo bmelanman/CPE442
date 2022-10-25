@@ -18,6 +18,9 @@
 
   default: clean_target src compile run
 
+  pi: clean_all
+	$(CC) -o $(TARGET) $(TARGET).cpp $(PKG_MNG) $(CFLAGS)
+
   lib: ../lib/$(LIB).cpp
 	$(CC) -c -o $(LIB).o ../lib/$(LIB).cpp $(CFLAGS)
 
@@ -35,4 +38,6 @@
 
   clean_all:
 	$(RM) $(TARGET) $(TARGET).o $(LIB).o
+
+  clean: clean_all
 
