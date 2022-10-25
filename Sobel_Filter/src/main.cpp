@@ -42,8 +42,6 @@ struct thread_data {
 /***** Prototypes *****/
 void grayscale_filter(Mat *image, Mat *grayscale);
 
-void sobel_filter(Mat *grayscale_img, Mat *sobel_img, int start, int stop);
-
 void *thread_sobel_filter(void *threadArgs);
 
 /***** Global Variables *****/
@@ -63,9 +61,9 @@ int main(int argc, char const *argv[]) {
     ifstream ifile;
     ifile.open(usr_arg);
 
-    if (!ifile){
+    if (!ifile) {
         cout << "File does not exist" << endl;
-        exit (-1);
+        exit(-1);
     }
 
     // Print how long the video is
@@ -83,6 +81,8 @@ int main(int argc, char const *argv[]) {
     Mat frame;
     Mat gray_frame(usr_vid_rows, usr_vid_cols, CV_8UC1);
     Mat sobel_frame(usr_vid_rows - 2, usr_vid_cols - 2, CV_8UC1);
+
+//    cvtColor(frame, gray_frame, COLOR_BGR2GRAY);
 
     // init pthreads
     pthread_t threads[NUM_THREADS];
@@ -157,8 +157,6 @@ void grayscale_filter(Mat *image, Mat *grayscale) {
     uchar *image_data = image->data;
     uchar *grayscale_data = grayscale->data;
 
-//    uint16x4_t rgb_const = {0.2126, 0.7156, 0.0722};
-
     // Apply the ITU-R (BT.709) grayscale algorithm
     for (int pos = 0; pos < image->rows * image->cols; pos++) {
         grayscale_data[pos] = (uchar) (
@@ -167,49 +165,43 @@ void grayscale_filter(Mat *image, Mat *grayscale) {
                 (image_data[3 * pos + 2] * R_CONST)
         );
     }
+
+
 }
 
 /**
  * Takes a grayscale image and applies the sobel operator to the given image. The function will default to single
  * thread operation when threading variables are unspecified.
- * @param grayscale_img An image that has been converted to grayscale
- * @param sobel_img A grayscale image with the sobel operator applied to it
- * @param start For use with threading, indicates the starting point for a given thread
- * @param step For use with threading, sets the number of pixels each thread will skip
+ * @param threadArgs - A struct with variables for the sobel_filter
  */
-void sobel_filter(Mat *grayscale_img, Mat *sobel_img, int start, int stop) {
+void *thread_sobel_filter(void *threadArgs) {
 
-    // index = [numCols * (row + x) + (col + y)]
-    // Convolution = img[index] + (img[index] << 1) + img[index] - img[index] - (img[index] << 1) - img[index]
-    // 2 V_ld1 instructions: Vr = fill(row) & Vc = fill(col)
-    // 2 V + S instructions: Vx = (Vr + Sr) & Vy = (Vc + Sy)
-    // 1 V + V * V instruction:  V_Gx = Vc + Vr * V_numRows
-    // These operations are per-pixel, meaning that the CPU does 4 * (6 * 2) + (5 * 2) + (6 * 2) = 70 operations per sobel pixel
-    // Without converting the 5 addition operations to vectors, we will still be reducing the total number of
-    // operations to (2 + 2 + 1) * 4 + (5 * 2) + (6 * 2) = 42 operations (>50% decrease!)
+    // init thread variables
+    auto *thread_data = (struct thread_data *) threadArgs;
+    int start = thread_data->start;
+    int stop = thread_data->stop;
+    Mat *grayscale_img = thread_data->input;
+    Mat *sobel_img = thread_data->output;
 
     // init function variables
+    uchar *gray_data = grayscale_img->data;
+    uchar *sobel_data = sobel_img->data;
     int numCols = grayscale_img->cols;
     int Gx, Gy, G;
 
-    uchar *gray_data = grayscale_img->data;
-    uchar *sobel_data = sobel_img->data;
-
+    // init NEON vectors
     uint32x4_t row_const, col_const, row_vect, col_vect;
     uint32x4_t numCol_vect = vdupq_n_u32(numCols);
     uint32x4x2_t Gx_vect, Gy_vect;
 
-    uint32x4x4_t Gx_conv_vect = {2, 1, 0, 2,
-                                 1, 0, 0, 0,
-                                 2, 2, 2, 0,
-                                 0, 0, 0, 0};
+    uint32x4x4_t Gx_conv_vect = {2, 1, 0, 2, 1, 0, 0, 0,
+                                 2, 2, 2, 0, 0, 0, 0, 0};
 
-    uint32x4x4_t Gy_conv_vect = {0, 0, 0, 2,
-                                 2, 2, 0, 0,
-                                 0, 1, 2, 0,
-                                 1, 2, 0, 0};
+    uint32x4x4_t Gy_conv_vect = {0, 0, 0, 2, 2, 2, 0, 0,
+                                 0, 1, 2, 0, 1, 2, 0, 0};
 
     while (!cont_flag) {
+
         // Loop through the rows and cols of the image and apply the sobel filter
         for (int row = start; row < stop - 2; row++) {
 
@@ -267,24 +259,7 @@ void sobel_filter(Mat *grayscale_img, Mat *sobel_img, int start, int stop) {
         }
         pthread_barrier_wait(&barrier);
     }
-}
 
-/**
- * Converts a thread struct into variables for sobel_filter()
- * @param threadArgs - A struct with variables for the sobel_filter
- */
-void *thread_sobel_filter(void *threadArgs) {
-
-    // init thread variables
-    auto *thread_data = (struct thread_data *) threadArgs;
-    int start = thread_data->start;
-    int step = thread_data->stop;
-    Mat *grayscale_img = thread_data->input;
-    Mat *sobel_img = thread_data->output;
-
-    // Run the sobel filter
-    sobel_filter(grayscale_img, sobel_img, start, step);
-
-    // pThread return functions
+    // pthread return function
     pthread_exit(nullptr);
 }
