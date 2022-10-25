@@ -8,15 +8,15 @@
   #  -g    			adds debugging information to the executable file
   #  -Wall 			turns on most, but not all, compiler warnings
   #  -std=c++11 	implements all of the major features of the C++11 standard
-  CFLAGS  = -std=c++11 -g -Wall -O3
+  CFLAGS  = -std=c++11 -g -Wall -O0
 
   # Target executables:
   TARGET = main
   LIB = pthread_barrier
 
-  all: clean_all lib src compile run
+  all: clean_all lib src compile
 
-  default: clean_target src compile run
+  default: clean_target src compile
 
   pi: clean_all
 	$(CC) -o $(TARGET) $(TARGET).cpp $(PKG_MNG) $(CFLAGS)

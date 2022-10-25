@@ -3,8 +3,9 @@ project(Sobel_Filter)
 
 # C++11 required for OpenCV
 set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_OSX_ARCHITECTURES "arm64")
 
-add_compile_options(-pthread -O3)
+add_compile_options(-pthread -O0)
 
 # Get OpenCV libs
 find_package(OpenCV REQUIRED)

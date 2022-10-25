@@ -18,13 +18,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9605c716-129a-4be6-961b-ada0259ab923" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../Sobel_Filter/src/main" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Sobel_Filter/src/main.o" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Sobel_Filter/src/pthread_barrier.o" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Sobel_Filter/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Sobel_Filter/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Sobel_Filter/cmake-build-debug/CMakeFiles/Sobel_Filter.dir/src/main.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/../Sobel_Filter/cmake-build-debug/CMakeFiles/Sobel_Filter.dir/src/main.cpp.o" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Sobel_Filter/cmake-build-debug/Sobel_Filter" beforeDir="false" afterPath="$PROJECT_DIR$/../Sobel_Filter/cmake-build-debug/Sobel_Filter" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Sobel_Filter/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/../Sobel_Filter/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel_Filter/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Sobel_Filter/src/main.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
