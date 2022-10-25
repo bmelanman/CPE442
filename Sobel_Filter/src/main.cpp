@@ -99,7 +99,9 @@ int main(int argc, char const *argv[]) {
 
     } else if (argc == 3 && isdigit(argv[2][0])) {
 
-        cout << "Processing time: " << process_timer(usr_arg, (int) argv[2][0]) << endl;
+        volatile int num = (uchar) argv[2][0];
+
+        cout << "Processing time: " << process_timer(usr_arg, num) << endl;
 
     } else {
 
@@ -145,9 +147,9 @@ void sobel_filter(Mat *grayscale_img, Mat *sobel_img, int start = 0, int step = 
     // 2 V + S instructions: Vx = (Vx + Sr) & Vy = (Vy + Sy)
     // 1 V * S instruction:  Vx = Vx * Sc
     // 1 V + V instruction:  Vx = Vx + Vy
-    // These operations are per-pixel, meaning that the CPU does 4 * 6 * 2 * 5 * 2 = 480 operations per sobel pixel
+    // These operations are per-pixel, meaning that the CPU does 4 * (6 * 2) * (5 * 2) = 480 operations per sobel pixel
     // Without converting the 5 addition operations to vectors, we will still be reducing the total number of
-    // operations to (2 + 1 + 1) * 5 * 2 = 40 operations -> That's 92% fewer operations!
+    // operations to (2 + 1 + 1) * (5 * 2) = 40 operations -> That's 92% fewer operations!
 
     // init function variables
     int numRows = grayscale_img->rows;
@@ -156,42 +158,63 @@ void sobel_filter(Mat *grayscale_img, Mat *sobel_img, int start = 0, int step = 
     uchar *grayscale_data = grayscale_img->data;
     uchar *sobel_data = sobel_img->data;
 
-    uint16x8_t Gx_vect, Gy_vect, row_vect, col_vect;
-    uint16x8_t Gx_row_vect = {2, 1, 0, 2, 1, 0};
-    uint16x8_t Gx_col_vect = {2, 2, 2, 0, 0, 0};
-    uint16x8_t Gy_row_vect = {0, 0, 0, 2, 2, 2};
-    uint16x8_t Gy_col_vect = {0, 1, 2, 0, 1, 2};
+    uint32x4_t row_vect, col_vect, row_temp, col_temp;
+    uint32x4_t numCol_vect = vdupq_n_u32(numCols);
+
+    uint32x4x4_t Gx_vect, Gx_conv_vect = {2, 1, 0, 2,
+                                          1, 0, 0, 0,
+                                          2, 2, 2, 0,
+                                          0, 0, 0, 0};
+
+    uint32x4x4_t Gy_vect, Gy_conv_vect = {0, 0, 0, 2,
+                                          2, 2, 0, 0,
+                                          0, 1, 2, 0,
+                                          1, 2, 0, 0};
 
     // Loop through the rows and cols of the image and apply the sobel filter
     for (int row = start; row < numRows - 2; row += step) {
+
+        // Put the row into a vector
+        row_vect = vdupq_n_u32(row);
+
         for (int col = 0; col < numCols - 2; col++) {
 
+            // Put the col into a vector
+            col_vect = vdupq_n_u32(col);
+
             // Convolve Gx
-            // Calculate [numCols * (row + x) + (col + y)]
-            row_vect = vaddq_u16(vdupq_n_u16(row), Gx_row_vect);    // row_sum = (row + Gx[i])
-            row_vect = vmulq_n_u16(row_vect, numCols);                  // row_sum *= numCols
-            col_vect = vaddq_u16(vdupq_n_u16(col), Gx_col_vect);    // col_sum = (col + Gx[j])
-            Gx_vect = vaddq_u16(row_vect, col_vect);                    // Gx_vect = row_sum + col_sum
-            
-            Gx =    (grayscale_data[vgetq_lane_u16(Gx_vect, 0)]) +
-                    (grayscale_data[vgetq_lane_u16(Gx_vect, 1)] << 1) +
-                    (grayscale_data[vgetq_lane_u16(Gx_vect, 2)]) -
-                    (grayscale_data[vgetq_lane_u16(Gx_vect, 3)]) -
-                    (grayscale_data[vgetq_lane_u16(Gx_vect, 4)] << 1) -
-                    (grayscale_data[vgetq_lane_u16(Gx_vect, 5)]);
+            // Calculate [numCols * (row + x) + (col + y)] for bits 0 - 3
+            row_temp = vaddq_u32(row_vect, Gx_conv_vect.val[0]);                // Vr = (row + i)
+            col_temp = vaddq_u32(col_vect, Gx_conv_vect.val[2]);                // Vc = (col + j)
+            Gx_vect.val[0] = vmlaq_u32(col_temp, row_temp, numCol_vect);    // i = Vc + Vr * V_numCols
+
+            row_temp = vaddq_u32(row_vect, Gx_conv_vect.val[1]);
+            col_temp = vaddq_u32(col_vect, Gx_conv_vect.val[3]);
+            Gx_vect.val[1] = vmlaq_u32(col_temp, row_temp, numCol_vect);
 
             // Convolve Gy
-            row_vect = vaddq_u16(vdupq_n_u16(row), Gy_row_vect);
-            row_vect = vmulq_n_u16(row_vect, numCols);
-            col_vect = vaddq_u16(vdupq_n_u16(col), Gy_col_vect);
-            Gy_vect = vaddq_u16(row_vect, col_vect);
+            // Calculate bits 4 - 5
+            row_temp = vaddq_u32(row_vect, Gy_conv_vect.val[0]);
+            col_temp = vaddq_u32(col_vect, Gy_conv_vect.val[2]);
+            Gy_vect.val[0] = vmlaq_u32(col_temp, row_temp, numCol_vect);
 
-            Gy =    (grayscale_data[vgetq_lane_u16(Gy_vect, 0)]) +
-                    (grayscale_data[vgetq_lane_u16(Gy_vect, 1)] << 1) +
-                    (grayscale_data[vgetq_lane_u16(Gy_vect, 2)]) -
-                    (grayscale_data[vgetq_lane_u16(Gy_vect, 3)]) -
-                    (grayscale_data[vgetq_lane_u16(Gy_vect, 4)] << 1) -
-                    (grayscale_data[vgetq_lane_u16(Gy_vect, 5)]);
+            row_temp = vaddq_u32(row_vect, Gy_conv_vect.val[1]);
+            col_temp = vaddq_u32(col_vect, Gy_conv_vect.val[3]);
+            Gy_vect.val[1] = vmlaq_u32(col_temp, row_temp, numCol_vect);
+
+            Gx = (grayscale_data[vgetq_lane_u32(Gx_vect.val[0], 0)]) +
+                 (grayscale_data[vgetq_lane_u32(Gx_vect.val[0], 1)] << 1) +
+                 (grayscale_data[vgetq_lane_u32(Gx_vect.val[0], 2)]) -
+                 (grayscale_data[vgetq_lane_u32(Gx_vect.val[0], 3)]) -
+                 (grayscale_data[vgetq_lane_u32(Gx_vect.val[1], 0)] << 1) -
+                 (grayscale_data[vgetq_lane_u32(Gx_vect.val[1], 1)]);
+
+            Gy = (grayscale_data[vgetq_lane_u32(Gy_vect.val[0], 0)]) +
+                 (grayscale_data[vgetq_lane_u32(Gy_vect.val[0], 1)] << 1) +
+                 (grayscale_data[vgetq_lane_u32(Gy_vect.val[0], 2)]) -
+                 (grayscale_data[vgetq_lane_u32(Gy_vect.val[0], 3)]) -
+                 (grayscale_data[vgetq_lane_u32(Gy_vect.val[1], 0)] << 1) -
+                 (grayscale_data[vgetq_lane_u32(Gy_vect.val[1], 1)]);
 
             // Gradient approximation
             G = abs(Gx) + abs(Gy);
@@ -200,7 +223,7 @@ void sobel_filter(Mat *grayscale_img, Mat *sobel_img, int start = 0, int step = 
             if (G > 255) { G = 255; }
 
             // Write the pixel to the sobel image
-            sobel_data[(sobel_img->cols * (row) + (col))] = G;
+            sobel_data[sobel_img->cols * (row) + (col)] = G;
         }
     }
 }
