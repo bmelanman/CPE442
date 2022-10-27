@@ -19,7 +19,7 @@
 #include <cmath>
 #include <pthread.h>
 #include "../lib/pthread_barrier.h"
-//#include <arm_neon.h>
+#include <arm_neon.h>
 
 /***** Defines *****/
 #define G_CONST 0.2126
@@ -40,13 +40,14 @@ struct thread_data {
 };
 
 /***** Prototypes *****/
-void grayscale_filter(Mat *image, Mat *grayscale);
+void *thread_grayscale_filter(void *threadArgs);
 
 void *thread_sobel_filter(void *threadArgs);
 
 /***** Global Variables *****/
-pthread_barrier_t barrier;
-bool cont_flag = false;
+pthread_barrier_t gray_barrier;
+pthread_barrier_t sobel_barrier;
+bool done_flag = false;
 
 /***** Main *****/
 int main(int argc, char const *argv[]) {
@@ -78,64 +79,77 @@ int main(int argc, char const *argv[]) {
     int usr_vid_cols = (int) usr_vid.get(3);
 
     // init image Mats
-    Mat frame;
+    Mat frame(usr_vid_rows, usr_vid_cols, CV_8UC3);
     Mat gray_frame(usr_vid_rows, usr_vid_cols, CV_8UC1);
     Mat sobel_frame(usr_vid_rows - 2, usr_vid_cols - 2, CV_8UC1);
 
     // init pthreads
-    pthread_t threads[NUM_THREADS];
-    struct thread_data in_out[NUM_THREADS];
-    pthread_barrier_init(&barrier, nullptr, NUM_THREADS + 1);
+    pthread_t gray_threads[NUM_THREADS];
+    pthread_t sobel_threads[NUM_THREADS];
 
-    // Each thread processes half of the image
+    // init barriers
+    pthread_barrier_init(&gray_barrier, nullptr, NUM_THREADS + 1);
+    pthread_barrier_init(&sobel_barrier, nullptr, NUM_THREADS + 1);
+
+    struct thread_data gray_data[NUM_THREADS], sobel_data[NUM_THREADS];
+
     for (int i = 0; i < NUM_THREADS; i++) {
 
         // init thread variables
-        in_out[i].input = &gray_frame;
-        in_out[i].output = &sobel_frame;
-        in_out[i].start = i * (usr_vid_rows / NUM_THREADS) - 2;
-        in_out[i].stop = (i + 1) * (usr_vid_rows / NUM_THREADS);
+        gray_data[i].input = &frame;
+        gray_data[i].output = &gray_frame;
+        gray_data[i].start = i * usr_vid_cols * (usr_vid_rows / NUM_THREADS);
 
-        if (i == 0) { in_out[i].start = 0; }
-        if (i == 3) { in_out[i].stop = usr_vid_rows - 2; }
+        if (i == NUM_THREADS - 1) { gray_data[i].stop = usr_vid_rows * usr_vid_cols - 1; }
+        else { gray_data[i].stop = (i + 1) * usr_vid_cols * (usr_vid_rows / NUM_THREADS); }
 
         // run the threads
-        pthread_create(&threads[i], nullptr, &thread_sobel_filter, (void *) &in_out[i]);
+        pthread_create(&gray_threads[i], nullptr, &thread_grayscale_filter, (void *) &gray_data[i]);
+
+        sobel_data[i].input = &gray_frame;
+        sobel_data[i].output = &sobel_frame;
+
+        if (i == 0) { sobel_data[i].start = 0; }
+        else { gray_data[i].start = i * (usr_vid_rows / NUM_THREADS) - 2; }
+
+        if (i == NUM_THREADS - 1) { sobel_data[i].stop = usr_vid_rows - 2; }
+        else { gray_data[i].stop = (i + 1) * (usr_vid_rows / NUM_THREADS); }
+
+        pthread_create(&sobel_threads[i], nullptr, &thread_sobel_filter, (void *) &sobel_data[i]);
     }
 
     // Loop through the image file
-    uchar key;
     while (usr_vid.isOpened()) {
         // Get a frame from the video
         usr_vid >> frame;
 
         // If we're all out of frames, the video is over
         if (frame.empty()) {
-            cont_flag = true;
+            done_flag = true;
             break;
         }
 
         // Process the image
-        grayscale_filter(&frame, &gray_frame);
-
-        pthread_barrier_wait(&barrier);
+        pthread_barrier_wait(&gray_barrier);
+        pthread_barrier_wait(&sobel_barrier);
 
         // Display the frame
         imshow("sobel", sobel_frame);
 
         // Hold ESC to exit the video early
-        key = waitKey(5);
-        if (key == 27) {
-            cont_flag = true;
-            break;
-        }
+        if ((char) waitKey(5) == 27) break;
     }
 
-    pthread_barrier_wait(&barrier);
-    for (auto &thread: threads) {
-        pthread_join(thread, nullptr);
+    pthread_barrier_wait(&gray_barrier);
+    pthread_barrier_wait(&sobel_barrier);
+
+    for (int i = 0; i < NUM_THREADS; i++) {
+        pthread_join(sobel_threads[i], nullptr);
+        pthread_join(gray_threads[i], nullptr);
     }
-    pthread_barrier_destroy(&barrier);
+
+    pthread_barrier_destroy(&gray_barrier);
+    pthread_barrier_destroy(&sobel_barrier);
 
     // Clean up
     usr_vid.release();
@@ -151,20 +165,24 @@ int main(int argc, char const *argv[]) {
  * @param image An image
  * @param grayscale A grayscale image
  */
-void grayscale_filter(Mat *image, Mat *grayscale) {
-    uchar *image_data = image->data;
-    uchar *gray_data = grayscale->data;
+void *thread_grayscale_filter(void *threadArgs) {
 
-    // Apply the ITU-R (BT.709) grayscale algorithm
-    for (int pos = 0; pos < image->rows * image->cols; pos++) {
-        gray_data[pos] = (uchar) (
-                (image_data[3 * pos + 0] * B_CONST) +
-                (image_data[3 * pos + 1] * G_CONST) +
-                (image_data[3 * pos + 2] * R_CONST)
-        );
+    // init thread variables
+    auto *thread_data = (struct thread_data *) threadArgs;
+    uchar *usr_img = thread_data->input->data;
+    uchar *gray_img = thread_data->output->data;
+    int start = thread_data->start;
+    int stop = thread_data->stop;
+
+    while (!done_flag) {
+        for (int pos = start; pos < stop; pos++) {
+            gray_img[pos] = (uchar) ((usr_img[3 * pos + 0] * B_CONST) +
+                                     (usr_img[3 * pos + 1] * G_CONST) +
+                                     (usr_img[3 * pos + 2] * R_CONST));
+        }
+        pthread_barrier_wait(&gray_barrier);
     }
-
-
+    pthread_exit(nullptr);
 }
 
 /**
@@ -198,7 +216,7 @@ void *thread_sobel_filter(void *threadArgs) {
     uint32x4x4_t Gy_conv_vect = {0, 0, 0, 2, 2, 2, 0, 0,
                                  0, 1, 2, 0, 1, 2, 0, 0};
 
-    while (!cont_flag) {
+    while (!done_flag) {
 
         // Loop through the rows and cols of the image and apply the sobel filter
         for (int row = start; row < stop - 2; row++) {
@@ -255,7 +273,8 @@ void *thread_sobel_filter(void *threadArgs) {
                 sobel_data[sobel_img->cols * (row) + (col)] = G;
             }
         }
-        pthread_barrier_wait(&barrier);
+        pthread_barrier_wait(&gray_barrier);
+        pthread_barrier_wait(&sobel_barrier);
     }
 
     // pthread return function
