@@ -25,7 +25,7 @@
 #define G_CONST 0.2126
 #define B_CONST 0.7152
 #define R_CONST 0.0722
-#define NUM_THREADS 4
+#define NUM_THREADS 8
 
 /***** Namespaces *****/
 using namespace std;
@@ -40,13 +40,13 @@ struct thread_data {
 };
 
 /***** Prototypes *****/
-void *thread_grayscale_filter(void *threadArgs);
+void *thread_gray_filter(void *threadArgs);
 
-void *thread_sobel_filter(void *threadArgs);
+void *thread_sobl_filter(void *threadArgs);
 
 /***** Global Variables *****/
 pthread_barrier_t gray_barrier;
-pthread_barrier_t sobel_barrier;
+pthread_barrier_t sobl_barrier;
 bool done_flag = false;
 
 /***** Main *****/
@@ -72,7 +72,7 @@ int main(int argc, char const *argv[]) {
     int fps = (int) usr_vid.get(CAP_PROP_FPS);
     int frame_count = int(usr_vid.get(CAP_PROP_FRAME_COUNT));
     cout << "Video length in seconds: " << (frame_count / fps) << "." << ((frame_count / fps) % 1) << endl;
-    cout << "Thread count set to default: 4 threads" << endl;
+    cout << "Number of threads: " << NUM_THREADS << endl;
 
     // Read the video
     int usr_vid_rows = (int) usr_vid.get(4);
@@ -81,17 +81,17 @@ int main(int argc, char const *argv[]) {
     // init image Mats
     Mat frame(usr_vid_rows, usr_vid_cols, CV_8UC3);
     Mat gray_frame(usr_vid_rows, usr_vid_cols, CV_8UC1);
-    Mat sobel_frame(usr_vid_rows - 2, usr_vid_cols - 2, CV_8UC1);
+    Mat sobl_frame(usr_vid_rows - 2, usr_vid_cols - 2, CV_8UC1);
 
     // init pthreads
     pthread_t gray_threads[NUM_THREADS];
-    pthread_t sobel_threads[NUM_THREADS];
+    pthread_t sobl_threads[NUM_THREADS];
 
     // init barriers
     pthread_barrier_init(&gray_barrier, nullptr, NUM_THREADS + 1);
-    pthread_barrier_init(&sobel_barrier, nullptr, NUM_THREADS + 1);
+    pthread_barrier_init(&sobl_barrier, nullptr, NUM_THREADS + 1);
 
-    struct thread_data gray_data[NUM_THREADS], sobel_data[NUM_THREADS];
+    struct thread_data gray_data[NUM_THREADS], sobl_data[NUM_THREADS];
 
     for (int i = 0; i < NUM_THREADS; i++) {
 
@@ -100,22 +100,22 @@ int main(int argc, char const *argv[]) {
         gray_data[i].output = &gray_frame;
         gray_data[i].start = i * usr_vid_cols * (usr_vid_rows / NUM_THREADS);
 
-        if (i == NUM_THREADS - 1) { gray_data[i].stop = usr_vid_rows * usr_vid_cols - 1; }
-        else { gray_data[i].stop = (i + 1) * usr_vid_cols * (usr_vid_rows / NUM_THREADS); }
+        if (i == NUM_THREADS - 1) { gray_data[i].stop = usr_vid_cols * usr_vid_rows - 1; }
+        else { gray_data[i].stop = (i + 1) * usr_vid_cols * usr_vid_rows / NUM_THREADS; }
 
         // run the threads
-        pthread_create(&gray_threads[i], nullptr, &thread_grayscale_filter, (void *) &gray_data[i]);
+        pthread_create(&gray_threads[i], nullptr, &thread_gray_filter, (void *) &gray_data[i]);
 
-        sobel_data[i].input = &gray_frame;
-        sobel_data[i].output = &sobel_frame;
+        sobl_data[i].input = &gray_frame;
+        sobl_data[i].output = &sobl_frame;
 
-        if (i == 0) { sobel_data[i].start = 0; }
+        if (i == 0) { sobl_data[i].start = 0; }
         else { gray_data[i].start = i * (usr_vid_rows / NUM_THREADS) - 2; }
 
-        if (i == NUM_THREADS - 1) { sobel_data[i].stop = usr_vid_rows - 2; }
+        if (i == NUM_THREADS - 1) { sobl_data[i].stop = usr_vid_rows - 2; }
         else { gray_data[i].stop = (i + 1) * (usr_vid_rows / NUM_THREADS); }
 
-        pthread_create(&sobel_threads[i], nullptr, &thread_sobel_filter, (void *) &sobel_data[i]);
+        pthread_create(&sobl_threads[i], nullptr, &thread_sobl_filter, (void *) &sobl_data[i]);
     }
 
     // Loop through the image file
@@ -131,25 +131,28 @@ int main(int argc, char const *argv[]) {
 
         // Process the image
         pthread_barrier_wait(&gray_barrier);
-        pthread_barrier_wait(&sobel_barrier);
+        pthread_barrier_wait(&sobl_barrier);
 
         // Display the frame
-        imshow("sobel", sobel_frame);
+        imshow("sobel", sobl_frame);
 
         // Hold ESC to exit the video early
-        if ((char) waitKey(5) == 27) break;
+        if ((char) waitKey(2) == 27) {
+            done_flag = true;
+            break;
+        }
     }
 
     pthread_barrier_wait(&gray_barrier);
-    pthread_barrier_wait(&sobel_barrier);
+    pthread_barrier_wait(&sobl_barrier);
 
     for (int i = 0; i < NUM_THREADS; i++) {
-        pthread_join(sobel_threads[i], nullptr);
         pthread_join(gray_threads[i], nullptr);
+        pthread_join(sobl_threads[i], nullptr);
     }
 
     pthread_barrier_destroy(&gray_barrier);
-    pthread_barrier_destroy(&sobel_barrier);
+    pthread_barrier_destroy(&sobl_barrier);
 
     // Clean up
     usr_vid.release();
@@ -165,20 +168,20 @@ int main(int argc, char const *argv[]) {
  * @param image An image
  * @param grayscale A grayscale image
  */
-void *thread_grayscale_filter(void *threadArgs) {
+void *thread_gray_filter(void *threadArgs) {
 
     // init thread variables
     auto *thread_data = (struct thread_data *) threadArgs;
-    uchar *usr_img = thread_data->input->data;
-    uchar *gray_img = thread_data->output->data;
+    uchar *user_img_data = thread_data->input->data;
+    uchar *gray_img_data = thread_data->output->data;
     int start = thread_data->start;
     int stop = thread_data->stop;
 
     while (!done_flag) {
         for (int pos = start; pos < stop; pos++) {
-            gray_img[pos] = (uchar) ((usr_img[3 * pos + 0] * B_CONST) +
-                                     (usr_img[3 * pos + 1] * G_CONST) +
-                                     (usr_img[3 * pos + 2] * R_CONST));
+            gray_img_data[pos] = (uchar) ((user_img_data[3 * pos + 0] * B_CONST) +
+                                          (user_img_data[3 * pos + 1] * G_CONST) +
+                                          (user_img_data[3 * pos + 2] * R_CONST));
         }
         pthread_barrier_wait(&gray_barrier);
     }
@@ -188,21 +191,19 @@ void *thread_grayscale_filter(void *threadArgs) {
 /**
  * Takes a grayscale image and applies the sobel operator to the given image. The function will default to single
  * thread operation when threading variables are unspecified.
- * @param threadArgs - A struct with variables for the sobel_filter
+ * @param threadArgs - A struct with variables for the sobel filter
  */
-void *thread_sobel_filter(void *threadArgs) {
+void *thread_sobl_filter(void *threadArgs) {
 
     // init thread variables
     auto *thread_data = (struct thread_data *) threadArgs;
     int start = thread_data->start;
     int stop = thread_data->stop;
-    Mat *grayscale_img = thread_data->input;
-    Mat *sobel_img = thread_data->output;
 
     // init function variables
-    uchar *gray_data = grayscale_img->data;
-    uchar *sobel_data = sobel_img->data;
-    int numCols = grayscale_img->cols;
+    uchar *gray_data = thread_data->input->data;
+    uchar *sobl_data = thread_data->output->data;
+    int numCols = thread_data->input->cols;
     int Gx, Gy, G;
 
     // init NEON vectors
@@ -270,13 +271,11 @@ void *thread_sobel_filter(void *threadArgs) {
                 if (G > 255) { G = 255; }
 
                 // Write the pixel to the sobel image
-                sobel_data[sobel_img->cols * (row) + (col)] = G;
+                sobl_data[(numCols - 2) * (row) + (col)] = G;
             }
         }
-        pthread_barrier_wait(&gray_barrier);
-        pthread_barrier_wait(&sobel_barrier);
+        pthread_barrier_wait(&sobl_barrier);
     }
-
     // pthread return function
     pthread_exit(nullptr);
 }
