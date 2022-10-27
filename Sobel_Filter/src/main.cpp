@@ -19,7 +19,7 @@
 #include <cmath>
 #include <pthread.h>
 #include "../lib/pthread_barrier.h"
-#include <arm_neon.h>
+//#include <arm_neon.h>
 
 /***** Defines *****/
 #define G_CONST 0.2126
@@ -124,7 +124,7 @@ int main(int argc, char const *argv[]) {
         imshow("sobel", sobel_frame);
 
         // Hold ESC to exit the video early
-        key = waitKey(25);
+        key = waitKey(5);
         if (key == 27) {
             cont_flag = true;
             break;
@@ -153,11 +153,11 @@ int main(int argc, char const *argv[]) {
  */
 void grayscale_filter(Mat *image, Mat *grayscale) {
     uchar *image_data = image->data;
-    uchar *grayscale_data = grayscale->data;
+    uchar *gray_data = grayscale->data;
 
     // Apply the ITU-R (BT.709) grayscale algorithm
     for (int pos = 0; pos < image->rows * image->cols; pos++) {
-        grayscale_data[pos] = (uchar) (
+        gray_data[pos] = (uchar) (
                 (image_data[3 * pos + 0] * B_CONST) +
                 (image_data[3 * pos + 1] * G_CONST) +
                 (image_data[3 * pos + 2] * R_CONST)

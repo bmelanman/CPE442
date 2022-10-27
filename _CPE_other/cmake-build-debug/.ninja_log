@@ -1,0 +1,4 @@
+# ninja log v5
+1	55	1666884788239629964	CMakeFiles/J_Sobel.dir/lib/pthread_barrier.cpp.o	63936b0eee9bbf18
+4	856	1666884832788543383	CMakeFiles/J_Sobel.dir/src/main.cpp.o	c494522e9e7cfdc6
+856	903	1666884832838640959	J_Sobel	430744664c2875ee
