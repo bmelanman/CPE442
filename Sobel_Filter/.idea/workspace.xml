@@ -22,10 +22,6 @@
   <component name="ChangeListManager">
     <list default="true" id="f377c617-8cf1-4092-91fe-fd16bf49fc42" name="Changes" comment="updated">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Sobel_Filter.dir/src/main.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Sobel_Filter.dir/src/main.cpp.o" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/Sobel_Filter" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Sobel_Filter" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -170,7 +166,7 @@
       <workItem from="1666709900219" duration="427000" />
       <workItem from="1666710354424" duration="1518000" />
       <workItem from="1666711929906" duration="77000" />
-      <workItem from="1666712014963" duration="20000000" />
+      <workItem from="1666712014963" duration="21637000" />
     </task>
     <task id="LOCAL-00001" summary="migrated to CLion">
       <created>1666414107358</created>
