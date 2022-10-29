@@ -68,10 +68,11 @@ int main(int argc, char const *argv[]) {
         exit(-1);
     }
 
-    // calculate and display video length
+    // calculate and display video length and resolution
     VideoCapture usr_vid(usr_arg);
     int fps = (int) usr_vid.get(CAP_PROP_FPS);
     int frame_count = int(usr_vid.get(CAP_PROP_FRAME_COUNT));
+    cout << "Video resolution: " << usr_vid.get(CAP_PROP_FRAME_HEIGHT) << "x" << usr_vid.get(CAP_PROP_FRAME_WIDTH) << endl;
     cout << "Video length in seconds: " << (frame_count / fps) << "." << ((frame_count / fps) % 1) << endl;
     cout << "Number of threads: " << NUM_THREADS << endl;
 
