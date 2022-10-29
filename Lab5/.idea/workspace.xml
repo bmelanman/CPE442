@@ -21,37 +21,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f377c617-8cf1-4092-91fe-fd16bf49fc42" name="Changes" comment="updated">
-      <change afterPath="$PROJECT_DIR$/../Lab4/cmake-build-debug/.cmake/api/v1/reply/cache-v2-86a92a878fbb7f4b0b63.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lab4/cmake-build-debug/.cmake/api/v1/reply/cmakeFiles-v1-b12985733a9314889105.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lab4/cmake-build-debug/.cmake/api/v1/reply/codemodel-v2-81ff0f312a613dbaed5d.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lab4/cmake-build-debug/.cmake/api/v1/reply/index-2022-10-29T17-09-18-0380.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lab4/cmake-build-debug/CMakeCache 2.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Lab4/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab4/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lab4/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab4/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lab4/cmake-build-debug/.cmake/api/v1/reply/cache-v2-9d84a3cd107fec3e16c4.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lab4/cmake-build-debug/.cmake/api/v1/reply/cmakeFiles-v1-af64dfaa0a79ba69cd01.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lab4/cmake-build-debug/.cmake/api/v1/reply/codemodel-v2-e17a3192a60e784c5fcd.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lab4/cmake-build-debug/.cmake/api/v1/reply/index-2022-10-29T16-54-13-0555.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lab4/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab4/cmake-build-debug/.ninja_deps" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lab4/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab4/cmake-build-debug/.ninja_log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lab4/cmake-build-debug/CMakeCache.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab4/cmake-build-debug/CMakeCache.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lab4/cmake-build-debug/CMakeFiles/3.23.2/CMakeDetermineCompilerABI_C.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab4/cmake-build-debug/CMakeFiles/3.23.2/CMakeDetermineCompilerABI_C.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lab4/cmake-build-debug/CMakeFiles/3.23.2/CMakeDetermineCompilerABI_CXX.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab4/cmake-build-debug/CMakeFiles/3.23.2/CMakeDetermineCompilerABI_CXX.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lab4/cmake-build-debug/CMakeFiles/CMakeOutput.log" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab4/cmake-build-debug/CMakeFiles/CMakeOutput.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lab4/cmake-build-debug/CMakeFiles/Lab4.dir/main.cpp.o" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lab4/cmake-build-debug/CMakeFiles/Lab4.dir/pthread_barrier.cpp.o" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lab4/cmake-build-debug/CMakeFiles/Sobel_Filter.dir/main.cpp.o" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lab4/cmake-build-debug/CMakeFiles/Sobel_Filter.dir/pthread_barrier.cpp.o" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lab4/cmake-build-debug/CMakeFiles/TargetDirectories.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab4/cmake-build-debug/CMakeFiles/TargetDirectories.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lab4/cmake-build-debug/CMakeFiles/clion-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab4/cmake-build-debug/CMakeFiles/clion-log.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lab4/cmake-build-debug/CMakeFiles/rules.ninja" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab4/cmake-build-debug/CMakeFiles/rules.ninja" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lab4/cmake-build-debug/build.ninja" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab4/cmake-build-debug/build.ninja" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lab4/cmake-build-debug/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab4/cmake-build-debug/cmake_install.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lab4/main" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lab4/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab4/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lab4/main.o" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lab4/pthread_barrier.o" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/toolchain/toolchain-rasppi.cmake" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -197,7 +169,7 @@
       <workItem from="1666710354424" duration="1518000" />
       <workItem from="1666711929906" duration="77000" />
       <workItem from="1666712014963" duration="40730000" />
-      <workItem from="1667059926814" duration="2764000" />
+      <workItem from="1667059926814" duration="2803000" />
     </task>
     <task id="LOCAL-00001" summary="migrated to CLion">
       <created>1666414107358</created>
