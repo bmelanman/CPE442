@@ -49,8 +49,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "/Users/brycemelander/Documents/GitHub/CPE442/Lab4New/cmake-build-debug",
-		"source" : "/Users/brycemelander/Documents/GitHub/CPE442/Lab4New"
+		"build" : "/Users/brycemelander/Documents/GitHub/CPE442/Lab4/cmake-build-debug",
+		"source" : "/Users/brycemelander/Documents/GitHub/CPE442/Lab4"
 	},
 	"version" : 
 	{

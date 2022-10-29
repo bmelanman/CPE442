@@ -55,7 +55,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/Users/brycemelander/Documents/GitHub/CPE442/Lab4New/cmake-build-debug"
+			"value" : "/Users/brycemelander/Documents/GitHub/CPE442/Lab4/cmake-build-debug"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -515,7 +515,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/Users/brycemelander/Documents/GitHub/CPE442/Lab4New"
+			"value" : "/Users/brycemelander/Documents/GitHub/CPE442/Lab4"
 		},
 		{
 			"name" : "CMAKE_INSTALL_NAME_TOOL",
@@ -1099,7 +1099,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/Users/brycemelander/Documents/GitHub/CPE442/Lab4New/cmake-build-debug"
+			"value" : "/Users/brycemelander/Documents/GitHub/CPE442/Lab4/cmake-build-debug"
 		},
 		{
 			"name" : "Lab4_IS_TOP_LEVEL",
@@ -1123,7 +1123,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/Users/brycemelander/Documents/GitHub/CPE442/Lab4New"
+			"value" : "/Users/brycemelander/Documents/GitHub/CPE442/Lab4"
 		},
 		{
 			"name" : "OpenCV_DIR",
@@ -1136,42 +1136,6 @@
 			],
 			"type" : "PATH",
 			"value" : "/opt/homebrew/lib/cmake/opencv4"
-		},
-		{
-			"name" : "Sobel_Filter_BINARY_DIR",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Value Computed by CMake"
-				}
-			],
-			"type" : "STATIC",
-			"value" : "/Users/brycemelander/Documents/GitHub/CPE442/Lab4New/cmake-build-debug"
-		},
-		{
-			"name" : "Sobel_Filter_IS_TOP_LEVEL",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Value Computed by CMake"
-				}
-			],
-			"type" : "STATIC",
-			"value" : "ON"
-		},
-		{
-			"name" : "Sobel_Filter_SOURCE_DIR",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Value Computed by CMake"
-				}
-			],
-			"type" : "STATIC",
-			"value" : "/Users/brycemelander/Documents/GitHub/CPE442/Lab4New"
 		}
 	],
 	"kind" : "cache",

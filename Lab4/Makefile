@@ -16,7 +16,7 @@
 
   all: clean lib src compile
 
-  time: clean lib src compile time
+  time: clean lib src compile timer
 
   default: clean_target src compile
 
@@ -35,7 +35,7 @@
   run: $(TARGET)
 	./$(TARGET) "../Media/small_frog.mp4"
 
-  time: $(TARGET)
+  timer:
 	time ./$(TARGET) "../Media/small_frog.mp4"
 
   clean_target:
