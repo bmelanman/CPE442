@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakePresetLoader">{
+  &quot;useNewFormat&quot;: true
+}</component>
+  <component name="CMakeReloadState">
+    <option name="reloaded" value="true" />
+  </component>
+  <component name="CMakeRunConfigurationManager">
+    <generated>
+      <config projectName="Lab4" targetName="Lab4" />
+    </generated>
+  </component>
+  <component name="CMakeSettings" AUTO_RELOAD="true">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" ENABLED="true" CONFIG_NAME="Debug" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="3efddf41-d55a-44f0-b066-ce475a326838" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../Lab4 New/cmake-build-debug/CMakeFiles/clion-log.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Lab4/pthread_barrier.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Lab4/pthread_barrier.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/Lab4 New.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/cache-v2-9d84a3cd107fec3e16c4.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/cmakeFiles-v1-af64dfaa0a79ba69cd01.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/codemodel-v2-e17a3192a60e784c5fcd.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/index-2022-10-29T16-54-13-0555.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/target-Lab4-Debug-02582ede835867b7c708.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Lab4.dir/main.cpp.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Lab4.dir/pthread_barrier.cpp.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Sobel_Filter.dir/main.cpp.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Sobel_Filter.dir/pthread_barrier.cpp.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/Lab4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmake-build-debug/Sobel_Filter" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main.o" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pthread_barrier.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pthread_barrier.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pthread_barrier.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Lab4/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab4/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Lab4/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab4/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Lab4/main" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Lab4/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab4/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Lab4/main.dSYM/Contents/Info.plist" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Lab4/main.dSYM/Contents/Resources/DWARF/main" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel_Filter/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Sobel_Filter/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel_Filter/cmake-build-debug/CMakeFiles/Sobel_Filter.dir/src/main.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/../Sobel_Filter/cmake-build-debug/CMakeFiles/Sobel_Filter.dir/src/main.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel_Filter/cmake-build-debug/Sobel_Filter" beforeDir="false" afterPath="$PROJECT_DIR$/../Sobel_Filter/cmake-build-debug/Sobel_Filter" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel_Filter/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/../Sobel_Filter/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel_Filter/src/main" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel_Filter/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Sobel_Filter/src/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel_Filter/src/main.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel_Filter/src/pthread_barrier.o" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectApplicationVersion">
+    <option name="ide" value="CLion" />
+    <option name="majorVersion" value="2022" />
+    <option name="minorVersion" value="2.4" />
+  </component>
+  <component name="ProjectId" id="2Gok1yuoVw6F9kUvbrXHkmlCisu" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "WebServerToolWindowFactoryState": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "last_opened_file_path": "/Users/brycemelander/Documents/GitHub/CPE442/Lab4New"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Makefile Target.time">
+    <configuration name="Lab4" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="small_frog.mp4" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" WORKING_DIR="file://$PROJECT_DIR$/../Media" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Lab4" TARGET_NAME="Lab4" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Lab4" RUN_TARGET_NAME="Lab4">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="all" type="MAKEFILE_TARGET_RUN_CONFIGURATION" factoryName="Makefile" temporary="true">
+      <makefile filename="$PROJECT_DIR$/Makefile" target="all" workingDirectory="" arguments="">
+        <envs />
+      </makefile>
+      <method v="2" />
+    </configuration>
+    <configuration name="run" type="MAKEFILE_TARGET_RUN_CONFIGURATION" factoryName="Makefile" temporary="true">
+      <makefile filename="$PROJECT_DIR$/Makefile" target="run" workingDirectory="" arguments="">
+        <envs />
+      </makefile>
+      <method v="2" />
+    </configuration>
+    <configuration name="time" type="MAKEFILE_TARGET_RUN_CONFIGURATION" factoryName="Makefile" temporary="true">
+      <makefile filename="$PROJECT_DIR$/Makefile" target="time" workingDirectory="" arguments="">
+        <envs />
+      </makefile>
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="CMake Application.Lab4" />
+      <item itemvalue="Makefile Target.all" />
+      <item itemvalue="Makefile Target.run" />
+      <item itemvalue="Makefile Target.time" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Makefile Target.time" />
+        <item itemvalue="Makefile Target.run" />
+        <item itemvalue="Makefile Target.all" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="3efddf41-d55a-44f0-b066-ce475a326838" name="Changes" comment="" />
+      <created>1667062112403</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1667062112403</updated>
+      <workItem from="1667062113633" duration="85000" />
+      <workItem from="1667062216014" duration="251000" />
+      <workItem from="1667062473077" duration="721000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+</project>

@@ -8,20 +8,38 @@
   #  -g    			adds debugging information to the executable file
   #  -Wall 			turns on most, but not all, compiler warnings
   #  -std=c++11 	implements all of the major features of the C++11 standard
-  CFLAGS  = $(PKG_MNG) -std=c++11 -g -Wall -O3
+  CFLAGS  = -std=c++11 -g -Wall -O0
 
-  # Target build executable:
+  # Target executables:
   TARGET = main
+  LIB = pthread_barrier
 
-  all: clean compile run
+  all: clean lib src compile
 
-  compile: $(TARGET).cpp
-    # g++ main.cpp -o main `pkg-config --cflags --libs opencv4` -std=c++11 -g -Wall
-	$(CC) $(TARGET).cpp -o $(TARGET) $(CFLAGS)
+  time: clean lib src compile time
+
+  default: clean_target src compile
+
+  pi: clean
+	$(CC) -o $(TARGET) $(TARGET).cpp $(PKG_MNG) $(CFLAGS)
+
+  lib: $(LIB).cpp
+	$(CC) -c -o $(LIB).o $(LIB).cpp $(CFLAGS)
+
+  src: $(TARGET).cpp
+	$(CC) -c -o $(TARGET).o $(TARGET).cpp `pkg-config --cflags opencv4` $(CFLAGS)
+
+  compile: $(TARGET).o $(LIB).o
+	$(CC) -o $(TARGET) $(TARGET).o $(LIB).o $(PKG_MNG) $(CFLAGS)
 
   run: $(TARGET)
-	./$(TARGET) "../media/small_frog.mp4"
+	./$(TARGET) "../Media/small_frog.mp4"
+
+  time: $(TARGET)
+	time ./$(TARGET) "../Media/small_frog.mp4"
+
+  clean_target:
+	$(RM) $(TARGET) $(TARGET).o
 
   clean:
-	$(RM) $(TARGET)
-
+	$(RM) $(TARGET) $(TARGET).o $(LIB).o

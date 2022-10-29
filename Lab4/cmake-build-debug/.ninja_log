@@ -1,0 +1,9 @@
+# ninja log v5
+1	33	1667062230675044366	CMakeFiles/Sobel_Filter.dir/pthread_barrier.cpp.o	a8f119085c0f71ba
+1	825	1667062231464079624	CMakeFiles/Sobel_Filter.dir/main.cpp.o	cdf4af0ab628c4d6
+826	875	1667062231517762639	Sobel_Filter	856c9ada0401ef9b
+2	31	1667062482728164461	CMakeFiles/Lab4.dir/pthread_barrier.cpp.o	a825fb5884436c93
+1	797	1667062483490721148	CMakeFiles/Lab4.dir/main.cpp.o	902d29efd59e51e7
+798	843	1667062483540385850	Lab4	ac3b9ea6cb057c7b
+4	947	1667062929938288515	CMakeFiles/Lab4.dir/main.cpp.o	902d29efd59e51e7
+947	998	1667062929993758312	Lab4	ac3b9ea6cb057c7b
