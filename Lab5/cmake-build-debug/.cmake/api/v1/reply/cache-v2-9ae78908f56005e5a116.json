@@ -55,7 +55,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/Users/brycemelander/Documents/GitHub/CPE442/Sobel_Filter/cmake-build-debug"
+			"value" : "/Users/brycemelander/Documents/GitHub/CPE442/Lab5/cmake-build-debug"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -531,7 +531,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/Users/brycemelander/Documents/GitHub/CPE442/Sobel_Filter"
+			"value" : "/Users/brycemelander/Documents/GitHub/CPE442/Lab5"
 		},
 		{
 			"name" : "CMAKE_INSTALL_NAME_TOOL",
@@ -815,7 +815,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "Sobel_Filter"
+			"value" : "Lab5"
 		},
 		{
 			"name" : "CMAKE_RANLIB",
@@ -1110,6 +1110,42 @@
 			"value" : "[/opt/homebrew/Cellar/opencv/4.6.0_1][v4.6.0()]"
 		},
 		{
+			"name" : "Lab5_BINARY_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "/Users/brycemelander/Documents/GitHub/CPE442/Lab5/cmake-build-debug"
+		},
+		{
+			"name" : "Lab5_IS_TOP_LEVEL",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "ON"
+		},
+		{
+			"name" : "Lab5_SOURCE_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "/Users/brycemelander/Documents/GitHub/CPE442/Lab5"
+		},
+		{
 			"name" : "OpenCV_DIR",
 			"properties" : 
 			[
@@ -1131,7 +1167,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/Users/brycemelander/Documents/GitHub/CPE442/Sobel_Filter/cmake-build-debug"
+			"value" : "/Users/brycemelander/Documents/GitHub/CPE442/Lab5/cmake-build-debug"
 		},
 		{
 			"name" : "Sobel_Filter_IS_TOP_LEVEL",
@@ -1155,7 +1191,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/Users/brycemelander/Documents/GitHub/CPE442/Sobel_Filter"
+			"value" : "/Users/brycemelander/Documents/GitHub/CPE442/Lab5"
 		}
 	],
 	"kind" : "cache",

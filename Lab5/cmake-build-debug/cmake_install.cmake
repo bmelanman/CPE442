@@ -1,4 +1,4 @@
-# Install script for directory: /Users/brycemelander/Documents/GitHub/CPE442/Sobel_Filter
+# Install script for directory: /Users/brycemelander/Documents/GitHub/CPE442/Lab5
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/Users/brycemelander/Documents/GitHub/CPE442/Sobel_Filter/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/Users/brycemelander/Documents/GitHub/CPE442/Lab5/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

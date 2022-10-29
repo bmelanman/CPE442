@@ -1,4 +1,4 @@
-/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_BUILD_TYPE=Debug -S /Users/brycemelander/Documents/GitHub/CPE442/Sobel_Filter -B /Users/brycemelander/Documents/GitHub/CPE442/Sobel_Filter/cmake-build-debug
+/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_BUILD_TYPE=Debug -S /Users/brycemelander/Documents/GitHub/CPE442/Lab5 -B /Users/brycemelander/Documents/GitHub/CPE442/Lab5/cmake-build-debug
 -- Configuring done
 -- Generating done
--- Build files have been written to: /Users/brycemelander/Documents/GitHub/CPE442/Sobel_Filter/cmake-build-debug
+-- Build files have been written to: /Users/brycemelander/Documents/GitHub/CPE442/Lab5/cmake-build-debug

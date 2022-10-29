@@ -54,16 +54,16 @@ RM = /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/brycemelander/Documents/GitHub/CPE442/Sobel_Filter
+CMAKE_SOURCE_DIR = /Users/brycemelander/Documents/GitHub/CPE442/Lab5
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/brycemelander/Documents/GitHub/CPE442/Sobel_Filter/cmake-build-debug
+CMAKE_BINARY_DIR = /Users/brycemelander/Documents/GitHub/CPE442/Lab5/cmake-build-debug
 
 #=============================================================================
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/Sobel_Filter.dir/all
+all: CMakeFiles/Lab5.dir/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
@@ -71,34 +71,34 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/Sobel_Filter.dir/clean
+clean: CMakeFiles/Lab5.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/Sobel_Filter.dir
+# Target rules for target CMakeFiles/Lab5.dir
 
 # All Build rule for target.
-CMakeFiles/Sobel_Filter.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Sobel_Filter.dir/build.make CMakeFiles/Sobel_Filter.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Sobel_Filter.dir/build.make CMakeFiles/Sobel_Filter.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/brycemelander/Documents/GitHub/CPE442/Sobel_Filter/cmake-build-debug/CMakeFiles --progress-num=1,2,3 "Built target Sobel_Filter"
-.PHONY : CMakeFiles/Sobel_Filter.dir/all
+CMakeFiles/Lab5.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Lab5.dir/build.make CMakeFiles/Lab5.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Lab5.dir/build.make CMakeFiles/Lab5.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/brycemelander/Documents/GitHub/CPE442/Lab5/cmake-build-debug/CMakeFiles --progress-num=1,2,3 "Built target Lab5"
+.PHONY : CMakeFiles/Lab5.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/Sobel_Filter.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/brycemelander/Documents/GitHub/CPE442/Sobel_Filter/cmake-build-debug/CMakeFiles 3
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/Sobel_Filter.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/brycemelander/Documents/GitHub/CPE442/Sobel_Filter/cmake-build-debug/CMakeFiles 0
-.PHONY : CMakeFiles/Sobel_Filter.dir/rule
+CMakeFiles/Lab5.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/brycemelander/Documents/GitHub/CPE442/Lab5/cmake-build-debug/CMakeFiles 3
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/Lab5.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/brycemelander/Documents/GitHub/CPE442/Lab5/cmake-build-debug/CMakeFiles 0
+.PHONY : CMakeFiles/Lab5.dir/rule
 
 # Convenience name for target.
-Sobel_Filter: CMakeFiles/Sobel_Filter.dir/rule
-.PHONY : Sobel_Filter
+Lab5: CMakeFiles/Lab5.dir/rule
+.PHONY : Lab5
 
 # clean rule for target.
-CMakeFiles/Sobel_Filter.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Sobel_Filter.dir/build.make CMakeFiles/Sobel_Filter.dir/clean
-.PHONY : CMakeFiles/Sobel_Filter.dir/clean
+CMakeFiles/Lab5.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Lab5.dir/build.make CMakeFiles/Lab5.dir/clean
+.PHONY : CMakeFiles/Lab5.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

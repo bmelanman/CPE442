@@ -176,8 +176,8 @@
 	"kind" : "cmakeFiles",
 	"paths" : 
 	{
-		"build" : "/Users/brycemelander/Documents/GitHub/CPE442/Sobel_Filter/cmake-build-debug",
-		"source" : "/Users/brycemelander/Documents/GitHub/CPE442/Sobel_Filter"
+		"build" : "/Users/brycemelander/Documents/GitHub/CPE442/Lab5/cmake-build-debug",
+		"source" : "/Users/brycemelander/Documents/GitHub/CPE442/Lab5"
 	},
 	"version" : 
 	{

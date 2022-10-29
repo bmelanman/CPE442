@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="CPP_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/_CPE_other/cmake-build-debug/CMakeFiles/3.23.2/CompilerIdC/tmp" />
+      <excludeFolder url="file://$MODULE_DIR$/_CPE_other/cmake-build-debug/CMakeFiles/3.23.2/CompilerIdCXX/tmp" />
+      <excludeFolder url="file://$MODULE_DIR$/_CPE_other/cmake-build-debug/CMakeFiles/_CPE_other.dir" />
+      <excludeFolder url="file://$MODULE_DIR$/_CPE_other/cmake-build-debug/CMakeFiles/CMakeTmp" />
+      <excludeFolder url="file://$MODULE_DIR$/_CPE_other/cmake-build-debug/CMakeFiles/Sobel_Filter.dir" />
+      <excludeFolder url="file://$MODULE_DIR$/Lab4/cmake-build-debug/CMakeFiles/3.23.2/CompilerIdC/tmp" />
+      <excludeFolder url="file://$MODULE_DIR$/Lab4/cmake-build-debug/CMakeFiles/3.23.2/CompilerIdCXX/tmp" />
+      <excludeFolder url="file://$MODULE_DIR$/Lab4/cmake-build-debug/CMakeFiles/CMakeTmp" />
+      <excludeFolder url="file://$MODULE_DIR$/Lab4/cmake-build-debug/CMakeFiles/Lab4.dir" />
+      <excludeFolder url="file://$MODULE_DIR$/Lab5/cmake-build-debug/CMakeFiles/3.23.2/CompilerIdC/tmp" />
+      <excludeFolder url="file://$MODULE_DIR$/Lab5/cmake-build-debug/CMakeFiles/3.23.2/CompilerIdCXX/tmp" />
+      <excludeFolder url="file://$MODULE_DIR$/Lab5/cmake-build-debug/CMakeFiles/Lab5.dir/lib" />
+      <excludeFolder url="file://$MODULE_DIR$/Lab5/cmake-build-debug/CMakeFiles/Lab5.dir/src" />
+      <excludeFolder url="file://$MODULE_DIR$/Lab5/cmake-build-debug/CMakeFiles/Sobel_Filter.dir/lib" />
+      <excludeFolder url="file://$MODULE_DIR$/Lab5/cmake-build-debug/CMakeFiles/Sobel_Filter.dir/src" />
+      <excludeFolder url="file://$MODULE_DIR$/Lab5/cmake-build-debug/CMakeFiles/CMakeTmp" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>

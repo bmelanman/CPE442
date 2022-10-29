@@ -2,7 +2,7 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "Sobel_Filter"
+			"path" : "Lab5"
 		}
 	],
 	"backtrace" : 1,
@@ -94,7 +94,7 @@
 			]
 		}
 	],
-	"id" : "Sobel_Filter::@6890427a1f51a3e7e1df",
+	"id" : "Lab5::@6890427a1f51a3e7e1df",
 	"link" : 
 	{
 		"commandFragments" : 
@@ -394,8 +394,8 @@
 		],
 		"language" : "CXX"
 	},
-	"name" : "Sobel_Filter",
-	"nameOnDisk" : "Sobel_Filter",
+	"name" : "Lab5",
+	"nameOnDisk" : "Lab5",
 	"paths" : 
 	{
 		"build" : ".",

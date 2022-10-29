@@ -53,10 +53,10 @@ RM = /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/brycemelander/Documents/GitHub/CPE442/Sobel_Filter
+CMAKE_SOURCE_DIR = /Users/brycemelander/Documents/GitHub/CPE442/Lab5
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/brycemelander/Documents/GitHub/CPE442/Sobel_Filter/cmake-build-debug
+CMAKE_BINARY_DIR = /Users/brycemelander/Documents/GitHub/CPE442/Lab5/cmake-build-debug
 
 # Include any dependencies generated for this target.
 include CMakeFiles/Sobel_Filter.dir/depend.make
@@ -72,30 +72,30 @@ include CMakeFiles/Sobel_Filter.dir/flags.make
 CMakeFiles/Sobel_Filter.dir/src/main.cpp.o: CMakeFiles/Sobel_Filter.dir/flags.make
 CMakeFiles/Sobel_Filter.dir/src/main.cpp.o: ../src/main.cpp
 CMakeFiles/Sobel_Filter.dir/src/main.cpp.o: CMakeFiles/Sobel_Filter.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/brycemelander/Documents/GitHub/CPE442/Sobel_Filter/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/Sobel_Filter.dir/src/main.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Sobel_Filter.dir/src/main.cpp.o -MF CMakeFiles/Sobel_Filter.dir/src/main.cpp.o.d -o CMakeFiles/Sobel_Filter.dir/src/main.cpp.o -c /Users/brycemelander/Documents/GitHub/CPE442/Sobel_Filter/src/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/brycemelander/Documents/GitHub/CPE442/Lab5/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/Sobel_Filter.dir/src/main.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Sobel_Filter.dir/src/main.cpp.o -MF CMakeFiles/Sobel_Filter.dir/src/main.cpp.o.d -o CMakeFiles/Sobel_Filter.dir/src/main.cpp.o -c /Users/brycemelander/Documents/GitHub/CPE442/Lab5/src/main.cpp
 
 CMakeFiles/Sobel_Filter.dir/src/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Sobel_Filter.dir/src/main.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/brycemelander/Documents/GitHub/CPE442/Sobel_Filter/src/main.cpp > CMakeFiles/Sobel_Filter.dir/src/main.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/brycemelander/Documents/GitHub/CPE442/Lab5/src/main.cpp > CMakeFiles/Sobel_Filter.dir/src/main.cpp.i
 
 CMakeFiles/Sobel_Filter.dir/src/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Sobel_Filter.dir/src/main.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/brycemelander/Documents/GitHub/CPE442/Sobel_Filter/src/main.cpp -o CMakeFiles/Sobel_Filter.dir/src/main.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/brycemelander/Documents/GitHub/CPE442/Lab5/src/main.cpp -o CMakeFiles/Sobel_Filter.dir/src/main.cpp.s
 
 CMakeFiles/Sobel_Filter.dir/lib/pthread_barrier.cpp.o: CMakeFiles/Sobel_Filter.dir/flags.make
 CMakeFiles/Sobel_Filter.dir/lib/pthread_barrier.cpp.o: ../lib/pthread_barrier.cpp
 CMakeFiles/Sobel_Filter.dir/lib/pthread_barrier.cpp.o: CMakeFiles/Sobel_Filter.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/brycemelander/Documents/GitHub/CPE442/Sobel_Filter/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Sobel_Filter.dir/lib/pthread_barrier.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Sobel_Filter.dir/lib/pthread_barrier.cpp.o -MF CMakeFiles/Sobel_Filter.dir/lib/pthread_barrier.cpp.o.d -o CMakeFiles/Sobel_Filter.dir/lib/pthread_barrier.cpp.o -c /Users/brycemelander/Documents/GitHub/CPE442/Sobel_Filter/lib/pthread_barrier.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/brycemelander/Documents/GitHub/CPE442/Lab5/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Sobel_Filter.dir/lib/pthread_barrier.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Sobel_Filter.dir/lib/pthread_barrier.cpp.o -MF CMakeFiles/Sobel_Filter.dir/lib/pthread_barrier.cpp.o.d -o CMakeFiles/Sobel_Filter.dir/lib/pthread_barrier.cpp.o -c /Users/brycemelander/Documents/GitHub/CPE442/Lab5/lib/pthread_barrier.cpp
 
 CMakeFiles/Sobel_Filter.dir/lib/pthread_barrier.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Sobel_Filter.dir/lib/pthread_barrier.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/brycemelander/Documents/GitHub/CPE442/Sobel_Filter/lib/pthread_barrier.cpp > CMakeFiles/Sobel_Filter.dir/lib/pthread_barrier.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/brycemelander/Documents/GitHub/CPE442/Lab5/lib/pthread_barrier.cpp > CMakeFiles/Sobel_Filter.dir/lib/pthread_barrier.cpp.i
 
 CMakeFiles/Sobel_Filter.dir/lib/pthread_barrier.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Sobel_Filter.dir/lib/pthread_barrier.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/brycemelander/Documents/GitHub/CPE442/Sobel_Filter/lib/pthread_barrier.cpp -o CMakeFiles/Sobel_Filter.dir/lib/pthread_barrier.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/brycemelander/Documents/GitHub/CPE442/Lab5/lib/pthread_barrier.cpp -o CMakeFiles/Sobel_Filter.dir/lib/pthread_barrier.cpp.s
 
 # Object files for target Sobel_Filter
 Sobel_Filter_OBJECTS = \
@@ -165,7 +165,7 @@ Sobel_Filter: /opt/homebrew/lib/libopencv_photo.4.6.0.dylib
 Sobel_Filter: /opt/homebrew/lib/libopencv_imgproc.4.6.0.dylib
 Sobel_Filter: /opt/homebrew/lib/libopencv_core.4.6.0.dylib
 Sobel_Filter: CMakeFiles/Sobel_Filter.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/brycemelander/Documents/GitHub/CPE442/Sobel_Filter/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable Sobel_Filter"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/brycemelander/Documents/GitHub/CPE442/Lab5/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable Sobel_Filter"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Sobel_Filter.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -177,6 +177,6 @@ CMakeFiles/Sobel_Filter.dir/clean:
 .PHONY : CMakeFiles/Sobel_Filter.dir/clean
 
 CMakeFiles/Sobel_Filter.dir/depend:
-	cd /Users/brycemelander/Documents/GitHub/CPE442/Sobel_Filter/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/brycemelander/Documents/GitHub/CPE442/Sobel_Filter /Users/brycemelander/Documents/GitHub/CPE442/Sobel_Filter /Users/brycemelander/Documents/GitHub/CPE442/Sobel_Filter/cmake-build-debug /Users/brycemelander/Documents/GitHub/CPE442/Sobel_Filter/cmake-build-debug /Users/brycemelander/Documents/GitHub/CPE442/Sobel_Filter/cmake-build-debug/CMakeFiles/Sobel_Filter.dir/DependInfo.cmake --color=$(COLOR)
+	cd /Users/brycemelander/Documents/GitHub/CPE442/Lab5/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/brycemelander/Documents/GitHub/CPE442/Lab5 /Users/brycemelander/Documents/GitHub/CPE442/Lab5 /Users/brycemelander/Documents/GitHub/CPE442/Lab5/cmake-build-debug /Users/brycemelander/Documents/GitHub/CPE442/Lab5/cmake-build-debug /Users/brycemelander/Documents/GitHub/CPE442/Lab5/cmake-build-debug/CMakeFiles/Sobel_Filter.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/Sobel_Filter.dir/depend
 

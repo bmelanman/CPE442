@@ -53,5 +53,5 @@ set(CMAKE_MAKEFILE_PRODUCTS
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
-  "CMakeFiles/Sobel_Filter.dir/DependInfo.cmake"
+  "CMakeFiles/Lab5.dir/DependInfo.cmake"
   )

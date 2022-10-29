@@ -1,5 +1,8 @@
 *.o
 *.make
+*.xml -f
 *.cmake
-*.idea
-**/cmake-build-debug
+*.dir
+.idea/**
+**/cmake-build-*/**
+/_CPE_other

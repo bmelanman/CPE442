@@ -57,10 +57,10 @@ RM = /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/brycemelander/Documents/GitHub/CPE442/Sobel_Filter
+CMAKE_SOURCE_DIR = /Users/brycemelander/Documents/GitHub/CPE442/Lab5
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/brycemelander/Documents/GitHub/CPE442/Sobel_Filter/cmake-build-debug
+CMAKE_BINARY_DIR = /Users/brycemelander/Documents/GitHub/CPE442/Lab5/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,9 +87,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/brycemelander/Documents/GitHub/CPE442/Sobel_Filter/cmake-build-debug/CMakeFiles /Users/brycemelander/Documents/GitHub/CPE442/Sobel_Filter/cmake-build-debug//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/brycemelander/Documents/GitHub/CPE442/Lab5/cmake-build-debug/CMakeFiles /Users/brycemelander/Documents/GitHub/CPE442/Lab5/cmake-build-debug//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/brycemelander/Documents/GitHub/CPE442/Sobel_Filter/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/brycemelander/Documents/GitHub/CPE442/Lab5/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -117,24 +117,24 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named Sobel_Filter
+# Target rules for targets named Lab5
 
 # Build rule for target.
-Sobel_Filter: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Sobel_Filter
-.PHONY : Sobel_Filter
+Lab5: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Lab5
+.PHONY : Lab5
 
 # fast build rule for target.
-Sobel_Filter/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Sobel_Filter.dir/build.make CMakeFiles/Sobel_Filter.dir/build
-.PHONY : Sobel_Filter/fast
+Lab5/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Lab5.dir/build.make CMakeFiles/Lab5.dir/build
+.PHONY : Lab5/fast
 
 lib/pthread_barrier.o: lib/pthread_barrier.cpp.o
 .PHONY : lib/pthread_barrier.o
 
 # target to build an object file
 lib/pthread_barrier.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Sobel_Filter.dir/build.make CMakeFiles/Sobel_Filter.dir/lib/pthread_barrier.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Lab5.dir/build.make CMakeFiles/Lab5.dir/lib/pthread_barrier.cpp.o
 .PHONY : lib/pthread_barrier.cpp.o
 
 lib/pthread_barrier.i: lib/pthread_barrier.cpp.i
@@ -142,7 +142,7 @@ lib/pthread_barrier.i: lib/pthread_barrier.cpp.i
 
 # target to preprocess a source file
 lib/pthread_barrier.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Sobel_Filter.dir/build.make CMakeFiles/Sobel_Filter.dir/lib/pthread_barrier.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Lab5.dir/build.make CMakeFiles/Lab5.dir/lib/pthread_barrier.cpp.i
 .PHONY : lib/pthread_barrier.cpp.i
 
 lib/pthread_barrier.s: lib/pthread_barrier.cpp.s
@@ -150,7 +150,7 @@ lib/pthread_barrier.s: lib/pthread_barrier.cpp.s
 
 # target to generate assembly for a file
 lib/pthread_barrier.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Sobel_Filter.dir/build.make CMakeFiles/Sobel_Filter.dir/lib/pthread_barrier.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Lab5.dir/build.make CMakeFiles/Lab5.dir/lib/pthread_barrier.cpp.s
 .PHONY : lib/pthread_barrier.cpp.s
 
 src/main.o: src/main.cpp.o
@@ -158,7 +158,7 @@ src/main.o: src/main.cpp.o
 
 # target to build an object file
 src/main.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Sobel_Filter.dir/build.make CMakeFiles/Sobel_Filter.dir/src/main.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Lab5.dir/build.make CMakeFiles/Lab5.dir/src/main.cpp.o
 .PHONY : src/main.cpp.o
 
 src/main.i: src/main.cpp.i
@@ -166,7 +166,7 @@ src/main.i: src/main.cpp.i
 
 # target to preprocess a source file
 src/main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Sobel_Filter.dir/build.make CMakeFiles/Sobel_Filter.dir/src/main.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Lab5.dir/build.make CMakeFiles/Lab5.dir/src/main.cpp.i
 .PHONY : src/main.cpp.i
 
 src/main.s: src/main.cpp.s
@@ -174,7 +174,7 @@ src/main.s: src/main.cpp.s
 
 # target to generate assembly for a file
 src/main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Sobel_Filter.dir/build.make CMakeFiles/Sobel_Filter.dir/src/main.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Lab5.dir/build.make CMakeFiles/Lab5.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
 # Help Target
@@ -185,7 +185,7 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... Sobel_Filter"
+	@echo "... Lab5"
 	@echo "... lib/pthread_barrier.o"
 	@echo "... lib/pthread_barrier.i"
 	@echo "... lib/pthread_barrier.s"
