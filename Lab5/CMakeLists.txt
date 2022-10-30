@@ -11,14 +11,14 @@ add_compile_options(-pthread -O0)
 find_package(OpenCV REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIRS})
 
-# Declare the exe and link the OpenCV libs to it
-
 if (APPLE)
     add_executable(Lab5 src/main.cpp lib/pthread_barrier.cpp lib/pthread_barrier.h)
+    add_compile_options(-Wall -mavx -mfma)
 else ()
     add_executable(Lab5 src/main.cpp)
 endif ()
 
+# Declare the target and link the OpenCV libs to it
 target_link_libraries(Lab5 ${OpenCV_LIBS})
 
 set(CMAKE_ARGS "small_frog.mp4")

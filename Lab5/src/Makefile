@@ -31,7 +31,7 @@
 	$(CC) -o $(TARGET) $(TARGET).o $(LIB).o $(PKG_MNG) $(CFLAGS)
 
   run: $(TARGET)
-	./$(TARGET) "../../Media/small_frog.mp4"
+	time ./$(TARGET) "../../Media/small_frog.mp4"
 
   clean_target:
 	$(RM) $(TARGET) $(TARGET).o
