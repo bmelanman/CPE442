@@ -39,6 +39,13 @@ struct thread_data {
     int stop{};
 };
 
+/***** Global Variables *****/
+pthread_barrier_t gray_barrier;
+pthread_barrier_t sobl_barrier;
+bool done_flag = false;
+const int16x8_t Gx_kernel = {-1, 0, 1, -2, 2, -1, 0, 1};
+const int16x8_t Gy_kernel = {1, 2, 1, 0, 0, -1, -2, -1};
+
 /***** Prototypes *****/
 void *thread_gray_filter(void *threadArgs);
 
@@ -46,10 +53,7 @@ void *thread_sobl_filter(void *threadArgs);
 
 void *thread_sobl_filter_vectors(void *threadArgs);
 
-/***** Global Variables *****/
-pthread_barrier_t gray_barrier;
-pthread_barrier_t sobl_barrier;
-bool done_flag = false;
+void *test_sobl(void *threadArgs);
 
 /***** Main *****/
 int main(int argc, char const *argv[]) {
@@ -75,7 +79,8 @@ int main(int argc, char const *argv[]) {
     VideoCapture usr_vid(usr_arg);
     int fps = (int) usr_vid.get(CAP_PROP_FPS);
     int frame_count = int(usr_vid.get(CAP_PROP_FRAME_COUNT));
-    cout << "Video resolution: " << usr_vid.get(CAP_PROP_FRAME_HEIGHT) << "x" << usr_vid.get(CAP_PROP_FRAME_WIDTH) << endl;
+    cout << "Video resolution: " << usr_vid.get(CAP_PROP_FRAME_HEIGHT) << "x" << usr_vid.get(CAP_PROP_FRAME_WIDTH)
+         << endl;
     cout << "Video length in seconds: " << (frame_count / fps) << "." << ((frame_count / fps) % 1) << endl;
     cout << "Number of threads: " << NUM_THREADS << endl;
 
@@ -86,19 +91,17 @@ int main(int argc, char const *argv[]) {
     Mat gray_frame(usr_vid_rows, usr_vid_cols, CV_8UC1);
     Mat sobl_frame(usr_vid_rows - 2, usr_vid_cols - 2, CV_8UC1);
 
-    // init pthreads
+    // init pthreads and barriers
     pthread_t gray_threads[NUM_THREADS];
     pthread_t sobl_threads[NUM_THREADS];
-
-    // init barriers
     pthread_barrier_init(&gray_barrier, nullptr, NUM_THREADS + 1);
     pthread_barrier_init(&sobl_barrier, nullptr, NUM_THREADS + 1);
 
-    auto filter_select = &thread_sobl_filter_vectors;
-
-    if (argc == 3) {
-        filter_select = &thread_sobl_filter;
-    }
+//    auto filter_select = &thread_sobl_filter;
+//
+//    if (argc == 3) {
+//        filter_select = &test_sobl;
+//    }
 
     // init and fill thread struct variables
     struct thread_data gray_data[NUM_THREADS], sobl_data[NUM_THREADS];
@@ -130,7 +133,7 @@ int main(int argc, char const *argv[]) {
         else { gray_data[i].stop = (i + 1) * (usr_vid_rows / NUM_THREADS); }
 
         // start running the sobel filter threads
-        pthread_create(&sobl_threads[i], nullptr, filter_select, (void *) &sobl_data[i]);
+        pthread_create(&sobl_threads[i], nullptr, test_sobl, (void *) &sobl_data[i]);
     }
 
     // Loop through the image file
@@ -231,7 +234,7 @@ void *thread_sobl_filter_vectors(void *threadArgs) {
     uchar *gray_data = thread_data->input->data;
     uchar *sobl_data = thread_data->output->data;
     int numCols = thread_data->input->cols;
-    int Gx, Gy, G;
+    int G, Gx, Gy;
 
     // init NEON vectors
     uint32x4_t row_const, col_const, row_vect, col_vect;
@@ -316,30 +319,41 @@ void *thread_sobl_filter(void *threadArgs) {
     int numCols = thread_data->input->cols;
     int start = thread_data->start;
     int stop = thread_data->stop;
-    int Gx, Gy, G;
+    int i1, i2, i3, p2, p4, p6, p8, Gx, Gy, G;
 
-    // lock the threads in the filter until the main loop leaves the display loop
-    while(!done_flag) {
+    // Lock the threads in the filter until the main thread leaves the display loop
+    while (!done_flag) {
 
-        // loop through the rows and cols of the image and apply the sobel filter
+        // Loop through the rows and cols of the image and apply the sobel filter
         for (int row = start; row < stop; row++) {
-            for (int col = 0; col < numCols - 2; col++) {
 
-                // Convolve Gx
-                Gx = (gray_data[(numCols * (row + 2) + (col + 2))]) +
-                     (gray_data[(numCols * (row + 1) + (col + 2))] << 1) +
-                     (gray_data[(numCols * (row + 0) + (col + 2))]) -
-                     (gray_data[(numCols * (row + 2) + (col + 0))]) -
-                     (gray_data[(numCols * (row + 1) + (col + 0))] << 1) -
-                     (gray_data[(numCols * (row + 0) + (col + 0))]);
+            // Calculate indexes
+            i1 = numCols * row;
+            i2 = numCols * (row + 1);
+            i3 = numCols * (row + 2);
 
-                // Convolve Gy
-                Gy = (gray_data[(numCols * (row + 0) + (col + 0))]) +
-                     (gray_data[(numCols * (row + 0) + (col + 1))] << 1) +
-                     (gray_data[(numCols * (row + 0) + (col + 2))]) -
-                     (gray_data[(numCols * (row + 2) + (col + 0))]) -
-                     (gray_data[(numCols * (row + 2) + (col + 1))] << 1) -
-                     (gray_data[(numCols * (row + 2) + (col + 2))]);
+            for (int col = 0; col < numCols - 2; col++, i1++, i2++, i3++) {
+
+                // Grab the pixels
+                p2 = gray_data[i1];
+                p4 = gray_data[i1 + 2];
+                p6 = gray_data[i3];
+                p8 = gray_data[i3 + 2];
+
+                // Convolve grayscale pixels with Gx:
+                //      |  1 |  2 |  1 |
+                // Gx = |  0 |  0 |  0 |
+                //      | -1 | -2 | -1 |
+                Gx = (p2) + (gray_data[i1 + 1] << 1) + (p4)
+                     - (p6) - (gray_data[i3 + 1] << 1) - (p8);
+
+                // Convolve grayscale pixels with Gy:
+                //      | -1 |  0 |  1 |
+                // Gy = | -2 |  0 |  2 |
+                //      | -1 |  0 |  1 |
+                Gy = -(p2) + (p4)
+                     - (gray_data[i2] << 1) + (gray_data[i2 + 2] << 1)
+                     - (p6) + (p8);
 
                 // Gradient approximation
                 G = abs(Gx) + abs(Gy);
@@ -351,7 +365,55 @@ void *thread_sobl_filter(void *threadArgs) {
                 sobl_data[(numCols - 2) * (row) + (col)] = (uchar) G;
             }
         }
-        // wait until the main loop moves on to the next image
+        // Wait until the main loop moves on to the next image
+        pthread_barrier_wait(&sobl_barrier);
+    }
+    pthread_exit(nullptr);
+}
+
+void *test_sobl(void *threadArgs) {
+
+    // init thread variables
+    auto *thread_data = (struct thread_data *) threadArgs;
+    uchar *gray_data = thread_data->input->data;
+    uchar *sobl_data = thread_data->output->data;
+    int numCols = thread_data->input->cols;
+    int start = thread_data->start;
+    int stop = thread_data->stop;
+    int i1, i2, i3, Gx, Gy, G;
+    int16x8_t pixel_vect;
+
+    // Lock the threads in the filter until the main loop leaves the display loop
+    while (!done_flag) {
+
+        // Loop through the rows and cols of the image and apply the sobel filter
+        for (int row = start; row < stop; row++) {
+
+            // Calculate indexes
+            i1 = numCols * row;
+            i2 = numCols * (row + 1);
+            i3 = numCols * (row + 2);
+
+            for (int col = 0; col < numCols - 2; col++, i1++, i2++, i3++) {
+
+                pixel_vect = (int16x8_t) {gray_data[i1], gray_data[i1 + 1], gray_data[i1 + 2],
+                                          gray_data[i2], gray_data[i2 + 2],
+                                          gray_data[i3], gray_data[i3 + 1], gray_data[i3 + 2]};
+
+                Gx = vaddlvq_s16(vmulq_s16(Gx_kernel, pixel_vect));
+                Gy = vaddlvq_s16(vmulq_s16(Gy_kernel, pixel_vect));
+
+                // Gradient approximation
+                G = abs(Gx) + abs(Gy);
+
+                // Overflow check
+                if (G > 255) { G = 255; }
+
+                // Write the pixel to the sobel image
+                sobl_data[(numCols - 2) * (row) + (col)] = (uchar) G;
+            }
+        }
+        // Wait until the main loop moves on to the next image
         pthread_barrier_wait(&sobl_barrier);
     }
     pthread_exit(nullptr);

@@ -21,17 +21,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f377c617-8cf1-4092-91fe-fd16bf49fc42" name="Changes" comment="updated">
-      <change afterPath="$PROJECT_DIR$/src/main" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Lab4/main" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Lab4/main.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Lab4/pthread_barrier.o" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/codemodel-v2-b0f3477074bf0904e187.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/index-2022-10-29T17-48-48-0375.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/target-Lab5-Debug-6c133dc432b3a969995f.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/Sobel_Filter" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/src/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,7 +73,7 @@
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "terminal",
+    "settings.editor.selected.configurable": "dynamic.analysis.tools.sanitizers",
     "structure.view.defaults.are.configured": "true"
   }
 }]]></component>
@@ -91,18 +88,18 @@
       <recent name="$PROJECT_DIR$/cmake-build-default" />
     </key>
   </component>
-  <component name="RunManager" selected="CMake Application.non-vector_test">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="non-vector_test" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="-p $CMakeCurrentProductFile$ small_coffee.mp4 t" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" WORKING_DIR="file://$PROJECT_DIR$/../Media" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Lab5" TARGET_NAME="Lab5" CONFIG_NAME="Debug" RUN_PATH="/usr/bin/time">
+  <component name="RunManager" selected="CMake Application.control">
+    <configuration name="control" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="-p $CMakeCurrentProductFile$ coffee_10.mp4" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" WORKING_DIR="file://$PROJECT_DIR$/../Media" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Lab5" TARGET_NAME="Lab5" CONFIG_NAME="Debug" RUN_PATH="/usr/bin/time">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="vector_test" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="-p $CMakeCurrentProductFile$ coffee_10.mp4" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" WORKING_DIR="file://$PROJECT_DIR$/../Media" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Lab5" TARGET_NAME="Lab5" CONFIG_NAME="Debug" RUN_PATH="/usr/bin/time">
+    <configuration name="small_coffee" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="-p $CMakeCurrentProductFile$ small_coffee.mp4" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" WORKING_DIR="file://$PROJECT_DIR$/../Media" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Lab5" TARGET_NAME="Lab5" CONFIG_NAME="Debug" RUN_PATH="/usr/bin/time">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="vector_test" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="-p $CMakeCurrentProductFile$ coffee_10.mp4 t" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" WORKING_DIR="file://$PROJECT_DIR$/../Media" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Lab5" TARGET_NAME="Lab5" CONFIG_NAME="Debug" RUN_PATH="/usr/bin/time">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -144,8 +141,9 @@
       <method v="2" />
     </configuration>
     <list>
+      <item itemvalue="CMake Application.control" />
       <item itemvalue="CMake Application.vector_test" />
-      <item itemvalue="CMake Application.non-vector_test" />
+      <item itemvalue="CMake Application.small_coffee" />
       <item itemvalue="Makefile Target.clean" />
       <item itemvalue="Makefile Target.run" />
       <item itemvalue="Makefile Target.all" />
@@ -155,10 +153,10 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Makefile Target.clean_all" />
         <item itemvalue="Makefile Target.run" />
         <item itemvalue="Makefile Target.clean (1)" />
         <item itemvalue="Makefile Target.all" />
-        <item itemvalue="Makefile Target.clean_all" />
         <item itemvalue="Makefile Target.default" />
       </list>
     </recent_temporary>
@@ -181,7 +179,9 @@
       <workItem from="1667059926814" duration="2803000" />
       <workItem from="1667065712953" duration="472000" />
       <workItem from="1667066198366" duration="2662000" />
-      <workItem from="1667069151918" duration="7870000" />
+      <workItem from="1667069151918" duration="8595000" />
+      <workItem from="1667109284285" duration="2445000" />
+      <workItem from="1667188070166" duration="21736000" />
     </task>
     <task id="LOCAL-00001" summary="migrated to CLion">
       <created>1666414107358</created>
