@@ -43,15 +43,12 @@ struct thread_data {
 pthread_barrier_t gray_barrier;
 pthread_barrier_t sobl_barrier;
 bool done_flag = false;
+const float32x4_t GBR_const = {G_CONST, B_CONST, R_CONST, 0};
 const int16x8_t Gx_kernel = {-1, 0, 1, -2, 2, -1, 0, 1};
 const int16x8_t Gy_kernel = {1, 2, 1, 0, 0, -1, -2, -1};
 
 /***** Prototypes *****/
 void *thread_gray_filter(void *threadArgs);
-
-void *thread_sobl_filter(void *threadArgs);
-
-void *thread_sobl_filter_vectors(void *threadArgs);
 
 void *test_sobl(void *threadArgs);
 
@@ -96,12 +93,6 @@ int main(int argc, char const *argv[]) {
     pthread_t sobl_threads[NUM_THREADS];
     pthread_barrier_init(&gray_barrier, nullptr, NUM_THREADS + 1);
     pthread_barrier_init(&sobl_barrier, nullptr, NUM_THREADS + 1);
-
-//    auto filter_select = &thread_sobl_filter;
-//
-//    if (argc == 3) {
-//        filter_select = &test_sobl;
-//    }
 
     // init and fill thread struct variables
     struct thread_data gray_data[NUM_THREADS], sobl_data[NUM_THREADS];
@@ -200,16 +191,20 @@ void *thread_gray_filter(void *threadArgs) {
     int start = thread_data->start;
     int stop = thread_data->stop;
 
+    float32x4_t pixel_vect;
+
     // Lock the threads into the filter loop until the main loop exits the display loop
     while (!done_flag) {
 
         // Iterate through each pixel and apply the grayscale filter
         for (int pos = start; pos < stop; pos++) {
-            gray_img_data[pos] = (uchar) (
-                    (user_img_data[3 * pos + 0] * B_CONST) +
-                    (user_img_data[3 * pos + 1] * G_CONST) +
-                    (user_img_data[3 * pos + 2] * R_CONST)
-            );
+
+            pixel_vect = (float32x4_t) {(float32_t) user_img_data[3 * pos],
+                                        (float32_t) user_img_data[3 * pos + 1],
+                                        (float32_t) user_img_data[3 * pos + 2],
+                                        0};
+
+            gray_img_data[pos] = (uchar) vaddvq_f32(vmulq_f32(pixel_vect, GBR_const));
         }
         // wait until the main loop fetches another image to process
         pthread_barrier_wait(&gray_barrier);
@@ -221,154 +216,6 @@ void *thread_gray_filter(void *threadArgs) {
  * Takes a grayscale image and applies the sobel operator to the given image.
  * @param threadArgs - A struct with variables for the sobel filter
  */
-void *thread_sobl_filter_vectors(void *threadArgs) {
-
-    // init thread variables
-    auto *thread_data = (struct thread_data *) threadArgs;
-    int start = thread_data->start;
-    int stop = thread_data->stop;
-
-    // init function variables
-    uchar *gray_data = thread_data->input->data;
-    uchar *sobl_data = thread_data->output->data;
-    int numCols = thread_data->input->cols;
-    int G, Gx, Gy;
-
-    // init NEON vectors
-    uint32x4_t row_const, col_const, row_vect, col_vect;
-    uint32x4_t numCol_vect = vdupq_n_u32(numCols);
-    uint32x4x2_t Gx_vect, Gy_vect;
-
-    uint32x4x4_t Gx_conv_vect = {2, 1, 0, 2, 1, 0, 0, 0,
-                                 2, 2, 2, 0, 0, 0, 0, 0};
-
-    uint32x4x4_t Gy_conv_vect = {0, 0, 0, 2, 2, 2, 0, 0,
-                                 0, 1, 2, 0, 1, 2, 0, 0};
-
-    while (!done_flag) {
-
-        // Loop through the rows and cols of the image and apply the sobel filter
-        for (int row = start; row < stop - 2; row++) {
-
-            // Put the row into a vector
-            row_const = vdupq_n_u32(row);
-
-            for (int col = 0; col < numCols - 2; col++) {
-
-                // Put the col into a vector
-                col_const = vdupq_n_u32(col);
-
-                // Convolve Gx
-                // Calculate [numCols * (row + x) + (col + y)] for bits 0 - 3
-                row_vect = vaddq_u32(row_const, Gx_conv_vect.val[0]);                // Vr = (row + i)
-                col_vect = vaddq_u32(col_const, Gx_conv_vect.val[2]);                // Vc = (col + j)
-                Gx_vect.val[0] = vmlaq_u32(col_vect, row_vect, numCol_vect);     // i = Vc + Vr * V_numCols
-
-                // Calculate bits 4 - 5
-                row_vect = vaddq_u32(row_const, Gx_conv_vect.val[1]);
-                col_vect = vaddq_u32(col_const, Gx_conv_vect.val[3]);
-                Gx_vect.val[1] = vmlaq_u32(col_vect, row_vect, numCol_vect);
-
-                // Convolve Gy
-                row_vect = vaddq_u32(row_const, Gy_conv_vect.val[0]);
-                col_vect = vaddq_u32(col_const, Gy_conv_vect.val[2]);
-                Gy_vect.val[0] = vmlaq_u32(col_vect, row_vect, numCol_vect);
-
-                row_vect = vaddq_u32(row_const, Gy_conv_vect.val[1]);
-                col_vect = vaddq_u32(col_const, Gy_conv_vect.val[3]);
-                Gy_vect.val[1] = vmlaq_u32(col_vect, row_vect, numCol_vect);
-
-                Gx = (gray_data[vgetq_lane_u32(Gx_vect.val[0], 0)]) +
-                     (gray_data[vgetq_lane_u32(Gx_vect.val[0], 1)] << 1) +
-                     (gray_data[vgetq_lane_u32(Gx_vect.val[0], 2)]) -
-                     (gray_data[vgetq_lane_u32(Gx_vect.val[0], 3)]) -
-                     (gray_data[vgetq_lane_u32(Gx_vect.val[1], 0)] << 1) -
-                     (gray_data[vgetq_lane_u32(Gx_vect.val[1], 1)]);
-
-                Gy = (gray_data[vgetq_lane_u32(Gy_vect.val[0], 0)]) +
-                     (gray_data[vgetq_lane_u32(Gy_vect.val[0], 1)] << 1) +
-                     (gray_data[vgetq_lane_u32(Gy_vect.val[0], 2)]) -
-                     (gray_data[vgetq_lane_u32(Gy_vect.val[0], 3)]) -
-                     (gray_data[vgetq_lane_u32(Gy_vect.val[1], 0)] << 1) -
-                     (gray_data[vgetq_lane_u32(Gy_vect.val[1], 1)]);
-
-                // Gradient approximation
-                G = abs(Gx) + abs(Gy);
-
-                // Overflow check
-                if (G > 255) { G = 255; }
-
-                // Write the pixel to the sobel image
-                sobl_data[(numCols - 2) * (row) + (col)] = G;
-            }
-        }
-        pthread_barrier_wait(&sobl_barrier);
-    }
-    // pthread return function
-    pthread_exit(nullptr);
-}
-
-void *thread_sobl_filter(void *threadArgs) {
-
-    // init thread variables
-    auto *thread_data = (struct thread_data *) threadArgs;
-    uchar *gray_data = thread_data->input->data;
-    uchar *sobl_data = thread_data->output->data;
-    int numCols = thread_data->input->cols;
-    int start = thread_data->start;
-    int stop = thread_data->stop;
-    int i1, i2, i3, p2, p4, p6, p8, Gx, Gy, G;
-
-    // Lock the threads in the filter until the main thread leaves the display loop
-    while (!done_flag) {
-
-        // Loop through the rows and cols of the image and apply the sobel filter
-        for (int row = start; row < stop; row++) {
-
-            // Calculate indexes
-            i1 = numCols * row;
-            i2 = numCols * (row + 1);
-            i3 = numCols * (row + 2);
-
-            for (int col = 0; col < numCols - 2; col++, i1++, i2++, i3++) {
-
-                // Grab the pixels
-                p2 = gray_data[i1];
-                p4 = gray_data[i1 + 2];
-                p6 = gray_data[i3];
-                p8 = gray_data[i3 + 2];
-
-                // Convolve grayscale pixels with Gx:
-                //      |  1 |  2 |  1 |
-                // Gx = |  0 |  0 |  0 |
-                //      | -1 | -2 | -1 |
-                Gx = (p2) + (gray_data[i1 + 1] << 1) + (p4)
-                     - (p6) - (gray_data[i3 + 1] << 1) - (p8);
-
-                // Convolve grayscale pixels with Gy:
-                //      | -1 |  0 |  1 |
-                // Gy = | -2 |  0 |  2 |
-                //      | -1 |  0 |  1 |
-                Gy = -(p2) + (p4)
-                     - (gray_data[i2] << 1) + (gray_data[i2 + 2] << 1)
-                     - (p6) + (p8);
-
-                // Gradient approximation
-                G = abs(Gx) + abs(Gy);
-
-                // Overflow check
-                if (G > 255) { G = 255; }
-
-                // Write the pixel to the sobel image
-                sobl_data[(numCols - 2) * (row) + (col)] = (uchar) G;
-            }
-        }
-        // Wait until the main loop moves on to the next image
-        pthread_barrier_wait(&sobl_barrier);
-    }
-    pthread_exit(nullptr);
-}
-
 void *test_sobl(void *threadArgs) {
 
     // init thread variables
