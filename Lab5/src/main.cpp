@@ -155,7 +155,7 @@ int main(int argc, char const *argv[]) {
         pthread_barrier_wait(&sobl_barrier);
 
         // Display the frame
-        imshow("sobel", sobl_frame);
+        imshow(usr_arg, sobl_frame);
 
         // Hold ESC to exit the video early
         if ((char) waitKey(2) == 27) {
@@ -200,10 +200,10 @@ void *thread_gray_filter(void *threadArgs) {
     int start = thread_data->start;
     int stop = thread_data->stop;
 
-    // lock the threads into the filter loop until the main loop exits the display loop
+    // Lock the threads into the filter loop until the main loop exits the display loop
     while (!done_flag) {
 
-        // iterate through each pixel and apply the grayscale filter
+        // Iterate through each pixel and apply the grayscale filter
         for (int pos = start; pos < stop; pos++) {
             gray_img_data[pos] = (uchar) (
                     (user_img_data[3 * pos + 0] * B_CONST) +
@@ -211,7 +211,6 @@ void *thread_gray_filter(void *threadArgs) {
                     (user_img_data[3 * pos + 2] * R_CONST)
             );
         }
-
         // wait until the main loop fetches another image to process
         pthread_barrier_wait(&gray_barrier);
     }
@@ -219,8 +218,7 @@ void *thread_gray_filter(void *threadArgs) {
 }
 
 /**
- * Takes a grayscale image and applies the sobel operator to the given image. The function will default to single
- * thread operation when threading variables are unspecified.
+ * Takes a grayscale image and applies the sobel operator to the given image.
  * @param threadArgs - A struct with variables for the sobel filter
  */
 void *thread_sobl_filter_vectors(void *threadArgs) {
@@ -380,7 +378,7 @@ void *test_sobl(void *threadArgs) {
     int numCols = thread_data->input->cols;
     int start = thread_data->start;
     int stop = thread_data->stop;
-    int i1, i2, i3, Gx, Gy, G;
+    int i0, i1, i2, Gx, Gy, G;
     int16x8_t pixel_vect;
 
     // Lock the threads in the filter until the main loop leaves the display loop
@@ -390,16 +388,18 @@ void *test_sobl(void *threadArgs) {
         for (int row = start; row < stop; row++) {
 
             // Calculate indexes
-            i1 = numCols * row;
-            i2 = numCols * (row + 1);
-            i3 = numCols * (row + 2);
+            i0 = numCols * row;
+            i1 = numCols * (row + 1);
+            i2 = numCols * (row + 2);
 
-            for (int col = 0; col < numCols - 2; col++, i1++, i2++, i3++) {
+            for (int col = 0; col < numCols - 2; col++, i0++, i1++, i2++) {
 
-                pixel_vect = (int16x8_t) {gray_data[i1], gray_data[i1 + 1], gray_data[i1 + 2],
-                                          gray_data[i2], gray_data[i2 + 2],
-                                          gray_data[i3], gray_data[i3 + 1], gray_data[i3 + 2]};
+                // Load pixels into a vector
+                pixel_vect = (int16x8_t) {gray_data[i0], gray_data[i0 + 1], gray_data[i0 + 2],
+                                          gray_data[i1], gray_data[i1 + 2],
+                                          gray_data[i2], gray_data[i2 + 1], gray_data[i2 + 2]};
 
+                // Convolve the pixels with Gx and Gy
                 Gx = vaddlvq_s16(vmulq_s16(Gx_kernel, pixel_vect));
                 Gy = vaddlvq_s16(vmulq_s16(Gy_kernel, pixel_vect));
 
