@@ -21,14 +21,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f377c617-8cf1-4092-91fe-fd16bf49fc42" name="Changes" comment="updated">
-      <change beforePath="$PROJECT_DIR$/../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lab4/main" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lab4/main.o" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lab4/pthread_barrier.o" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Lab5.dir/compiler_depend.make" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Lab5.dir/compiler_depend.make" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Lab5.dir/flags.make" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Lab5.dir/flags.make" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/src/Makefile" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,7 +70,7 @@
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "dynamic.analysis.tools.sanitizers",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
     "structure.view.defaults.are.configured": "true"
   }
 }]]></component>
@@ -89,7 +86,12 @@
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.control">
-    <configuration name="control" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="-p $CMakeCurrentProductFile$ coffee_10.mp4" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" WORKING_DIR="file://$PROJECT_DIR$/../Media" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Lab5" TARGET_NAME="Lab5" CONFIG_NAME="Debug" RUN_PATH="/usr/bin/time">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="control" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="-p $CMakeCurrentProductFile$ small_coffee.mp4" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" WORKING_DIR="file://$PROJECT_DIR$/../Media" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Lab5" TARGET_NAME="Lab5" CONFIG_NAME="Debug" RUN_PATH="/usr/bin/time">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -128,8 +130,8 @@
       </makefile>
       <method v="2" />
     </configuration>
-    <configuration name="default" type="MAKEFILE_TARGET_RUN_CONFIGURATION" factoryName="Makefile" temporary="true">
-      <makefile filename="$PROJECT_DIR$/src/Makefile" target="default" workingDirectory="" arguments="">
+    <configuration name="pi" type="MAKEFILE_TARGET_RUN_CONFIGURATION" factoryName="Makefile" temporary="true">
+      <makefile filename="$PROJECT_DIR$/src/Makefile" target="pi" workingDirectory="" arguments="">
         <envs />
       </makefile>
       <method v="2" />
@@ -145,19 +147,19 @@
       <item itemvalue="CMake Application.vector_test" />
       <item itemvalue="CMake Application.small_coffee" />
       <item itemvalue="Makefile Target.clean" />
+      <item itemvalue="Makefile Target.pi" />
       <item itemvalue="Makefile Target.run" />
       <item itemvalue="Makefile Target.all" />
       <item itemvalue="Makefile Target.clean (1)" />
       <item itemvalue="Makefile Target.clean_all" />
-      <item itemvalue="Makefile Target.default" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Makefile Target.pi" />
         <item itemvalue="Makefile Target.clean_all" />
         <item itemvalue="Makefile Target.run" />
         <item itemvalue="Makefile Target.clean (1)" />
         <item itemvalue="Makefile Target.all" />
-        <item itemvalue="Makefile Target.default" />
       </list>
     </recent_temporary>
   </component>
@@ -181,7 +183,7 @@
       <workItem from="1667066198366" duration="2662000" />
       <workItem from="1667069151918" duration="8595000" />
       <workItem from="1667109284285" duration="2445000" />
-      <workItem from="1667188070166" duration="21736000" />
+      <workItem from="1667188070166" duration="28019000" />
     </task>
     <task id="LOCAL-00001" summary="migrated to CLion">
       <created>1666414107358</created>
@@ -323,7 +325,28 @@
       <option name="project" value="LOCAL" />
       <updated>1666911350057</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="updated">
+      <created>1667324723515</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1667324723515</updated>
+    </task>
+    <task id="LOCAL-00022" summary="updated">
+      <created>1667325514522</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1667325514522</updated>
+    </task>
+    <task id="LOCAL-00023" summary="updated">
+      <created>1667329127690</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1667329127690</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
