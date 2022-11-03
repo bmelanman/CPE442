@@ -13,13 +13,17 @@
 
 /***** Includes *****/
 #include <opencv2/opencv.hpp>
+#include "../lib/pthread_barrier.h"
 #include <fstream>
 #include <iostream>
 #include <vector>
 #include <cmath>
 #include <pthread.h>
-#include "../lib/pthread_barrier.h"
 #include <arm_neon.h>
+
+/***** Namespaces *****/
+using namespace std;
+using namespace cv;
 
 /***** Defines *****/
 #define G_CONST 0.2126
@@ -27,9 +31,17 @@
 #define R_CONST 0.0722
 #define NUM_THREADS 4
 
-/***** Namespaces *****/
-using namespace std;
-using namespace cv;
+/***** Global Variables *****/
+pthread_barrier_t gray_barrier;
+pthread_barrier_t sobl_barrier;
+bool done_flag = false;
+
+const uint8x8_t G_vect = vdup_n_u8(G_CONST * 256);
+const uint8x8_t B_vect = vdup_n_u8(B_CONST * 256);
+const uint8x8_t R_vect = vdup_n_u8(R_CONST * 256);
+
+const int16x8_t Gx_kernel = {-1, 0, 1, -2, 2, -1, 0, 1};
+const int16x8_t Gy_kernel = {1, 2, 1, 0, 0, -1, -2, -1};
 
 /***** Structures *****/
 struct thread_data {
@@ -37,18 +49,11 @@ struct thread_data {
     Mat *output{};
     int start{};
     int stop{};
+    int remainder{};
 };
 
-/***** Global Variables *****/
-pthread_barrier_t gray_barrier;
-pthread_barrier_t sobl_barrier;
-bool done_flag = false;
-const float32x4_t GBR_const = {G_CONST, B_CONST, R_CONST, 0};
-const int16x8_t Gx_kernel = {-1, 0, 1, -2, 2, -1, 0, 1};
-const int16x8_t Gy_kernel = {1, 2, 1, 0, 0, -1, -2, -1};
-
 /***** Prototypes *****/
-void *thread_gray_filter(void *threadArgs);
+void *thread_gray_filter_vector(void *threadArgs);
 
 void *test_sobl(void *threadArgs);
 
@@ -76,8 +81,8 @@ int main(int argc, char const *argv[]) {
     VideoCapture usr_vid(usr_arg);
     int fps = (int) usr_vid.get(CAP_PROP_FPS);
     int frame_count = int(usr_vid.get(CAP_PROP_FRAME_COUNT));
-    cout << "Video resolution: " << usr_vid.get(CAP_PROP_FRAME_HEIGHT) << "x" << usr_vid.get(CAP_PROP_FRAME_WIDTH)
-         << endl;
+    cout << "Video resolution: " << usr_vid.get(CAP_PROP_FRAME_HEIGHT)
+         << "x" << usr_vid.get(CAP_PROP_FRAME_WIDTH) << endl;
     cout << "Video length in seconds: " << (frame_count / fps) << "." << ((frame_count / fps) % 1) << endl;
     cout << "Number of threads: " << NUM_THREADS << endl;
 
@@ -96,20 +101,26 @@ int main(int argc, char const *argv[]) {
 
     // init and fill thread struct variables
     struct thread_data gray_data[NUM_THREADS], sobl_data[NUM_THREADS];
+    int img_size = usr_vid_rows * usr_vid_cols;
+    int remainder_pixels = img_size % (8 * NUM_THREADS);
+    int num_pixels = img_size - remainder_pixels;
+    int remainder = 0;
 
     for (int i = 0; i < NUM_THREADS; i++) {
 
         // init grayscale filter thread variables
         gray_data[i].input = &frame;
         gray_data[i].output = &gray_frame;
-        gray_data[i].start = i * usr_vid_cols * (usr_vid_rows / NUM_THREADS);
+        gray_data[i].start = i * num_pixels / NUM_THREADS;
+        gray_data[i].stop = (i + 1) * num_pixels / NUM_THREADS - 1;
+        gray_data[i].remainder = remainder;
 
-        // special case for the last thread, it must go all the way to the end
-        if (i == NUM_THREADS - 1) { gray_data[i].stop = usr_vid_cols * usr_vid_rows - 1; }
-        else { gray_data[i].stop = (i + 1) * usr_vid_cols * usr_vid_rows / NUM_THREADS; }
+        if (i == NUM_THREADS - 1) {
+            remainder = remainder_pixels;
+        }
 
         // start running the grayscale filter threads
-        pthread_create(&gray_threads[i], nullptr, &thread_gray_filter, (void *) &gray_data[i]);
+        pthread_create(&gray_threads[i], nullptr, &thread_gray_filter_vector, (void *) &gray_data[i]);
 
         // init the sobel filter thread variables
         sobl_data[i].input = &gray_frame;
@@ -135,7 +146,6 @@ int main(int argc, char const *argv[]) {
 
         // If we're all out of frames, the video is over
         if (frame.empty()) {
-
             // set the done flag high to release the threads from the filters
             done_flag = true;
             break;
@@ -178,35 +188,43 @@ int main(int argc, char const *argv[]) {
 /***** Project Functions *****/
 
 /**
- * A grayscale filter for color images, applies the ITU-R (BT.709) grayscale algorithm
+ * A grayscale filter for color images, applies the ITU-R (BT.709) grayscale algorithm. The function utilizes ARM neon
+ * vectors to optimize the speed of the grayscale algorithm.
  * @param image An image
  * @param grayscale A grayscale image
  */
-void *thread_gray_filter(void *threadArgs) {
+void *thread_gray_filter_vector(void *threadArgs) {
 
-    // init thread variables
     auto *thread_data = (struct thread_data *) threadArgs;
-    uchar *user_img_data = thread_data->input->data;
-    uchar *gray_img_data = thread_data->output->data;
+    int remainder = thread_data->remainder;
     int start = thread_data->start;
     int stop = thread_data->stop;
 
-    float32x4_t pixel_vect;
+    uchar *origImgData;
+    uchar *grayImgData;
+    uint8x8x3_t BGR_values;
+    uint16x8_t temp;
 
-    // Lock the threads into the filter loop until the main loop exits the display loop
     while (!done_flag) {
+        origImgData = thread_data->input->data + (start * 3);
+        grayImgData = thread_data->output->data + start;
 
-        // Iterate through each pixel and apply the grayscale filter
-        for (int pos = start; pos < stop; pos++) {
+        for (int i = start; i < stop; i += 8, origImgData += 24, grayImgData += 8) {
+            BGR_values = vld3_u8(origImgData);
 
-            pixel_vect = (float32x4_t) {(float32_t) user_img_data[3 * pos],
-                                        (float32_t) user_img_data[3 * pos + 1],
-                                        (float32_t) user_img_data[3 * pos + 2],
-                                        0};
+            temp = vmull_u8(BGR_values.val[0], B_vect);
 
-            gray_img_data[pos] = (uchar) vaddvq_f32(vmulq_f32(pixel_vect, GBR_const));
+            temp = vmlal_u8(temp, BGR_values.val[1], G_vect);
+            temp = vmlal_u8(temp, BGR_values.val[2], R_vect);
+
+            vst1_u8(grayImgData, vshrn_n_u16(temp, 8));
         }
-        // wait until the main loop fetches another image to process
+
+        for (int i = stop; i < stop + remainder; i++, origImgData += 3, grayImgData++) {
+            *grayImgData = (uchar) ((*origImgData * B_CONST) +
+                                    (*origImgData * G_CONST) +
+                                    (*origImgData * R_CONST));
+        }
         pthread_barrier_wait(&gray_barrier);
     }
     pthread_exit(nullptr);
