@@ -17,9 +17,11 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a8f00745-0ce2-4552-9949-faddfa18afc9" name="Changes" comment="">
+    <list default="true" id="a8f00745-0ce2-4552-9949-faddfa18afc9" name="Changes" comment="updated">
       <change beforePath="$PROJECT_DIR$/../Lab5/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab5/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Lab5/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab5/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Lab5/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab5/src/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,8 +77,17 @@
       <workItem from="1667403119804" duration="1828000" />
       <workItem from="1667404969352" duration="6381000" />
       <workItem from="1667418424294" duration="18611000" />
-      <workItem from="1667499330829" duration="1096000" />
+      <workItem from="1667499330829" duration="1153000" />
+      <workItem from="1667501580711" duration="32812000" />
     </task>
+    <task id="LOCAL-00001" summary="updated">
+      <created>1667690137061</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1667690137061</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -92,5 +103,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="updated" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated" />
   </component>
 </project>
