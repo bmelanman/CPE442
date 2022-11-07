@@ -18,16 +18,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a8f00745-0ce2-4552-9949-faddfa18afc9" name="Changes" comment="updated">
-      <change afterPath="$PROJECT_DIR$/../Lab3/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lab3/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lab3/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lab3/main" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lab3/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab3/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lab3/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab3/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lab3/main.dSYM/Contents/Resources/DWARF/main" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab3/main.dSYM/Contents/Resources/DWARF/main" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Lab3/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab3/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Lab5/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab5/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Lab5/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab5/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lab5/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab5/src/main.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
     </list>
@@ -89,7 +82,8 @@
       <workItem from="1667501580711" duration="52509000" />
       <workItem from="1667755582881" duration="5458000" />
       <workItem from="1667840581542" duration="1328000" />
-      <workItem from="1667842601152" duration="1913000" />
+      <workItem from="1667842601152" duration="4681000" />
+      <workItem from="1667849287444" duration="3589000" />
     </task>
     <task id="LOCAL-00001" summary="updated">
       <created>1667690137061</created>
@@ -98,7 +92,14 @@
       <option name="project" value="LOCAL" />
       <updated>1667690137061</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="updated">
+      <created>1667844819898</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1667844819898</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -118,5 +119,16 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="updated" />
     <option name="LAST_COMMIT_MESSAGE" value="updated" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/main.cpp</url>
+          <line>102</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

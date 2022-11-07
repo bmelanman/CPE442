@@ -23,16 +23,16 @@ const uint8x8_t Blue_vect = vdup_n_u8(B_CONST * 256);
 const uint8x8_t Red_vect = vdup_n_u8(R_CONST * 256);
 const uint16x8_t Overflow_check = vdupq_n_u16(255);
 
-const int16x8_t Gx_kernel_small = {-1, 0, 1, -2, 2, -1, 0, 1};
-const int16x8_t Gy_kernel_small = {1, 2, 1, 0, 0, -1, -2, -1};
+const int16x8_t Gx_kernel_small = {1, 2, 1, 0, 0, -1, -2, -1};
+const int16x8_t Gy_kernel_small = {-1, 0, 1, -2, 2, -1, 0, 1};
 
 const int8x8x8_t Gx_kernel = {
-        {vdup_n_s8(-1), vdup_n_s8(0), vdup_n_s8(1), vdup_n_s8(-2),
-         vdup_n_s8(2), vdup_n_s8(-1), vdup_n_s8(0), vdup_n_s8(1)}
-};
-const int8x8x8_t Gy_kernel = {
         {vdup_n_s8(1), vdup_n_s8(2), vdup_n_s8(1), vdup_n_s8(0),
          vdup_n_s8(0), vdup_n_s8(-1), vdup_n_s8(-2), vdup_n_s8(-1)}
+};
+const int8x8x8_t Gy_kernel = {
+        {vdup_n_s8(-1), vdup_n_s8(0), vdup_n_s8(1), vdup_n_s8(-2),
+         vdup_n_s8(2), vdup_n_s8(-1), vdup_n_s8(0), vdup_n_s8(1)}
 };
 
 void gray(Mat *origImg, Mat *grayImg, int start, int stop, int remainder) {
@@ -98,18 +98,17 @@ void sobl(Mat *grayImg, Mat *soblImg, int start, int stop, int remainder) {
             gray_pixels.val[7] = vld1_u8(gray_data + i2 + 2 + col);
 
             // This operation also clears old values
-            Gx_vect = vmull_s8(Gx_kernel.val[0], gray_pixels.val[0]);
+            Gx_vect = vmulq_s16(vmovl_s8(Gx_kernel.val[0]), vmovl_u8(gray_pixels.val[0]));
 
             for (int i = 1; i < 8; i++) {
-                Gx_vect = vmlal_s8(Gx_vect, Gx_kernel.val[i], gray_pixels.val[i]);
+                Gx_vect = vmlaq_s16(Gx_vect, vmovl_s8(Gx_kernel.val[i]), vmovl_u8(gray_pixels.val[i]));
             }
 
             // This operation also clears old values
-            Gy_vect = vmull_s8(Gy_kernel.val[0], gray_pixels.val[0]);
+            Gy_vect = vmulq_s16(vmovl_s8(Gy_kernel.val[0]), vmovl_u8(gray_pixels.val[0]));
 
             for (int i = 1; i < 8; i++) {
-
-                Gy_vect = vmlal_s8(Gy_vect, Gy_kernel.val[i], gray_pixels.val[i]);
+                Gy_vect = vmlaq_s16(Gy_vect, vmovl_s8(Gy_kernel.val[i]), vmovl_u8(gray_pixels.val[i]));
             }
 
             // Gradient Approximation
@@ -148,8 +147,6 @@ int main() {
 
     // Get the name of the file the user is requesting
     string usr_arg = "/Users/brycemelander/Documents/GitHub/CPE442/Media/valve.PNG";
-//    string usr_arg = "/Users/brycemelander/Documents/GitHub/CPE442/Media/valve_resize.PNG";
-//    string usr_arg = "/Users/brycemelander/Documents/GitHub/CPE442/Media/valve_small.PNG";
 
     // init image Mats
     Mat usr_img = imread(usr_arg);
@@ -196,6 +193,8 @@ int main() {
 
         sobl(&gray_img, &sobl_img, start, stop, remainder);
     }
+
+    resize(sobl_img, sobl_img, Size(), 10, 10, INTER_LANCZOS4);
 
     imshow(usr_arg, sobl_img);
     waitKey(0);
