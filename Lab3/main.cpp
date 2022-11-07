@@ -31,7 +31,7 @@ using namespace cv;
 * param image: Mat: An RGB image in a cv::Mat
 * 
 * return: Mat
-*--------------------------------------------------------*/ 
+*--------------------------------------------------------*/
 Mat grayscale_img(Mat image) {
 
     int rows = image.rows;
@@ -45,10 +45,10 @@ Mat grayscale_img(Mat image) {
 
             // Apply the ITU-R (BT.709) algorithm to each pixel
             grayscale.at<uchar>(i, j) = (
-                0.0722 * image.at<Vec3b>(i, j)[0] +
-                0.7152 * image.at<Vec3b>(i, j)[1] +
-                0.2126 * image.at<Vec3b>(i, j)[2]
-                );
+                    0.0722 * image.at<Vec3b>(i, j)[0] +
+                    0.7152 * image.at<Vec3b>(i, j)[1] +
+                    0.2126 * image.at<Vec3b>(i, j)[2]
+            );
         }
     }
 
@@ -64,7 +64,7 @@ Mat grayscale_img(Mat image) {
 * param image: Mat: A grayscale image in a cv::Mat
 * 
 * return: Mat
-*--------------------------------------------------------*/ 
+*--------------------------------------------------------*/
 Mat sobel_filter(Mat grayscale_image) {
 
     // Scanning with a 3x3 matrix which means we can stop at the 3rd last row and col
@@ -83,43 +83,41 @@ Mat sobel_filter(Mat grayscale_image) {
             // [-2,  0,  2]
             // [-1,  0,  1]
             int16_t Gx = (
-                -grayscale_image.at<uchar>(i, j)
-                + grayscale_image.at<uchar>(i, j + 2)
-                - (grayscale_image.at<uchar>(i + 1, j) << 1)
-                + (grayscale_image.at<uchar>(i + 1, j + 2) << 1)
-                - grayscale_image.at<uchar>(i + 2, j)
-                + grayscale_image.at<uchar>(i + 2, j + 2)
-                );
+                    -grayscale_image.at<uchar>(i, j)
+                    + grayscale_image.at<uchar>(i, j + 2)
+                    - (grayscale_image.at<uchar>(i + 1, j) << 1)
+                    + (grayscale_image.at<uchar>(i + 1, j + 2) << 1)
+                    - grayscale_image.at<uchar>(i + 2, j)
+                    + grayscale_image.at<uchar>(i + 2, j + 2)
+            );
 
             // Gy Filter:
             // [-1, -2, -1]
             // [ 0,  0,  0]
             // [ 1,  2,  1]
             int16_t Gy = (
-                -grayscale_image.at<uchar>(i, j)
-                - (grayscale_image.at<uchar>(i, j + 1) << 1)
-                - grayscale_image.at<uchar>(i, j + 2)
-                + grayscale_image.at<uchar>(i + 2, j)
-                + (grayscale_image.at<uchar>(i + 2, j + 1) << 1)
-                + grayscale_image.at<uchar>(i + 2, j + 2)
-                );
+                    -grayscale_image.at<uchar>(i, j)
+                    - (grayscale_image.at<uchar>(i, j + 1) << 1)
+                    - grayscale_image.at<uchar>(i, j + 2)
+                    + grayscale_image.at<uchar>(i + 2, j)
+                    + (grayscale_image.at<uchar>(i + 2, j + 1) << 1)
+                    + grayscale_image.at<uchar>(i + 2, j + 2)
+            );
 
             // G = |Gx| + |Gy|
             int16_t G = abs(Gx) + abs(Gy);
-            if (G > 255){
-                sobel_img.at<uchar>(i, j) = 255;
-            }
-            else {
-                sobel_img.at<uchar>(i, j) = G;
-            }
-             
+
+            if (G > 255) { G = 255; }
+
+            sobel_img.at<int16_t>(i, j) = G;
+
         }
     }
 
     return sobel_img;
 }
 
-int main(int argc, char const* argv[]) {
+int main(int argc, char const *argv[]) {
 
     // Check for valid input
     if (argc != 2) {
@@ -161,8 +159,7 @@ int main(int argc, char const* argv[]) {
         destroyAllWindows();
 
         return 0;
-    }
-    else if (usr_arg.substr(usr_arg.size() - 4) == ".mp4") {
+    } else if (usr_arg.substr(usr_arg.size() - 4) == ".mp4") {
         // Read the video
         VideoCapture usr_vid = VideoCapture(usr_arg);
 
@@ -197,8 +194,7 @@ int main(int argc, char const* argv[]) {
         destroyAllWindows();
 
         return 0;
-    }
-    else {
+    } else {
         cout << "This file is not supported";
         return -1;
     }

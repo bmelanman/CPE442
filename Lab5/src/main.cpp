@@ -141,7 +141,6 @@ int main(int argc, char const *argv[]) {
         // init the sobel filter thread variables
         sobl_data[i].input = &gray_frame;
         sobl_data[i].output = &sobl_frame;
-
         gray_data[i].start = i * usr_vid_rows / NUM_THREADS;
 
         // special case for the last thread, it must go all the way to the end
@@ -308,8 +307,9 @@ void *test_filter(void *threadArgs) {
     int start = thread_data->start;
     int stop = thread_data->stop;
 
-    int remainder = ((numCols - 2) % 8);
-    int col_stop = numCols - 2 - remainder;
+    int numCols_sobel = numCols - 2;
+    int remainder = (numCols_sobel % 8);
+    int col_stop = numCols_sobel - remainder;
 
     int i0, i1, i2, G;
     int8x8x8_t gray_pixels;
@@ -359,17 +359,19 @@ void *test_filter(void *threadArgs) {
                 G_vect = vminq_u16(G_vect, Overflow_check);
 
                 // Write the pixel to the sobel image
-                vst1q_u8(sobl_data + ((numCols - 2) * row) + col, vreinterpretq_u8_u16(G_vect));
+                vst1q_u8(sobl_data + (numCols_sobel * row) + col, vreinterpretq_u8_u16(G_vect));
             }
 
-            for (int i = col_stop; i < numCols - 2; i++, i0++, i1++, i2++) {
+            for (int r_col = col_stop; r_col < numCols_sobel; r_col++) {
 
                 // Reusing variables here
-                G_vect = (uint16x8_t) {gray_data[i0], gray_data[i0 + 1], gray_data[i0 + 2],
-                                       gray_data[i1], gray_data[i1 + 2],
-                                       gray_data[i2], gray_data[i2 + 1], gray_data[i2 + 2]};
+                G_vect = (uint16x8_t) {
+                        gray_data[i0 + r_col], gray_data[i0 + 1 + r_col], gray_data[i0 + 2 + r_col],
+                        gray_data[i1 + r_col], gray_data[i1 + 2 + r_col],
+                        gray_data[i2 + r_col], gray_data[i2 + 1 + r_col], gray_data[i2 + 2 + r_col]
+                };
 
-                // Calculate G from the pixels
+                // Calculate G from the pixels, lots of conversions at once to avoid using more variables
                 G = abs(vaddlvq_s16(vmulq_s16(Gx_kernel_small, G_vect))) +
                     abs(vaddlvq_s16(vmulq_s16(Gy_kernel_small, G_vect)));
 
@@ -377,7 +379,7 @@ void *test_filter(void *threadArgs) {
                 if (G > 255) { G = 255; }
 
                 // Write the pixel to the sobel image
-                sobl_data[(numCols - 2) * (row) + (col_stop)] = (uchar) G;
+                sobl_data[numCols_sobel * row + r_col] = (uchar) G;
             }
         }
         // Wait until the main loop moves on to the next image

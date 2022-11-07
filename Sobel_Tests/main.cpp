@@ -14,6 +14,10 @@ typedef struct int8x8x8_t {
     int8x8_t val[8];
 } int8x8x8_t;
 
+typedef struct uint8x8x8_t {
+    uint8x8_t val[8];
+} uint8x8x8_t;
+
 const uint8x8_t Green_vect = vdup_n_u8(G_CONST * 256);
 const uint8x8_t Blue_vect = vdup_n_u8(B_CONST * 256);
 const uint8x8_t Red_vect = vdup_n_u8(R_CONST * 256);
@@ -31,7 +35,7 @@ const int8x8x8_t Gy_kernel = {
          vdup_n_s8(0), vdup_n_s8(-1), vdup_n_s8(-2), vdup_n_s8(-1)}
 };
 
-void grayscale_filter_vector(Mat *origImg, Mat *grayImg, int start, int stop, int remainder) {
+void gray(Mat *origImg, Mat *grayImg, int start, int stop, int remainder) {
 
     uchar *origImgData = origImg->data + (start * 3);
     uchar *grayImgData = grayImg->data + start;
@@ -48,28 +52,26 @@ void grayscale_filter_vector(Mat *origImg, Mat *grayImg, int start, int stop, in
         temp = vmlal_u8(temp, BGR_values.val[2], Red_vect);
 
         vst1_u8(grayImgData, vshrn_n_u16(temp, 8));
-
     }
 
     for (int i = stop; i < stop + remainder; i++, origImgData += 3, grayImgData++) {
         *grayImgData = (uchar) ((*origImgData * B_CONST) +
-                                (*origImgData * G_CONST) +
-                                (*origImgData * R_CONST));
+                                ((*origImgData + 1) * G_CONST) +
+                                ((*origImgData + 2) * R_CONST));
     }
 }
 
-void sobel_filter_vector(Mat *grayImg, Mat *soblImg, int start, int stop) {
+void sobl(Mat *grayImg, Mat *soblImg, int start, int stop, int remainder) {
 
     // init thread variables
     uchar *gray_data = grayImg->data;
     uchar *sobl_data = soblImg->data;
     int numCols = grayImg->cols;
-
-    int remainder = ((numCols - 2) % 8);
-    int col_stop = numCols - 2 - remainder;
+    int numSobelCols = numCols - 2;
+    int col_stop = numSobelCols - remainder;
 
     int i0, i1, i2, G;
-    int8x8x8_t gray_pixels;
+    uint8x8x8_t gray_pixels;
     int16x8_t Gx_vect, Gy_vect;
     uint16x8_t G_vect;
 
@@ -102,9 +104,11 @@ void sobel_filter_vector(Mat *grayImg, Mat *soblImg, int start, int stop) {
                 Gx_vect = vmlal_s8(Gx_vect, Gx_kernel.val[i], gray_pixels.val[i]);
             }
 
+            // This operation also clears old values
             Gy_vect = vmull_s8(Gy_kernel.val[0], gray_pixels.val[0]);
 
             for (int i = 1; i < 8; i++) {
+
                 Gy_vect = vmlal_s8(Gy_vect, Gy_kernel.val[i], gray_pixels.val[i]);
             }
 
@@ -114,18 +118,20 @@ void sobel_filter_vector(Mat *grayImg, Mat *soblImg, int start, int stop) {
             // Overflow check
             G_vect = vminq_u16(G_vect, Overflow_check);
 
-            // Write the pixel to the sobel image
-            vst1q_u8(sobl_data + ((numCols - 2) * row) + col, vreinterpretq_u8_u16(G_vect));
+            // Write the pixels to the sobel image
+            vst1_u8(sobl_data + (numSobelCols * row) + col, vmovn_u16(G_vect));
         }
 
-        for (int i = col_stop; i < numCols - 2; i++, i0++, i1++, i2++) {
+        for (int r_col = col_stop; r_col < numSobelCols; r_col++) {
 
             // Reusing variables here
-            G_vect = (uint16x8_t) {gray_data[i0], gray_data[i0 + 1], gray_data[i0 + 2],
-                                   gray_data[i1], gray_data[i1 + 2],
-                                   gray_data[i2], gray_data[i2 + 1], gray_data[i2 + 2]};
+            G_vect = (uint16x8_t) {
+                    gray_data[i0 + r_col], gray_data[i0 + 1 + r_col], gray_data[i0 + 2 + r_col],
+                    gray_data[i1 + r_col], gray_data[i1 + 2 + r_col],
+                    gray_data[i2 + r_col], gray_data[i2 + 1 + r_col], gray_data[i2 + 2 + r_col]
+            };
 
-            // Calculate G from the pixels
+            // Calculate G from the pixels, lots of conversions at once to avoid using more variables
             G = abs(vaddlvq_s16(vmulq_s16(Gx_kernel_small, G_vect))) +
                 abs(vaddlvq_s16(vmulq_s16(Gy_kernel_small, G_vect)));
 
@@ -133,26 +139,29 @@ void sobel_filter_vector(Mat *grayImg, Mat *soblImg, int start, int stop) {
             if (G > 255) { G = 255; }
 
             // Write the pixel to the sobel image
-            sobl_data[(numCols - 2) * (row) + (col_stop)] = (uchar) G;
+            sobl_data[numSobelCols * row + r_col] = (uchar) G;
         }
     }
-
 }
 
 int main() {
 
     // Get the name of the file the user is requesting
     string usr_arg = "/Users/brycemelander/Documents/GitHub/CPE442/Media/valve.PNG";
+//    string usr_arg = "/Users/brycemelander/Documents/GitHub/CPE442/Media/valve_resize.PNG";
 //    string usr_arg = "/Users/brycemelander/Documents/GitHub/CPE442/Media/valve_small.PNG";
 
     // init image Mats
     Mat usr_img = imread(usr_arg);
-    Mat gray_img(usr_img.rows, usr_img.cols, CV_8UC1);
-    Mat sobl_img(usr_img.rows - 2, usr_img.cols - 2, CV_8UC1);
 
     // Calculate starts and stops
     int num_rows = usr_img.rows;
     int num_cols = usr_img.cols;
+    Mat gray_img(num_rows, num_cols, CV_8UC1);
+    Mat sobl_img(num_rows - 2, num_cols - 2, CV_8UC1);
+
+    printf("%dx%d -> %dx%d", num_rows, num_cols, num_rows - 2, num_cols - 2);
+
     int img_size = num_rows * num_cols;
     int remainder_pixels = img_size % (8 * NUM_THREADS);
     int num_pixels = img_size - remainder_pixels;
@@ -169,7 +178,7 @@ int main() {
             remainder = remainder_pixels;
         }
 
-        grayscale_filter_vector(&usr_img, &gray_img, start, stop, remainder);
+        gray(&usr_img, &gray_img, start, stop, remainder);
     }
 
     // init and run sobel filter
@@ -178,16 +187,15 @@ int main() {
         start = i * num_rows / NUM_THREADS;
         stop = (i + 1) * num_rows / NUM_THREADS;
 
+        // The last thread gets the remaining rows
         if (i == NUM_THREADS - 1) {
             stop = num_rows - 2;
         }
 
-        sobel_filter_vector(&gray_img, &sobl_img, start, stop);
+        remainder = (num_cols - 2) % 8;
+
+        sobl(&gray_img, &sobl_img, start, stop, remainder);
     }
-
-    printf("%dx%d", sobl_img.rows, sobl_img.cols);
-
-//    resize(sobl_img, sobl_img, Size(), 10, 10, INTER_LANCZOS4);
 
     imshow(usr_arg, sobl_img);
     waitKey(0);
