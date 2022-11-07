@@ -43,6 +43,10 @@ typedef struct int8x8x8_t {
     int8x8_t val[8];
 } int8x8x8_t;
 
+typedef struct uint8x8x8_t {
+    uint8x8_t val[8];
+} uint8x8x8_t;
+
 #define NUM_THREADS 4
 /***** Global Variables *****/
 pthread_barrier_t gray_barrier;
@@ -53,17 +57,17 @@ const uint8x8_t Green_vect = vdup_n_u8(G_CONST * 256);
 const uint8x8_t Blue_vect = vdup_n_u8(B_CONST * 256);
 const uint8x8_t Red_vect = vdup_n_u8(R_CONST * 256);
 const uint16x8_t Overflow_check = vdupq_n_u16(255);
+
 const int16x8_t Gx_kernel_small = {-1, 0, 1, -2, 2, -1, 0, 1};
 const int16x8_t Gy_kernel_small = {1, 2, 1, 0, 0, -1, -2, -1};
 
 const int8x8x8_t Gx_kernel = {
-        {vdup_n_s8(-1), vdup_n_s8(0), vdup_n_s8(1), vdup_n_s8(-2),
-         vdup_n_s8(2), vdup_n_s8(-1), vdup_n_s8(0), vdup_n_s8(1)}
-};
-
-const int8x8x8_t Gy_kernel = {
         {vdup_n_s8(1), vdup_n_s8(2), vdup_n_s8(1), vdup_n_s8(0),
          vdup_n_s8(0), vdup_n_s8(-1), vdup_n_s8(-2), vdup_n_s8(-1)}
+};
+const int8x8x8_t Gy_kernel = {
+        {vdup_n_s8(-1), vdup_n_s8(0), vdup_n_s8(1), vdup_n_s8(-2),
+         vdup_n_s8(2), vdup_n_s8(-1), vdup_n_s8(0), vdup_n_s8(1)}
 };
 
 /***** Prototypes *****/
@@ -312,7 +316,7 @@ void *test_filter(void *threadArgs) {
     int col_stop = numCols_sobel - remainder;
 
     int i0, i1, i2, G;
-    int8x8x8_t gray_pixels;
+    uint8x8x8_t gray_pixels;
     int16x8_t Gx_vect, Gy_vect;
     uint16x8_t G_vect;
 
@@ -340,16 +344,17 @@ void *test_filter(void *threadArgs) {
                 gray_pixels.val[7] = vld1_u8(gray_data + i2 + 2 + col);
 
                 // This operation also clears old values
-                Gx_vect = vmull_s8(Gx_kernel.val[0], gray_pixels.val[0]);
+                Gx_vect = vmulq_s16(vmovl_s8(Gx_kernel.val[0]), vmovl_u8(gray_pixels.val[0]));
 
                 for (int i = 1; i < 8; i++) {
-                    Gx_vect = vmlal_s8(Gx_vect, Gx_kernel.val[i], gray_pixels.val[i]);
+                    Gx_vect = vmlaq_s16(Gx_vect, vmovl_s8(Gx_kernel.val[i]), vmovl_u8(gray_pixels.val[i]));
                 }
 
-                Gy_vect = vmull_s8(Gy_kernel.val[0], gray_pixels.val[0]);
+                // This operation also clears old values
+                Gy_vect = vmulq_s16(vmovl_s8(Gy_kernel.val[0]), vmovl_u8(gray_pixels.val[0]));
 
                 for (int i = 1; i < 8; i++) {
-                    Gy_vect = vmlal_s8(Gy_vect, Gy_kernel.val[i], gray_pixels.val[i]);
+                    Gy_vect = vmlaq_s16(Gy_vect, vmovl_s8(Gy_kernel.val[i]), vmovl_u8(gray_pixels.val[i]));
                 }
 
                 // Gradient Approximation
@@ -358,8 +363,8 @@ void *test_filter(void *threadArgs) {
                 // Overflow check
                 G_vect = vminq_u16(G_vect, Overflow_check);
 
-                // Write the pixel to the sobel image
-                vst1q_u8(sobl_data + (numCols_sobel * row) + col, vreinterpretq_u8_u16(G_vect));
+                // Write the pixels to the sobel image
+                vst1_u8(sobl_data + (numCols_sobel * row) + col, vmovn_u16(G_vect));
             }
 
             for (int r_col = col_stop; r_col < numCols_sobel; r_col++) {
