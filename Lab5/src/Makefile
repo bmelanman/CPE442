@@ -19,7 +19,7 @@
   default: clean_target src compile
 
   pi: clean_all
-	$(CC) -o $(TARGET) $(TARGET).cpp $(PKG_MNG) $(CFLAGS)
+	$(CC) -o $(TARGET) $(TARGET).cpp $(PKG_MNG) $(CFLAGS) -flax-vector-conversions
 
   lib: ../lib/$(LIB).cpp
 	$(CC) -c -o $(LIB).o ../lib/$(LIB).cpp $(CFLAGS)
