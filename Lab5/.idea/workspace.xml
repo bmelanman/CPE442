@@ -20,60 +20,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f377c617-8cf1-4092-91fe-fd16bf49fc42" name="Changes" comment="updated">
-      <change beforePath="$PROJECT_DIR$/../Lab4/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab4/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/src/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_CPE_other/.idea/.name" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_CPE_other/.idea/_CPE_other.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_CPE_other/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_CPE_other/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_CPE_other/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_CPE_other/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../_CPE_other/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_CPE_other/CMakeLists.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_CPE_other/cmake-build-debug/.cmake/api/v1/query/cache-v2" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_CPE_other/cmake-build-debug/.cmake/api/v1/query/cmakeFiles-v1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_CPE_other/cmake-build-debug/.cmake/api/v1/query/codemodel-v2" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_CPE_other/cmake-build-debug/.cmake/api/v1/query/toolchains-v1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_CPE_other/cmake-build-debug/.cmake/api/v1/reply/cache-v2-44594246803a2de67c7a.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_CPE_other/cmake-build-debug/.cmake/api/v1/reply/cmakeFiles-v1-0a2ce500c748de404b79.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_CPE_other/cmake-build-debug/.cmake/api/v1/reply/codemodel-v2-3a8b0837892ec19b45e3.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_CPE_other/cmake-build-debug/.cmake/api/v1/reply/directory-.-Debug-f5ebdc15457944623624.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_CPE_other/cmake-build-debug/.cmake/api/v1/reply/index-2022-10-27T15-34-59-0606.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_CPE_other/cmake-build-debug/.cmake/api/v1/reply/target-J_Sobel-Debug-7226463f9e88e404a470.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_CPE_other/cmake-build-debug/.cmake/api/v1/reply/toolchains-v1-5b833b81ddf072f33d87.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_CPE_other/cmake-build-debug/.ninja_deps" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_CPE_other/cmake-build-debug/.ninja_log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_CPE_other/cmake-build-debug/CMakeCache.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_CPE_other/cmake-build-debug/CMakeFiles/3.23.2/CMakeCCompiler.cmake" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_CPE_other/cmake-build-debug/CMakeFiles/3.23.2/CMakeCXXCompiler.cmake" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_CPE_other/cmake-build-debug/CMakeFiles/3.23.2/CMakeDetermineCompilerABI_C.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_CPE_other/cmake-build-debug/CMakeFiles/3.23.2/CMakeDetermineCompilerABI_CXX.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_CPE_other/cmake-build-debug/CMakeFiles/3.23.2/CMakeSystem.cmake" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_CPE_other/cmake-build-debug/CMakeFiles/3.23.2/CompilerIdC/CMakeCCompilerId.c" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_CPE_other/cmake-build-debug/CMakeFiles/3.23.2/CompilerIdC/CMakeCCompilerId.o" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_CPE_other/cmake-build-debug/CMakeFiles/3.23.2/CompilerIdCXX/CMakeCXXCompilerId.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_CPE_other/cmake-build-debug/CMakeFiles/3.23.2/CompilerIdCXX/CMakeCXXCompilerId.o" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_CPE_other/cmake-build-debug/CMakeFiles/CMakeError.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_CPE_other/cmake-build-debug/CMakeFiles/CMakeOutput.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_CPE_other/cmake-build-debug/CMakeFiles/J_Sobel.dir/lib/pthread_barrier.cpp.o" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_CPE_other/cmake-build-debug/CMakeFiles/J_Sobel.dir/src/main.cpp.o" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_CPE_other/cmake-build-debug/CMakeFiles/TargetDirectories.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_CPE_other/cmake-build-debug/CMakeFiles/clion-environment.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_CPE_other/cmake-build-debug/CMakeFiles/clion-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../_CPE_other/cmake-build-debug/CMakeFiles/clion-log.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_CPE_other/cmake-build-debug/CMakeFiles/cmake.check_cache" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_CPE_other/cmake-build-debug/CMakeFiles/rules.ninja" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_CPE_other/cmake-build-debug/J_Sobel" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_CPE_other/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_CPE_other/cmake-build-debug/build.ninja" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_CPE_other/cmake-build-debug/cmake_install.cmake" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_CPE_other/lib/pthread_barrier.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_CPE_other/lib/pthread_barrier.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_CPE_other/src/Makefile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_CPE_other/src/main.cpp" beforeDir="false" />
-    </list>
+    <list default="true" id="f377c617-8cf1-4092-91fe-fd16bf49fc42" name="Changes" comment="updated" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -233,7 +180,7 @@
       <workItem from="1667924853130" duration="2000" />
       <workItem from="1667924890492" duration="26000" />
       <workItem from="1667924920703" duration="93000" />
-      <workItem from="1667925546075" duration="147000" />
+      <workItem from="1667925546075" duration="180000" />
     </task>
     <task id="LOCAL-00001" summary="migrated to CLion">
       <created>1666414107358</created>
@@ -431,7 +378,14 @@
       <option name="project" value="LOCAL" />
       <updated>1667854744164</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="updated">
+      <created>1667925706425</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1667925706425</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
