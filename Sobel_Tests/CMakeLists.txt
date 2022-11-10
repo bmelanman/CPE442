@@ -13,8 +13,12 @@ add_compile_options(-Wall -pthread -O0)
 find_package(OpenCV REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIRS})
 
-add_executable(Sobel_Tests main.cpp)
+add_executable(brick main.cpp)
+add_executable(gavin main2.cpp)
+add_executable(jonch josh5.cpp lib/pthread_barrier.cpp lib/pthread_barrier.h)
 
 # Declare the target and link the OpenCV libs to it
-target_link_libraries(Sobel_Tests ${OpenCV_LIBS})
+target_link_libraries(brick ${OpenCV_LIBS})
+target_link_libraries(gavin ${OpenCV_LIBS})
+target_link_libraries(jonch ${OpenCV_LIBS})
 
