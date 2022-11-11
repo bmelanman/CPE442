@@ -9,7 +9,9 @@
   <component name="CMakeRunConfigurationManager">
     <generated>
       <config projectName="Sobel_Tests" targetName="gavin" />
+      <config projectName="Sobel_Tests" targetName="jonny" />
       <config projectName="Sobel_Tests" targetName="brick" />
+      <config projectName="Sobel_Tests" targetName="blase" />
       <config projectName="Sobel_Tests" targetName="jonch" />
     </generated>
   </component>
@@ -20,20 +22,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a8f00745-0ce2-4552-9949-faddfa18afc9" name="Changes" comment="updated">
-      <change afterPath="$PROJECT_DIR$/josh5.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/pthread_barrier.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/pthread_barrier.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main2.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lab4/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab4/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/blase4.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/jon5.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Lab5/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab5/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lab5/cmake-build-debug/CMakeFiles/Lab5.dir/flags.make" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab5/cmake-build-debug/CMakeFiles/Lab5.dir/flags.make" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Lab5/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab5/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lab5/src/main" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Lab5/src/main" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab5/src/main" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Lab6/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab6/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Lab6/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab6/src/main.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../_CPE_other/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../_CPE_other/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,7 +68,8 @@
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
     "last_opened_file_path": "/Users/brycemelander/Documents/GitHub/CPE442/Sobel_Tests",
-    "nodejs_package_manager_path": "npm"
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "editor.preferences.completion"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -81,8 +80,13 @@
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
-  <component name="RunManager" selected="CMake Application.jonch">
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+  <component name="RunManager" selected="CMake Application.brick">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="blase" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Sobel_Tests" TARGET_NAME="blase" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Sobel_Tests" RUN_TARGET_NAME="blase">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -102,10 +106,17 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration name="jonny" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="-p $CMakeCurrentProductFile$ coffee_10.mp4" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" WORKING_DIR="file://$PROJECT_DIR$/../Media" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Sobel_Tests" TARGET_NAME="jonny" CONFIG_NAME="Debug" RUN_PATH="/usr/bin/time">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <list>
+      <item itemvalue="CMake Application.blase" />
       <item itemvalue="CMake Application.brick" />
       <item itemvalue="CMake Application.gavin" />
       <item itemvalue="CMake Application.jonch" />
+      <item itemvalue="CMake Application.jonny" />
     </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -127,7 +138,8 @@
       <workItem from="1667849287444" duration="4156000" />
       <workItem from="1667930867312" duration="1764000" />
       <workItem from="1667944379348" duration="2424000" />
-      <workItem from="1668059859352" duration="6429000" />
+      <workItem from="1668059859352" duration="8090000" />
+      <workItem from="1668099756714" duration="9032000" />
     </task>
     <task id="LOCAL-00001" summary="updated">
       <created>1667690137061</created>
@@ -188,6 +200,11 @@
           <url>file://$PROJECT_DIR$/josh5.cpp</url>
           <line>131</line>
           <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/main.cpp</url>
+          <line>161</line>
+          <option name="timeStamp" value="20" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
