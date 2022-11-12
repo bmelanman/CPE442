@@ -25,6 +25,7 @@
 
 /***** Namespaces *****/
 using namespace std;
+using namespace chrono;
 using namespace cv;
 
 /***** Defines *****/
@@ -45,8 +46,7 @@ typedef struct uint16x8x8_t {
 } uint16x8x8_t;
 
 /***** Global Variables *****/
-pthread_barrier_t gray_barrier;
-pthread_barrier_t sobl_barrier;
+pthread_barrier_t filter_barrier;
 
 // While-loop lock variable for keeping the threads in their respective filters
 bool thread_lock = false;
@@ -56,8 +56,7 @@ const uint8x8_t Blue_vect = vdup_n_u8(B_CONST);     // 0.0722 * 256, rounded up
 const uint8x8_t Green_vect = vdup_n_u8(G_CONST);    // 0.7152 * 256
 const uint8x8_t Red_vect = vdup_n_u8(R_CONST);      // 0.2126 * 256
 
-// Kernels used for grayscale filtering
-// Small kernel is used for single pixel processing
+// Kernels used for single pixel grayscale filtering
 const int16x8_t Gx_kernel_small = {-1, 0, 1, -2, 2, -1, 0, 1};
 const int16x8_t Gy_kernel_small = {1, 2, 1, 0, 0, -1, -2, -1};
 
@@ -89,10 +88,11 @@ int main(int argc, char const *argv[]) {
     VideoCapture usrVideo(usrVideo_location);
     auto fps = (uint8_t) usrVideo.get(CAP_PROP_FPS);
     int num_frames = (int) usrVideo.get(CAP_PROP_FRAME_COUNT);
+
     printf("Video Resolution: %dx%d\n", (int) usrVideo.get(CAP_PROP_FRAME_HEIGHT),
            (int) usrVideo.get(CAP_PROP_FRAME_WIDTH));
-    printf("Video Length: %d.%d seconds\n", num_frames / fps, (num_frames / fps) % 1);
-    printf("Number of threads: %d\n", NUM_THREADS);
+    printf("Number of frames: %d\n", num_frames);
+    printf("Video Length: %d.%d seconds\n\n", num_frames / fps, (num_frames / fps) % 1);
 
     // Init Mats for each filter
     int usrVideo_rows = (int) usrVideo.get(4);
@@ -103,8 +103,7 @@ int main(int argc, char const *argv[]) {
 
     // Init pthreads and barriers
     pthread_t filter_threads[NUM_THREADS];
-    pthread_barrier_init(&gray_barrier, nullptr, NUM_THREADS + 1);
-    pthread_barrier_init(&sobl_barrier, nullptr, NUM_THREADS + 1);
+    pthread_barrier_init(&filter_barrier, nullptr, NUM_THREADS + 1);
 
     // Init thread struct variables
     struct big_thread_data thread_data[NUM_THREADS];
@@ -119,15 +118,12 @@ int main(int argc, char const *argv[]) {
                 i
         };
 
+        // run the threads
         pthread_create(&filter_threads[i], nullptr, &filter, (void *) &thread_data[i]);
     }
 
     // Loop through the image file
     while (usrVideo.isOpened()) {
-
-        // Wait for the image to be processes
-        pthread_barrier_wait(&gray_barrier);
-        pthread_barrier_wait(&sobl_barrier);
 
         // Get a frame from the video
         usrVideo >> frame;
@@ -137,21 +133,24 @@ int main(int argc, char const *argv[]) {
             break;
         }
 
+        // Wait for the image to be processed
+        pthread_barrier_wait(&filter_barrier);
+
+        // let the image display for a second
+        waitKey(1);
+
         // Display the frame
         imshow(usrVideo_location, sobl_frame);
-
-        // Hold ESC to exit the video early
-        if ((char) waitKey(1) == 27) {
-            break;
-        }
     }
+
+    // waitKey technically displays the image
+    waitKey(1);
 
     // set the done flag high to release the threads from the filters
     thread_lock = true;
 
     // Rejoin all threads
-    pthread_barrier_wait(&gray_barrier);
-    pthread_barrier_wait(&sobl_barrier);
+    pthread_barrier_wait(&filter_barrier);
 
     // Clean up threads
     for (auto &filter_thread: filter_threads) {
@@ -159,8 +158,7 @@ int main(int argc, char const *argv[]) {
     }
 
     // Clean up thread barriers
-    pthread_barrier_destroy(&gray_barrier);
-    pthread_barrier_destroy(&sobl_barrier);
+    pthread_barrier_destroy(&filter_barrier);
 
     // clean up video stuff
     usrVideo.release();
@@ -191,7 +189,6 @@ void *filter(void *threadArgs) {
     /***** Filter variables *****/
     uint8x8x3_t BGR_values;
     uint16x8x8_t gray_pixels;
-    int16x8_t Gx_vect, Gy_vect;
     uint16x8_t G_vect;
     int i0, i1, i2, G;
 
@@ -214,6 +211,9 @@ void *filter(void *threadArgs) {
     if (thread_id == NUM_THREADS - 1) {
         sobl_stop = orig_rows - 2;
     }
+
+    // Wait main to load the first frame
+    pthread_barrier_wait(&filter_barrier);
 
     /***** Begin filtering *****/
 
@@ -253,10 +253,10 @@ void *filter(void *threadArgs) {
             );
         }
 
-        // Wait until all threads are done with grayscale
-        pthread_barrier_wait(&gray_barrier);
-
         gray_frame_data = thread_data->gray_frame->data;
+
+        // Wait until all threads are done with grayscale
+        pthread_barrier_wait(&filter_barrier);
 
         /***** Sobel conversion *****/
 
@@ -282,48 +282,46 @@ void *filter(void *threadArgs) {
                 gray_pixels.val[6] = vmovl_u8(vld1_u8(gray_frame_data + i2 + 1 + col));   // Pixel 8
                 gray_pixels.val[7] = vmovl_u8(vld1_u8(gray_frame_data + i2 + 2 + col));   // Pixel 9
 
-                Gx_vect =
-                        vabsq_s16(
-                                vaddq_s16(                                          // E =
-                                        vsubq_u16(
-                                                vshlq_n_u16(gray_pixels.val[1], 1),
-                                                vshlq_n_u16(gray_pixels.val[6], 1)  // C = 2*P2 - 2*P8
-                                        ),
-                                        vsubq_s16(                                  // D = A - B
-                                                vaddq_u16(                          // A = P1 + P3
-                                                        gray_pixels.val[0],
-                                                        gray_pixels.val[2]
+                G_vect =
+                        vaddq_u16(
+                                vabsq_s16(
+                                        vaddq_s16(                                          // E =
+                                                vsubq_u16(
+                                                        vshlq_n_u16(gray_pixels.val[1], 1),
+                                                        vshlq_n_u16(gray_pixels.val[6], 1)  // C = 2*P2 - 2*P8
                                                 ),
-                                                vaddq_u16(                          // B = P7 + P9
-                                                        gray_pixels.val[5],
-                                                        gray_pixels.val[7]
+                                                vsubq_s16(                                  // D = A - B
+                                                        vaddq_u16(                          // A = P1 + P3
+                                                                gray_pixels.val[0],
+                                                                gray_pixels.val[2]
+                                                        ),
+                                                        vaddq_u16(                          // B = P7 + P9
+                                                                gray_pixels.val[5],
+                                                                gray_pixels.val[7]
+                                                        )
+                                                )
+                                        )
+                                ),
+                                vabsq_s16(
+                                        vaddq_s16(
+                                                vsubq_u16(
+                                                        vshlq_n_u16(gray_pixels.val[4], 1),
+                                                        vshlq_n_u16(gray_pixels.val[3], 1)  // 2*P6 - 2*P4
+                                                ),
+                                                vsubq_s16(                                  // (P3+P9) - (P1+P7)
+                                                        vaddq_u16(                          // P3 + P9
+                                                                gray_pixels.val[2],
+                                                                gray_pixels.val[7]
+                                                        ),
+                                                        vaddq_u16(                          // P1 + P7
+                                                                gray_pixels.val[0],
+                                                                gray_pixels.val[5]
+                                                        )
                                                 )
                                         )
                                 )
-                        );
 
-                Gy_vect =
-                        vabsq_s16(
-                                vaddq_s16(
-                                        vsubq_u16(
-                                                vshlq_n_u16(gray_pixels.val[4], 1),
-                                                vshlq_n_u16(gray_pixels.val[3], 1)  // 2*P6 - 2*P4
-                                        ),
-                                        vsubq_s16(                                  // (P3+P9) - (P1+P7)
-                                                vaddq_u16(                          // P3 + P9
-                                                        gray_pixels.val[2],
-                                                        gray_pixels.val[7]
-                                                ),
-                                                vaddq_u16(                          // P1 + P7
-                                                        gray_pixels.val[0],
-                                                        gray_pixels.val[5]
-                                                )
-                                        )
-                                )
                         );
-
-                // Gradient Approximation
-                G_vect = vaddq_u16(Gx_vect, Gy_vect);
 
                 // Saturated move the G_vect values to a uint8_t, then write to the sobel image 8 pixels at a time
                 vst1_u8(sobl_frame_data + (sobl_cols * row) + col, vqmovn_u16(G_vect));
@@ -349,7 +347,8 @@ void *filter(void *threadArgs) {
         }
 
         // Wait until the main loop moves on to the next image
-        pthread_barrier_wait(&sobl_barrier);
+        pthread_barrier_wait(&filter_barrier);
     }
     pthread_exit(nullptr);
 }
+
