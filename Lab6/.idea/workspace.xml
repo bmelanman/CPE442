@@ -21,15 +21,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f377c617-8cf1-4092-91fe-fd16bf49fc42" name="Changes" comment="updated">
-      <change afterPath="$PROJECT_DIR$/../Sobel_Tests/blase4.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Sobel_Tests/jon5.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lab5/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab5/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lab5/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab5/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lab5/src/main" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab5/src/main" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Sobel_Tests/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Sobel_Tests/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Sobel_Tests/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../Sobel_Tests/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Sobel_Tests/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Sobel_Tests/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -196,7 +190,7 @@
       <workItem from="1667924168131" duration="17000" />
       <workItem from="1667924261629" duration="10810000" />
       <workItem from="1668059950325" duration="1189000" />
-      <workItem from="1668061578564" duration="14215000" />
+      <workItem from="1668061578564" duration="32132000" />
     </task>
     <task id="LOCAL-00001" summary="migrated to CLion">
       <created>1666414107358</created>
@@ -401,7 +395,14 @@
       <option name="project" value="LOCAL" />
       <updated>1667925978465</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="updated">
+      <created>1668202130312</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1668202130312</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
