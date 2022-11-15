@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.23)
 project(Lab6)
 
-# C++11 required for OpenCV
+# C++20 required for OpenCV
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_OSX_ARCHITECTURES "arm64")
 

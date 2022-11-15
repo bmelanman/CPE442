@@ -29,10 +29,10 @@ using namespace chrono;
 using namespace cv;
 
 /***** Defines *****/
-#define B_CONST 19
 #define G_CONST 183
+#define B_CONST 19
 #define R_CONST 54
-#define NUM_THREADS 4
+#define NUM_THREADS 2
 
 /***** Structures *****/
 struct big_thread_data {
@@ -52,8 +52,8 @@ pthread_barrier_t filter_barrier;
 bool thread_lock = false;
 
 // These values will be divided by 256 by the grayscale filter to avoid float math
-const uint8x8_t Blue_vect = vdup_n_u8(B_CONST);     // 0.0722 * 256, rounded up
 const uint8x8_t Green_vect = vdup_n_u8(G_CONST);    // 0.7152 * 256
+const uint8x8_t Blue_vect = vdup_n_u8(B_CONST);     // 0.0722 * 256, rounded up
 const uint8x8_t Red_vect = vdup_n_u8(R_CONST);      // 0.2126 * 256
 
 // Kernels used for single pixel grayscale filtering
@@ -190,12 +190,12 @@ void *filter(void *threadArgs) {
     uint8x8x3_t BGR_values;
     uint16x8x8_t gray_pixels;
     uint16x8_t G_vect;
-    int i0, i1, i2, G;
+    int G;
 
     int orig_rows = thread_data->orig_frame->rows;
     int orig_cols = thread_data->orig_frame->cols;
     int orig_num_pixels = orig_rows * orig_cols;
-    int sobl_cols = orig_cols - 2;
+//    int sobl_cols = orig_cols - 2;
 
     // Grayscale filter variables
     int gray_remainder_pixels = orig_num_pixels % (8 * NUM_THREADS);
@@ -203,13 +203,11 @@ void *filter(void *threadArgs) {
     int gray_stop = (thread_id + 1) * (orig_num_pixels - gray_remainder_pixels) / NUM_THREADS - 1;
 
     // Sobel filter variables
-    int sobl_start = thread_id * orig_rows / NUM_THREADS;
-    int sobl_stop = (thread_id + 1) * orig_rows / NUM_THREADS;
-    int sobl_remainder = (sobl_cols) % 8;
-    int sobl_col_stop = sobl_cols - sobl_remainder;
+    int sobl_start = thread_id * (orig_rows * orig_cols) / NUM_THREADS;
+    int sobl_stop = (thread_id + 1) * ((orig_rows * orig_cols) - (2 * orig_cols) - 2) / NUM_THREADS;
 
     if (thread_id == NUM_THREADS - 1) {
-        sobl_stop = orig_rows - 2;
+        sobl_stop = (orig_rows - 2) * (orig_cols - 2);
     }
 
     // Wait main to load the first frame
@@ -259,34 +257,34 @@ void *filter(void *threadArgs) {
         pthread_barrier_wait(&filter_barrier);
 
         /***** Sobel conversion *****/
+        int row_count = 0;
+        int gray_index;
+        int dataSize = 8;
 
-        // Loop through the rows and cols of the image and apply the sobel filter
-        for (int row = sobl_start; row < sobl_stop; row++) {
+        for (int i = sobl_start; i < sobl_stop;) {
 
-            // Calculate indexes
-            i0 = orig_cols * row;
-            i1 = orig_cols * (row + 1);
-            i2 = orig_cols * (row + 2);
+            gray_index = i - (2 * row_count);
 
-            for (int col = 0; col < sobl_col_stop; col += 8) {
+            if (i + dataSize < orig_cols * row_count) {
 
+                // 8 pixel processing
                 // Load pixel sets into vectors
-                gray_pixels.val[0] = vmovl_u8(vld1_u8(gray_frame_data + i0 + col));       // Pixel 1
-                gray_pixels.val[1] = vmovl_u8(vld1_u8(gray_frame_data + i0 + 1 + col));   // Pixel 2
-                gray_pixels.val[2] = vmovl_u8(vld1_u8(gray_frame_data + i0 + 2 + col));   // Pixel 3
+                gray_pixels.val[0] = vmovl_u8(vld1_u8(gray_frame_data + i));       // Pixel 1
+                gray_pixels.val[1] = vmovl_u8(vld1_u8(gray_frame_data + i + 1));   // Pixel 2
+                gray_pixels.val[2] = vmovl_u8(vld1_u8(gray_frame_data + i + 2));   // Pixel 3
 
-                gray_pixels.val[3] = vmovl_u8(vld1_u8(gray_frame_data + i1 + col));       // Pixel 4
-                gray_pixels.val[4] = vmovl_u8(vld1_u8(gray_frame_data + i1 + 2 + col));   // Pixel 6
+                gray_pixels.val[3] = vmovl_u8(vld1_u8(gray_frame_data + i + orig_cols));       // Pixel 4
+                gray_pixels.val[4] = vmovl_u8(vld1_u8(gray_frame_data + i + 2 + orig_cols));   // Pixel 6
 
-                gray_pixels.val[5] = vmovl_u8(vld1_u8(gray_frame_data + i2 + col));       // Pixel 7
-                gray_pixels.val[6] = vmovl_u8(vld1_u8(gray_frame_data + i2 + 1 + col));   // Pixel 8
-                gray_pixels.val[7] = vmovl_u8(vld1_u8(gray_frame_data + i2 + 2 + col));   // Pixel 9
+                gray_pixels.val[5] = vmovl_u8(vld1_u8(gray_frame_data + i + (orig_cols << 1)));       // Pixel 7
+                gray_pixels.val[6] = vmovl_u8(vld1_u8(gray_frame_data + i + 1 + (orig_cols << 1)));   // Pixel 8
+                gray_pixels.val[7] = vmovl_u8(vld1_u8(gray_frame_data + i + 2 + (orig_cols << 1)));   // Pixel 9
 
                 G_vect =
                         vaddq_u16(
                                 vabsq_s16(
                                         vaddq_s16(                                          // E =
-                                                vsubq_u16(
+                                                vsubq_s16(
                                                         vshlq_n_u16(gray_pixels.val[1], 1),
                                                         vshlq_n_u16(gray_pixels.val[6], 1)  // C = 2*P2 - 2*P8
                                                 ),
@@ -304,7 +302,7 @@ void *filter(void *threadArgs) {
                                 ),
                                 vabsq_s16(
                                         vaddq_s16(
-                                                vsubq_u16(
+                                                vsubq_s16(
                                                         vshlq_n_u16(gray_pixels.val[4], 1),
                                                         vshlq_n_u16(gray_pixels.val[3], 1)  // 2*P6 - 2*P4
                                                 ),
@@ -320,21 +318,20 @@ void *filter(void *threadArgs) {
                                                 )
                                         )
                                 )
-
                         );
 
-                // Saturated move the G_vect values to a uint8_t, then write to the sobel image 8 pixels at a time
-                vst1_u8(sobl_frame_data + (sobl_cols * row) + col, vqmovn_u16(G_vect));
-            }
+                vst1_u8(sobl_frame_data + gray_index, vqmovn_u16(G_vect));
+                i += dataSize;
 
-            for (int r_col = sobl_col_stop; r_col < sobl_cols; r_col++) {
+            } else {
 
                 // If there's some remaining pixels, filter them one by one
                 // Reusing variables here
                 G_vect = (uint16x8_t) {
-                        gray_frame_data[i0 + r_col], gray_frame_data[i0 + 1 + r_col], gray_frame_data[i0 + 2 + r_col],
-                        gray_frame_data[i1 + r_col], gray_frame_data[i1 + 2 + r_col],
-                        gray_frame_data[i2 + r_col], gray_frame_data[i2 + 1 + r_col], gray_frame_data[i2 + 2 + r_col]
+                        gray_frame_data[i], gray_frame_data[i + 1], gray_frame_data[i + 2],
+                        gray_frame_data[i + orig_cols], gray_frame_data[i + 2 + orig_cols],
+                        gray_frame_data[i + (orig_cols * 2)], gray_frame_data[i + 1 + (orig_cols * 2)],
+                        gray_frame_data[i + 2 + (orig_cols * 2)]
                 };
 
                 // Calculate G from the pixels, lots of conversions at once to avoid using more variables
@@ -342,10 +339,14 @@ void *filter(void *threadArgs) {
                     abs(vaddlvq_s16(vmulq_s16(Gy_kernel_small, G_vect)));
 
                 // Write the pixel to the sobel image
-                sobl_frame_data[sobl_cols * row + r_col] = saturate_cast<uchar>(G);
+                sobl_frame_data[gray_index] = saturate_cast<uchar>(G);
+                i++;
+            }
+
+            if (i % orig_cols == 0) {
+                row_count++;
             }
         }
-
         // Wait until the main loop moves on to the next image
         pthread_barrier_wait(&filter_barrier);
     }

@@ -11,15 +11,9 @@ using namespace cv;
 #define R_CONST 54
 #define NUM_THREADS 4
 
-typedef struct int16x8x8_t {
-    int16x8_t val[8];
-} int16x8x8_t;
 typedef struct uint16x8x8_t {
     uint16x8_t val[8];
 } uint16x8x8_t;
-typedef struct uint8x8x8_t {
-    uint8x8_t val[8];
-} uint8x8x8_t;
 
 // These values will be divided by 256 by the grayscale filter to avoid float math
 const uint8x8_t Blue_vect = vdup_n_u8(B_CONST);     // 0.0722 * 256, rounded up
@@ -31,19 +25,6 @@ const uint8x8_t Red_vect = vdup_n_u8(R_CONST);      // 0.2126 * 256
 const int16x8_t Gx_kernel_small = {-1, 0, 1, -2, 2, -1, 0, 1};
 const int16x8_t Gy_kernel_small = {1, 2, 1, 0, 0, -1, -2, -1};
 
-// Large kernel is used for processing 8 pixels at a time
-const int16x8x8_t Gx_kernel = {
-        {vdupq_n_s16(1), vdupq_n_s16(2), vdupq_n_s16(1), vdupq_n_s16(0),
-         vdupq_n_s16(0), vdupq_n_s16(-1), vdupq_n_s16(-2), vdupq_n_s16(-1)}};
-const int16x8x8_t Gy_kernel = {
-        {vdupq_n_s16(-1), vdupq_n_s16(0), vdupq_n_s16(1), vdupq_n_s16(-2),
-         vdupq_n_s16(2), vdupq_n_s16(-1), vdupq_n_s16(0), vdupq_n_s16(1)}};
-
-long long oldTime = 0;
-long long newTime = 0;
-long long decimal_places = 1e3;     // The n in 1*10^n decides the number of decimal places
-int c = 0;
-
 void filter(Mat *origImg, Mat *grayImg, Mat *soblImg, uint8_t thread_id) {
 
     uchar *orig_frame_data;
@@ -52,15 +33,16 @@ void filter(Mat *origImg, Mat *grayImg, Mat *soblImg, uint8_t thread_id) {
 
     uint8x8x3_t BGR_values;
     uint16x8x8_t gray_pixels;
-    uint8x8x8_t gray_pixels_test;
-    int16x8_t Gx_vect, Gy_vect;
+//    uint8x8x8_t gray_pixels_test;
+//    int16x8_t Gx_vect, Gy_vect;
     uint16x8_t G_vect;
-    int i0, i1, i2, G;
+//    int i0, i1, i2, G;
+    int G;
 
     int orig_rows = origImg->rows;
     int orig_cols = origImg->cols;
     int orig_num_pixels = orig_rows * orig_cols;
-    int sobl_cols = orig_cols - 2;
+//    int sobl_cols = orig_cols - 2;
 
     // Grayscale filter variables
     int gray_remainder_pixels = orig_num_pixels % (8 * NUM_THREADS);
@@ -68,14 +50,14 @@ void filter(Mat *origImg, Mat *grayImg, Mat *soblImg, uint8_t thread_id) {
     int gray_stop = (thread_id + 1) * (orig_num_pixels - gray_remainder_pixels) / NUM_THREADS - 1;
 
     // Sobel filter variables
-    int sobl_start = thread_id * (orig_rows - 6) / NUM_THREADS;
-    int sobl_stop = (thread_id + 1) * orig_rows / NUM_THREADS;
-    int sobl_remainder = (sobl_cols) % 8;
-    int sobl_col_stop = sobl_cols - sobl_remainder;
+//    int sobl_start = thread_id * (orig_rows - 6) / NUM_THREADS;
+//    int sobl_stop = (thread_id + 1) * orig_rows / NUM_THREADS;
+//    int sobl_remainder = (sobl_cols) % 8;
+//    int sobl_col_stop = sobl_cols - sobl_remainder;
 
-    if (thread_id == NUM_THREADS - 1) {
-        sobl_stop = orig_rows - 2;
-    }
+//    if (thread_id == NUM_THREADS - 1) {
+//        sobl_stop = orig_rows - 2;
+//    }
 
     /***** Grayscale conversion *****/
 
@@ -114,133 +96,88 @@ void filter(Mat *origImg, Mat *grayImg, Mat *soblImg, uint8_t thread_id) {
 
     /***** Sobel conversion *****/
 
-    // Loop through the rows and cols of the image and apply the sobel filter
-    for (int row = sobl_start; row < sobl_stop; row++) {
+    int row_count = 0;
+    int gray_index;
+    int dataSize = 8;
 
-        // Calculate indexes
-        i0 = orig_cols * row;
-        i1 = orig_cols * (row + 1);
-        i2 = orig_cols * (row + 2);
+    int sobl_start = thread_id * (orig_rows * orig_cols) / NUM_THREADS;
+    int sobl_stop = (thread_id + 1) * ((orig_rows * orig_cols) - (2 * orig_cols) - 2) / NUM_THREADS;
 
-        for (int col = 0; col < sobl_col_stop; col += 8) {
+    if (thread_id == NUM_THREADS - 1) {
+        sobl_stop = (orig_rows - 2) * (orig_cols - 2);
+    }
 
-            // Time 1 start
-            auto start1 = high_resolution_clock::now();
+    for (int i = sobl_start; i < sobl_stop;) {
 
+        gray_index = i - (2 * row_count);
+
+        if (i + dataSize < orig_cols * row_count) {
+
+            // 8 pixel processing
             // Load pixel sets into vectors
-            gray_pixels_test.val[0] = vld1_u8(gray_frame_data + i0 + col);
-            gray_pixels_test.val[1] = vld1_u8(gray_frame_data + i0 + 1 + col);
-            gray_pixels_test.val[2] = vld1_u8(gray_frame_data + i0 + 2 + col);
+            gray_pixels.val[0] = vmovl_u8(vld1_u8(gray_frame_data + i));       // Pixel 1
+            gray_pixels.val[1] = vmovl_u8(vld1_u8(gray_frame_data + i + 1));   // Pixel 2
+            gray_pixels.val[2] = vmovl_u8(vld1_u8(gray_frame_data + i + 2));   // Pixel 3
 
-            gray_pixels_test.val[3] = vld1_u8(gray_frame_data + i1 + col);
-            gray_pixels_test.val[4] = vld1_u8(gray_frame_data + i1 + 2 + col);
+            gray_pixels.val[3] = vmovl_u8(vld1_u8(gray_frame_data + i + orig_cols));       // Pixel 4
+            gray_pixels.val[4] = vmovl_u8(vld1_u8(gray_frame_data + i + 2 + orig_cols));   // Pixel 6
 
-            gray_pixels_test.val[5] = vld1_u8(gray_frame_data + i2 + col);
-            gray_pixels_test.val[6] = vld1_u8(gray_frame_data + i2 + 1 + col);
-            gray_pixels_test.val[7] = vld1_u8(gray_frame_data + i2 + 2 + col);
+            gray_pixels.val[5] = vmovl_u8(vld1_u8(gray_frame_data + i + (orig_cols << 1)));       // Pixel 7
+            gray_pixels.val[6] = vmovl_u8(vld1_u8(gray_frame_data + i + 1 + (orig_cols << 1)));   // Pixel 8
+            gray_pixels.val[7] = vmovl_u8(vld1_u8(gray_frame_data + i + 2 + (orig_cols << 1)));   // Pixel 9
 
-            // Multiply each pixel by the X kernel and sum them all together
-            // This operation also clears old values
-            Gx_vect = vmulq_s16(Gx_kernel.val[0], vmovl_u8(gray_pixels_test.val[0]));
-
-            for (int i = 1; i < 8; i++) {
-                Gx_vect = vmlaq_s16(Gx_vect, Gx_kernel.val[i], vmovl_u8(gray_pixels_test.val[i]));
-            }
-
-            // Repeat for the Y kernel
-            Gy_vect = vmulq_s16(Gy_kernel.val[0], vmovl_u8(gray_pixels_test.val[0]));
-
-            for (int i = 1; i < 8; i++) {
-                Gy_vect = vmlaq_s16(Gy_vect, Gy_kernel.val[i], vmovl_u8(gray_pixels_test.val[i]));
-            }
-
-            Gx_vect = vabsq_s16(Gx_vect);
-            Gy_vect = vabsq_s16(Gy_vect);
-
-            // time 1 stop
-            auto stop1 = high_resolution_clock::now();
-
-            if (G > 700) {
-                cout << vgetq_lane_s16(vaddq_s16(Gx_vect, Gy_vect), 0);
-            }
-
-            // time 2 start
-            auto start2 = high_resolution_clock::now();
-
-            // Load pixel sets into vectors
-            gray_pixels.val[0] = vmovl_u8(vld1_u8(gray_frame_data + i0 + col));       // Pixel 1
-            gray_pixels.val[1] = vmovl_u8(vld1_u8(gray_frame_data + i0 + 1 + col));   // Pixel 2
-            gray_pixels.val[2] = vmovl_u8(vld1_u8(gray_frame_data + i0 + 2 + col));   // Pixel 3
-
-            gray_pixels.val[3] = vmovl_u8(vld1_u8(gray_frame_data + i1 + col));       // Pixel 4
-            gray_pixels.val[4] = vmovl_u8(vld1_u8(gray_frame_data + i1 + 2 + col));   // Pixel 6
-
-            gray_pixels.val[5] = vmovl_u8(vld1_u8(gray_frame_data + i2 + col));       // Pixel 7
-            gray_pixels.val[6] = vmovl_u8(vld1_u8(gray_frame_data + i2 + 1 + col));   // Pixel 8
-            gray_pixels.val[7] = vmovl_u8(vld1_u8(gray_frame_data + i2 + 2 + col));   // Pixel 9
-
-            Gx_vect =
-                    vabsq_s16(
-                            vaddq_s16(
-                                    vsubq_u16(
-                                            vshlq_n_u16(gray_pixels.val[1], 1),
-                                            vshlq_n_u16(gray_pixels.val[6], 1)  // 2*P2 - 2*P8
-                                    ),
-                                    vsubq_s16(                                  // (P1+P3) - (P7+P9)
-                                            vaddq_u16(                          // P1 + P3
-                                                    gray_pixels.val[0],
-                                                    gray_pixels.val[2]
+            G_vect =
+                    vaddq_u16(
+                            vabsq_s16(
+                                    vaddq_s16(                                          // E =
+                                            vsubq_s16(
+                                                    vshlq_n_u16(gray_pixels.val[1], 1),
+                                                    vshlq_n_u16(gray_pixels.val[6], 1)  // C = 2*P2 - 2*P8
                                             ),
-                                            vaddq_u16(                          // P7 + P9
-                                                    gray_pixels.val[5],
-                                                    gray_pixels.val[7]
+                                            vsubq_s16(                                  // D = A - B
+                                                    vaddq_u16(                          // A = P1 + P3
+                                                            gray_pixels.val[0],
+                                                            gray_pixels.val[2]
+                                                    ),
+                                                    vaddq_u16(                          // B = P7 + P9
+                                                            gray_pixels.val[5],
+                                                            gray_pixels.val[7]
+                                                    )
+                                            )
+                                    )
+                            ),
+                            vabsq_s16(
+                                    vaddq_s16(
+                                            vsubq_s16(
+                                                    vshlq_n_u16(gray_pixels.val[4], 1),
+                                                    vshlq_n_u16(gray_pixels.val[3], 1)  // 2*P6 - 2*P4
+                                            ),
+                                            vsubq_s16(                                  // (P3+P9) - (P1+P7)
+                                                    vaddq_u16(                          // P3 + P9
+                                                            gray_pixels.val[2],
+                                                            gray_pixels.val[7]
+                                                    ),
+                                                    vaddq_u16(                          // P1 + P7
+                                                            gray_pixels.val[0],
+                                                            gray_pixels.val[5]
+                                                    )
                                             )
                                     )
                             )
                     );
 
-            Gy_vect =
-                    vabsq_s16(
-                            vaddq_s16(
-                                    vsubq_u16(
-                                            vshlq_n_u16(gray_pixels.val[4], 1),
-                                            vshlq_n_u16(gray_pixels.val[3], 1)  // 2*P6 - 2*P4
-                                    ),
-                                    vsubq_s16(                                  // (P3+P9) - (P1+P7)
-                                            vaddq_u16(                          // P3 + P9
-                                                    gray_pixels.val[2],
-                                                    gray_pixels.val[7]
-                                            ),
-                                            vaddq_u16(                          // P1 + P7
-                                                    gray_pixels.val[0],
-                                                    gray_pixels.val[5]
-                                            )
-                                    )
-                            )
-                    );
+            vst1_u8(sobl_frame_data + gray_index, vqmovn_u16(G_vect));
+            i += dataSize;
 
-            // time 2 stop
-            auto stop2 = high_resolution_clock::now();
-
-            oldTime += duration_cast<nanoseconds>(stop1 - start1).count() * decimal_places;
-            newTime += duration_cast<nanoseconds>(stop2 - start2).count() * decimal_places;
-            c++;
-
-            // Gradient Approximation
-            G_vect = vaddq_u16(Gx_vect, Gy_vect);
-
-            // Saturated move the G_vect values to a uint8_t, then write to the sobel image 8 pixels at a time
-            vst1_u8(sobl_frame_data + (sobl_cols * row) + col, vqmovn_u16(G_vect));
-        }
-
-        for (int r_col = sobl_col_stop; r_col < sobl_cols; r_col++) {
+        } else {
 
             // If there's some remaining pixels, filter them one by one
             // Reusing variables here
             G_vect = (uint16x8_t) {
-                    gray_frame_data[i0 + r_col], gray_frame_data[i0 + 1 + r_col], gray_frame_data[i0 + 2 + r_col],
-                    gray_frame_data[i1 + r_col], gray_frame_data[i1 + 2 + r_col],
-                    gray_frame_data[i2 + r_col], gray_frame_data[i2 + 1 + r_col], gray_frame_data[i2 + 2 + r_col]
+                    gray_frame_data[i], gray_frame_data[i + 1], gray_frame_data[i + 2],
+                    gray_frame_data[i + orig_cols], gray_frame_data[i + 2 + orig_cols],
+                    gray_frame_data[i + (orig_cols * 2)], gray_frame_data[i + 1 + (orig_cols * 2)],
+                    gray_frame_data[i + 2 + (orig_cols * 2)]
             };
 
             // Calculate G from the pixels, lots of conversions at once to avoid using more variables
@@ -248,16 +185,20 @@ void filter(Mat *origImg, Mat *grayImg, Mat *soblImg, uint8_t thread_id) {
                 abs(vaddlvq_s16(vmulq_s16(Gy_kernel_small, G_vect)));
 
             // Write the pixel to the sobel image
-            sobl_frame_data[sobl_cols * row + r_col] = saturate_cast<uchar>(G);
+            sobl_frame_data[gray_index] = saturate_cast<uchar>(G);
+            i++;
+        }
+
+        if (i % orig_cols == 0) {
+            row_count++;
         }
     }
 }
 
 int main() {
 
-
     // Get the name of the file the user is requesting
-    string usr_arg = "/Users/brycemelander/Documents/GitHub/CPE442/Media/valve_resize.PNG";
+    string usr_arg = "/Users/brycemelander/Documents/GitHub/CPE442/Media/valve.PNG";
 
     // init image Mats
     Mat usr_img = imread(usr_arg);
@@ -273,15 +214,6 @@ int main() {
 
         filter(&usr_img, &gray_img, &sobl_img, i);
     }
-
-    auto time1 = oldTime / c;
-    auto time2 = newTime / c;
-
-    printf(
-            "Old Time Avg: %lld.%lld ns \nNew Time Avg: %lld.%lld ns \n\n",
-            time1 / decimal_places, time1 % decimal_places,
-            time2 / decimal_places, time2 % decimal_places
-    );
 
     resize(sobl_img, sobl_img, Size(), 10, 10, INTER_LANCZOS4);
     imshow(usr_arg, sobl_img);
