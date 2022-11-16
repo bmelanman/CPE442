@@ -25,6 +25,8 @@ const uint8x8_t Red_vect = vdup_n_u8(R_CONST);      // 0.2126 * 256
 const int16x8_t Gx_kernel_small = {-1, 0, 1, -2, 2, -1, 0, 1};
 const int16x8_t Gy_kernel_small = {1, 2, 1, 0, 0, -1, -2, -1};
 
+int counter = 0;
+
 void filter(Mat *origImg, Mat *grayImg, Mat *soblImg, uint8_t thread_id) {
 
     uchar *orig_frame_data;
@@ -96,22 +98,20 @@ void filter(Mat *origImg, Mat *grayImg, Mat *soblImg, uint8_t thread_id) {
 
     /***** Sobel conversion *****/
 
-    int row_count = 0;
-    int gray_index;
+    int row_count = thread_id * orig_rows / NUM_THREADS;
     int dataSize = 8;
 
-    int sobl_start = thread_id * (orig_rows * orig_cols) / NUM_THREADS;
-    int sobl_stop = (thread_id + 1) * ((orig_rows * orig_cols) - (2 * orig_cols) - 2) / NUM_THREADS;
+    int sobl_start = (thread_id * orig_rows / NUM_THREADS) * orig_cols;
+    int sobl_stop = ((thread_id + 1) * orig_rows / NUM_THREADS) * orig_cols - 1;
 
     if (thread_id == NUM_THREADS - 1) {
-        sobl_stop = (orig_rows - 2) * (orig_cols - 2);
+        sobl_stop = (orig_rows * orig_cols - 1) - (2 * orig_cols) - 2;
     }
 
     for (int i = sobl_start; i < sobl_stop;) {
 
-        gray_index = i - (2 * row_count);
 
-        if (i + dataSize < orig_cols * row_count) {
+        if (i + dataSize < orig_cols * (row_count + 1)) {
 
             // 8 pixel processing
             // Load pixel sets into vectors
@@ -126,7 +126,7 @@ void filter(Mat *origImg, Mat *grayImg, Mat *soblImg, uint8_t thread_id) {
             gray_pixels.val[6] = vmovl_u8(vld1_u8(gray_frame_data + i + 1 + (orig_cols << 1)));   // Pixel 8
             gray_pixels.val[7] = vmovl_u8(vld1_u8(gray_frame_data + i + 2 + (orig_cols << 1)));   // Pixel 9
 
-            G_vect =
+            G_vect = (
                     vaddq_u16(
                             vabsq_s16(
                                     vaddq_s16(                                          // E =
@@ -164,9 +164,10 @@ void filter(Mat *origImg, Mat *grayImg, Mat *soblImg, uint8_t thread_id) {
                                             )
                                     )
                             )
-                    );
+                    )
+            );
 
-            vst1_u8(sobl_frame_data + gray_index, vqmovn_u16(G_vect));
+            vst1_u8(sobl_frame_data + i - (2 * row_count), vqmovn_u16(G_vect));
             i += dataSize;
 
         } else {
@@ -185,7 +186,7 @@ void filter(Mat *origImg, Mat *grayImg, Mat *soblImg, uint8_t thread_id) {
                 abs(vaddlvq_s16(vmulq_s16(Gy_kernel_small, G_vect)));
 
             // Write the pixel to the sobel image
-            sobl_frame_data[gray_index] = saturate_cast<uchar>(G);
+            sobl_frame_data[i - (2 * row_count)] = saturate_cast<uchar>(G);
             i++;
         }
 
@@ -193,6 +194,7 @@ void filter(Mat *origImg, Mat *grayImg, Mat *soblImg, uint8_t thread_id) {
             row_count++;
         }
     }
+    counter = max(counter, row_count);
 }
 
 int main() {
@@ -206,6 +208,7 @@ int main() {
     // Calculate starts and stops
     int num_rows = usr_img.rows;
     int num_cols = usr_img.cols;
+
     Mat gray_img(num_rows, num_cols, CV_8UC1);
     Mat sobl_img(num_rows - 2, num_cols - 2, CV_8UC1);
 

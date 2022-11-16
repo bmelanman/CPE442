@@ -22,11 +22,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a8f00745-0ce2-4552-9949-faddfa18afc9" name="Changes" comment="updated">
+      <change beforePath="$PROJECT_DIR$/../Lab5/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab5/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Lab5/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab5/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Lab6/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab6/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lab6/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab6/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lab6/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab6/src/main.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jon5.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/jon5.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -142,7 +141,7 @@
       <workItem from="1667944379348" duration="2424000" />
       <workItem from="1668059859352" duration="8090000" />
       <workItem from="1668099756714" duration="17206000" />
-      <workItem from="1668496468397" duration="9190000" />
+      <workItem from="1668496468397" duration="16583000" />
     </task>
     <task id="LOCAL-00001" summary="updated">
       <created>1667690137061</created>
@@ -208,6 +207,12 @@
           <url>file://$PROJECT_DIR$/jon5.cpp</url>
           <line>133</line>
           <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <condition expression="row_count &gt; (orig_cols / 4) - 3" language="ObjectiveC" />
+          <url>file://$PROJECT_DIR$/main.cpp</url>
+          <line>193</line>
+          <option name="timeStamp" value="32" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
