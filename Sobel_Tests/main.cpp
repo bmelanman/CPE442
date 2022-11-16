@@ -10,6 +10,7 @@ using namespace cv;
 #define G_CONST 183
 #define R_CONST 54
 #define NUM_THREADS 4
+#define DATA_SIZE 8
 
 typedef struct uint16x8x8_t {
     uint16x8_t val[8];
@@ -25,8 +26,6 @@ const uint8x8_t Red_vect = vdup_n_u8(R_CONST);      // 0.2126 * 256
 const int16x8_t Gx_kernel_small = {-1, 0, 1, -2, 2, -1, 0, 1};
 const int16x8_t Gy_kernel_small = {1, 2, 1, 0, 0, -1, -2, -1};
 
-int counter = 0;
-
 void filter(Mat *origImg, Mat *grayImg, Mat *soblImg, uint8_t thread_id) {
 
     uchar *orig_frame_data;
@@ -34,32 +33,28 @@ void filter(Mat *origImg, Mat *grayImg, Mat *soblImg, uint8_t thread_id) {
     uchar *sobl_frame_data = soblImg->data;
 
     uint8x8x3_t BGR_values;
-    uint16x8x8_t gray_pixels;
-//    uint8x8x8_t gray_pixels_test;
-//    int16x8_t Gx_vect, Gy_vect;
-    uint16x8_t G_vect;
-//    int i0, i1, i2, G;
+    uint16x8x8_t gray_pixels;    uint16x8_t G_vect;
     int G;
 
     int orig_rows = origImg->rows;
     int orig_cols = origImg->cols;
     int orig_num_pixels = orig_rows * orig_cols;
-//    int sobl_cols = orig_cols - 2;
 
     // Grayscale filter variables
-    int gray_remainder_pixels = orig_num_pixels % (8 * NUM_THREADS);
+    int gray_remainder_pixels = orig_num_pixels % (DATA_SIZE * NUM_THREADS);
+
     int gray_start = thread_id * (orig_num_pixels - gray_remainder_pixels) / NUM_THREADS;
     int gray_stop = (thread_id + 1) * (orig_num_pixels - gray_remainder_pixels) / NUM_THREADS - 1;
 
     // Sobel filter variables
-//    int sobl_start = thread_id * (orig_rows - 6) / NUM_THREADS;
-//    int sobl_stop = (thread_id + 1) * orig_rows / NUM_THREADS;
-//    int sobl_remainder = (sobl_cols) % 8;
-//    int sobl_col_stop = sobl_cols - sobl_remainder;
+    int row_count = thread_id * orig_rows / NUM_THREADS;
 
-//    if (thread_id == NUM_THREADS - 1) {
-//        sobl_stop = orig_rows - 2;
-//    }
+    int sobl_start = thread_id * orig_num_pixels / NUM_THREADS;
+    int sobl_stop = (thread_id + 1) * orig_num_pixels / NUM_THREADS - 1;
+
+    if (thread_id == NUM_THREADS - 1) {
+        sobl_stop = (orig_num_pixels - 1) - (2 * orig_cols) - 2;
+    }
 
     /***** Grayscale conversion *****/
 
@@ -68,7 +63,7 @@ void filter(Mat *origImg, Mat *grayImg, Mat *soblImg, uint8_t thread_id) {
     gray_frame_data = grayImg->data + gray_start;
 
     // Go through the image 8 pixels at a time
-    for (int i = gray_start; i < gray_stop; i += 8, orig_frame_data += 24, gray_frame_data += 8) {
+    for (int i = gray_start; i < gray_stop; i += DATA_SIZE, orig_frame_data += 24, gray_frame_data += DATA_SIZE) {
 
         // Load 8 pixels in a vector
         BGR_values = vld3_u8(orig_frame_data);
@@ -98,20 +93,9 @@ void filter(Mat *origImg, Mat *grayImg, Mat *soblImg, uint8_t thread_id) {
 
     /***** Sobel conversion *****/
 
-    int row_count = thread_id * orig_rows / NUM_THREADS;
-    int dataSize = 8;
-
-    int sobl_start = (thread_id * orig_rows / NUM_THREADS) * orig_cols;
-    int sobl_stop = ((thread_id + 1) * orig_rows / NUM_THREADS) * orig_cols - 1;
-
-    if (thread_id == NUM_THREADS - 1) {
-        sobl_stop = (orig_rows * orig_cols - 1) - (2 * orig_cols) - 2;
-    }
-
     for (int i = sobl_start; i < sobl_stop;) {
 
-
-        if (i + dataSize < orig_cols * (row_count + 1)) {
+        if (i + DATA_SIZE < orig_cols * (row_count + 1)) {
 
             // 8 pixel processing
             // Load pixel sets into vectors
@@ -168,7 +152,7 @@ void filter(Mat *origImg, Mat *grayImg, Mat *soblImg, uint8_t thread_id) {
             );
 
             vst1_u8(sobl_frame_data + i - (2 * row_count), vqmovn_u16(G_vect));
-            i += dataSize;
+            i += DATA_SIZE;
 
         } else {
 
@@ -194,13 +178,12 @@ void filter(Mat *origImg, Mat *grayImg, Mat *soblImg, uint8_t thread_id) {
             row_count++;
         }
     }
-    counter = max(counter, row_count);
 }
 
 int main() {
 
     // Get the name of the file the user is requesting
-    string usr_arg = "/Users/brycemelander/Documents/GitHub/CPE442/Media/valve.PNG";
+    string usr_arg = "/Users/brycemelander/Documents/GitHub/CPE442/Media/valve_resize.PNG";
 
     // init image Mats
     Mat usr_img = imread(usr_arg);
