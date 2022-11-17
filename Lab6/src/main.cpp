@@ -144,7 +144,7 @@ int main(int argc, char const *argv[]) {
         imshow(usrVideo_location, sobl_frame);
     }
 
-    // waitKey technically displays the image
+    // waitKey displays the final image
     waitKey(1);
 
     // set the done flag high to release the threads from the filters
@@ -171,12 +171,10 @@ int main(int argc, char const *argv[]) {
 /***** Project Functions *****/
 
 /**
- * A grayscale filter for color images, applies the ITU-R (BT.709) grayscale algorithm. The function utilizes ARM neon
- * vectors to optimize the speed of the grayscale algorithm.
- * @param image An image
- * @param grayscale A grayscale image
- * Takes a grayscale image and applies the sobel operator to the given image.
- * @param threadArgs - A struct with variables for the sobel filter
+ * A Sobel filter for color images.
+ * It applies the ITU-R (BT.709) grayscale algorithm and then uses the sobel operator on the grayscale image.
+ * The function utilizes ARM neon vectors to optimize the speed of the grayscale algorithm.
+ * @param threadArgs
  */
 void *filter(void *threadArgs) {
 
@@ -188,10 +186,10 @@ void *filter(void *threadArgs) {
     uint8_t thread_id = thread_data->thread_id;
 
     /***** Filter variables *****/
-    uint8x8x3_t BGR_values;
     uint16x8x8_t gray_pixels;
-    uint16x8_t G_vect;
-    int G;
+    uint8x8x3_t BGR_values;
+    uint16x8_t vector_storage;
+    int G, row_count;
 
     int orig_rows = thread_data->orig_frame->rows;
     int orig_cols = thread_data->orig_frame->cols;
@@ -204,7 +202,6 @@ void *filter(void *threadArgs) {
     int gray_stop = (thread_id + 1) * (orig_num_pixels - gray_remainder_pixels) / NUM_THREADS - 1;
 
     // Sobel filter variables
-    int row_count;
 
     int sobl_start = thread_id * orig_rows * orig_cols / NUM_THREADS;
     int sobl_stop = (thread_id + 1) * orig_rows * orig_cols / NUM_THREADS - 1;
@@ -235,14 +232,19 @@ void *filter(void *threadArgs) {
             BGR_values = vld3_u8(orig_frame_data);
 
             // Multiply each pixel by the predefined grayscale ratios
-            // Reusing G_vect to use fewer variables overall
-            G_vect = vmull_u8(BGR_values.val[0], Blue_vect);
+            // Reusing vector_storage to use fewer variables overall
+//            vector_storage = vmull_u8(BGR_values.val[0], Blue_vect);
 
-            G_vect = vmlal_u8(G_vect, BGR_values.val[1], Green_vect);
-            G_vect = vmlal_u8(G_vect, BGR_values.val[2], Red_vect);
+//            vector_storage = vmlal_u8(vmull_u8(BGR_values.val[0], Blue_vect), BGR_values.val[1], Green_vect);
+            vector_storage =
+                    vmlal_u8(
+                            vmlal_u8(
+                                    vmull_u8(BGR_values.val[0], Blue_vect),
+                                    BGR_values.val[1], Green_vect),
+                            BGR_values.val[2], Red_vect);
 
             // Write 8 pixels at a time to grayscale frame
-            vst1_u8(gray_frame_data, vshrn_n_u16(G_vect, 8));
+            vst1_u8(gray_frame_data, vshrn_n_u16(vector_storage, 8));
         }
 
         // If the end of the image has fewer than 8 pixels, process the remainder one pixel at a time
@@ -281,7 +283,7 @@ void *filter(void *threadArgs) {
                 gray_pixels.val[6] = vmovl_u8(vld1_u8(gray_frame_data + i + 1 + (orig_cols << 1)));   // Pixel 8
                 gray_pixels.val[7] = vmovl_u8(vld1_u8(gray_frame_data + i + 2 + (orig_cols << 1)));   // Pixel 9
 
-                G_vect = (
+                vector_storage = (
                         vaddq_u16(
                                 vabsq_s16(
                                         vaddq_s16(                                          // E =
@@ -322,16 +324,16 @@ void *filter(void *threadArgs) {
                         )
                 );
 
-                vst1_u8(sobl_frame_data + i - (2 * row_count), vqmovn_u16(G_vect));
+                vst1_u8(sobl_frame_data + i - (2 * row_count), vqmovn_u16(vector_storage));
                 i += DATA_SIZE;
 
             }
 
-            // If the index is not at a position where we can grab 8 pixels, we filter them one by one
+                // If the index is not at a position where we can grab 8 pixels, we filter them one by one
             else {
 
                 // Reusing variables here
-                G_vect = (uint16x8_t) {
+                vector_storage = (uint16x8_t) {
                         gray_frame_data[i], gray_frame_data[i + 1], gray_frame_data[i + 2],
                         gray_frame_data[i + orig_cols], gray_frame_data[i + 2 + orig_cols],
                         gray_frame_data[i + (orig_cols * 2)], gray_frame_data[i + 1 + (orig_cols * 2)],
@@ -339,8 +341,8 @@ void *filter(void *threadArgs) {
                 };
 
                 // Calculate G from the pixels, lots of conversions at once to avoid using more variables
-                G = abs(vaddlvq_s16(vmulq_s16(Gx_kernel_small, G_vect))) +
-                    abs(vaddlvq_s16(vmulq_s16(Gy_kernel_small, G_vect)));
+                G = abs(vaddlvq_s16(vmulq_s16(Gx_kernel_small, vector_storage))) +
+                    abs(vaddlvq_s16(vmulq_s16(Gy_kernel_small, vector_storage)));
 
                 // Write the pixel to the sobel image
                 sobl_frame_data[i - (2 * row_count)] = saturate_cast<uchar>(G);

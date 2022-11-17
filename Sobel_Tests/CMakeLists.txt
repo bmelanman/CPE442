@@ -18,6 +18,7 @@ add_executable(gavin main2.cpp)
 add_executable(jonch josh5.cpp lib/pthread_barrier.cpp lib/pthread_barrier.h)
 add_executable(jonny jon5.cpp lib/pthread_barrier.cpp lib/pthread_barrier.h)
 add_executable(blase blase4.cpp lib/pthread_barrier.cpp lib/pthread_barrier.h)
+add_executable(test testing.cpp)
 
 # Declare the target and link the OpenCV libs to it
 target_link_libraries(brick ${OpenCV_LIBS})
