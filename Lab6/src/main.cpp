@@ -233,9 +233,6 @@ void *filter(void *threadArgs) {
 
             // Multiply each pixel by the predefined grayscale ratios
             // Reusing vector_storage to use fewer variables overall
-//            vector_storage = vmull_u8(BGR_values.val[0], Blue_vect);
-
-//            vector_storage = vmlal_u8(vmull_u8(BGR_values.val[0], Blue_vect), BGR_values.val[1], Green_vect);
             vector_storage =
                     vmlal_u8(
                             vmlal_u8(
@@ -324,6 +321,7 @@ void *filter(void *threadArgs) {
                         )
                 );
 
+                // Store vector into the sobel frame
                 vst1_u8(sobl_frame_data + i - (2 * row_count), vqmovn_u16(vector_storage));
                 i += DATA_SIZE;
 
