@@ -7,23 +7,18 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_OSX_ARCHITECTURES "arm64")
 
-add_compile_options(-Wall -pthread -O0)
+add_compile_options(-Wall -pthread -O0 -framework OpenCL)
 
 # Get OpenCV libs
 find_package(OpenCV REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIRS})
 
+# Get OpenCL libs
+find_package(OpenCL REQUIRED)
+
 add_executable(brick main.cpp)
-add_executable(gavin main2.cpp)
-add_executable(jonch josh5.cpp lib/pthread_barrier.cpp lib/pthread_barrier.h)
-add_executable(jonny jon5.cpp lib/pthread_barrier.cpp lib/pthread_barrier.h)
-add_executable(blase blase4.cpp lib/pthread_barrier.cpp lib/pthread_barrier.h)
-add_executable(test testing.cpp)
 
 # Declare the target and link the OpenCV libs to it
 target_link_libraries(brick ${OpenCV_LIBS})
-target_link_libraries(gavin ${OpenCV_LIBS})
-target_link_libraries(jonch ${OpenCV_LIBS})
-target_link_libraries(jonny ${OpenCV_LIBS})
-target_link_libraries(blase ${OpenCV_LIBS})
+target_link_libraries(brick OpenCL::OpenCL)
 

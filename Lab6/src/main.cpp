@@ -137,7 +137,7 @@ int main(int argc, char const *argv[]) {
         // Wait for the image to be processed
         pthread_barrier_wait(&filter_barrier);
 
-        // let the image display for a second
+        // waitKey displays the image
         waitKey(1);
 
         // Display the frame
@@ -169,7 +169,6 @@ int main(int argc, char const *argv[]) {
 }
 
 /***** Project Functions *****/
-
 /**
  * A Sobel filter for color images.
  * It applies the ITU-R (BT.709) grayscale algorithm and then uses the sobel operator on the grayscale image.
