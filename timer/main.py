@@ -28,7 +28,7 @@ def timer(main_dir, media_dir, num_tests):
         output = re.findall(r'\d*[.]\d+', str(process.communicate()[1]))
 
         # Make sure video data was properly collected
-        if video_data != 5:
+        if len(video_data) != 5:
             print("Video data error: " + ' '.join(video_data))
             continue
 
