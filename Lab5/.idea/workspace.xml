@@ -21,12 +21,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f377c617-8cf1-4092-91fe-fd16bf49fc42" name="Changes" comment="updated">
-      <change afterPath="$PROJECT_DIR$/../Lab6/src/main" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../timer/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../timer/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../timer/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../timer/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../timer/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../timer/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/../timer/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../timer/requirements.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main" beforeDir="false" afterPath="$PROJECT_DIR$/src/main" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Lab6/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab6/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel_Tests/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Sobel_Tests/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -195,7 +193,7 @@
       <workItem from="1668097137368" duration="1838000" />
       <workItem from="1668146388379" duration="227000" />
       <workItem from="1668565348603" duration="9000" />
-      <workItem from="1669915544377" duration="897000" />
+      <workItem from="1669915544377" duration="909000" />
     </task>
     <task id="LOCAL-00001" summary="migrated to CLion">
       <created>1666414107358</created>
