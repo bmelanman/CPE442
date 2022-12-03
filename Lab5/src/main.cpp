@@ -106,10 +106,11 @@ int main(int argc, char const *argv[]) {
     VideoCapture usrVideo(usrVideo_location);
     auto fps = (uint8_t) usrVideo.get(CAP_PROP_FPS);
     int num_frames = (int) usrVideo.get(CAP_PROP_FRAME_COUNT);
+
     printf("Video Resolution: %dx%d\n", (int) usrVideo.get(CAP_PROP_FRAME_HEIGHT),
            (int) usrVideo.get(CAP_PROP_FRAME_WIDTH));
-    printf("Video Length: %d.%d seconds\n", num_frames / fps, (num_frames / fps) % 1);
-    printf("Number of threads: %d\n", NUM_THREADS);
+    printf("Number of frames: %d\n", num_frames);
+    printf("Video Length: %d.%d seconds\n\n", num_frames / fps, (num_frames / fps) % 1);
 
     // Init Mats for each filter
     int usrVideo_rows = (int) usrVideo.get(4);
