@@ -13,24 +13,30 @@ def timer(main_dir, media_dir, num_tests):
     num_frames = 0
 
     for _ in range(num_tests):
-        num_frames = 0
 
         # Run the code to be tested
         process = subprocess.Popen("time -p " + main_dir + "main " + media_dir, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
-        # While it is running, check for stop signal
+        # Wait for the filter to finish, check for stop if necessary
         while process.poll() is None:
             pass
 
-        num_frames = int(re.findall(r'\d+', str(process.communicate()[0]))[2])
+        # Get frame rate data
+        video_data = re.findall(r'\d+', str(process.communicate()[0]))
+
+        # Get time data
         output = re.findall(r'\d*[.]\d+', str(process.communicate()[1]))
 
+        # Make sure video data was properly collected
+        if video_data != 5:
+            continue
+
+        # Make sure time data was collected
         if len(output) != 3:
             print("Time output error: " + str(output))
             exit(-1)
 
-        if num_frames == 0:
-            continue
+        num_frames = video_data[2]
 
         real_time.append(float(output[0]))
         user_time.append(float(output[1]))
