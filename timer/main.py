@@ -32,8 +32,11 @@ def timer(main_dir, media_dir, num_tests):
         # if loop_continue:
         #     continue
 
-        print(re.findall(r'\d*', str(process.communicate()[0])))
+        num_frames = (re.findall(r'\d*', ' '.join(str(process.communicate()[0]))))
         output = re.findall(r'\d*[.]\d+', str(process.communicate()[1]))
+
+        print(num_frames)
+        num_frames = 1
 
         if len(output) != 3:
             print("Time output error: " + str(output))
