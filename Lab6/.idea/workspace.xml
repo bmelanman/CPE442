@@ -21,12 +21,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f377c617-8cf1-4092-91fe-fd16bf49fc42" name="Changes" comment="updated">
-      <change beforePath="$PROJECT_DIR$/../Lab5/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab5/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main 2" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/timing.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Sobel_Tests/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Sobel_Tests/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../timer/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../timer/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../timer/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../timer/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../timer/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../timer/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/../timer/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../timer/requirements.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -86,7 +86,7 @@
       <recent name="$PROJECT_DIR$/cmake-build-default" />
     </key>
   </component>
-  <component name="RunManager" selected="Makefile Target.clean (1)">
+  <component name="RunManager" selected="Makefile Target.all">
     <configuration name="Lab6" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Lab6" TARGET_NAME="Lab6" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Lab6" RUN_TARGET_NAME="Lab6">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -107,6 +107,12 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration name="all" type="MAKEFILE_TARGET_RUN_CONFIGURATION" factoryName="Makefile" temporary="true">
+      <makefile filename="$PROJECT_DIR$/src/Makefile" target="all" workingDirectory="" arguments="">
+        <envs />
+      </makefile>
+      <method v="2" />
+    </configuration>
     <configuration name="clean (1)" type="MAKEFILE_TARGET_RUN_CONFIGURATION" factoryName="Makefile" temporary="true">
       <makefile filename="$PROJECT_DIR$/src/Makefile" target="clean" workingDirectory="" arguments="">
         <envs />
@@ -121,12 +127,6 @@
     </configuration>
     <configuration name="compile" type="MAKEFILE_TARGET_RUN_CONFIGURATION" factoryName="Makefile" temporary="true">
       <makefile filename="$PROJECT_DIR$/src/Makefile" target="compile" workingDirectory="" arguments="">
-        <envs />
-      </makefile>
-      <method v="2" />
-    </configuration>
-    <configuration name="lib" type="MAKEFILE_TARGET_RUN_CONFIGURATION" factoryName="Makefile" temporary="true">
-      <makefile filename="$PROJECT_DIR$/src/Makefile" target="lib" workingDirectory="" arguments="">
         <envs />
       </makefile>
       <method v="2" />
@@ -149,18 +149,18 @@
       <item itemvalue="CMake Application.Lab6" />
       <item itemvalue="Makefile Target.clean" />
       <item itemvalue="Makefile Target.compile" />
-      <item itemvalue="Makefile Target.lib" />
       <item itemvalue="Makefile Target.src" />
       <item itemvalue="Makefile Target.run" />
+      <item itemvalue="Makefile Target.all" />
       <item itemvalue="Makefile Target.clean (1)" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Makefile Target.all" />
         <item itemvalue="Makefile Target.clean (1)" />
         <item itemvalue="Makefile Target.run" />
         <item itemvalue="Makefile Target.compile" />
         <item itemvalue="Makefile Target.src" />
-        <item itemvalue="Makefile Target.lib" />
       </list>
     </recent_temporary>
   </component>
@@ -202,7 +202,7 @@
       <workItem from="1668496554883" duration="12149000" />
       <workItem from="1668625046942" duration="3950000" />
       <workItem from="1668642920108" duration="7114000" />
-      <workItem from="1669737336060" duration="5795000" />
+      <workItem from="1669737336060" duration="5895000" />
     </task>
     <task id="LOCAL-00001" summary="migrated to CLion">
       <created>1666414107358</created>

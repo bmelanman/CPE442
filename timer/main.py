@@ -1,7 +1,9 @@
+import re
 import subprocess
 import sys
 
 import ffmpeg
+import keyboard
 
 
 def timer(main_dir, media_dir, num_tests):
@@ -12,19 +14,40 @@ def timer(main_dir, media_dir, num_tests):
     sys_time = []
 
     for i in range(num_tests):
-        output = subprocess.getoutput("time -p " + main_dir + "/main " + media_dir).split()
+        loop_continue = False
 
-        if len(output) != 17:
+        # Run the code to be tested
+        process = subprocess.Popen("time -p " + main_dir + "main " + media_dir, shell=True,
+                                   stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
-            print("Time output error: " + ' '.join(output))
+        # While it is running, check for stop signal
+        while process.poll() is None:
+            if keyboard.is_pressed(" "):
+                keyboard.press("ESC")
+                process.kill()
+                loop_continue = True
+
+        while keyboard.is_pressed(" "):
+            pass
+
+        if loop_continue:
+            continue
+
+        output = re.findall(r'\d*[.]\d+', str(process.communicate()[1]))
+
+        if len(output) != 3:
+            print("Time output error: " + str(output))
             exit(-1)
 
-        real_time.append(float(output[12]))
-        user_time.append(float(output[14]))
-        sys_time.append(float(output[16]))
+        real_time.append(float(output[0]))
+        user_time.append(float(output[1]))
+        sys_time.append(float(output[2]))
 
     print("Number of tests: %d" % num_tests)
     print("")
+
+    if len(real_time) < 1:
+        return
 
     print("Frame rate avg:  %.3f" % (num_frames / (sum(real_time) / num_tests)))
     print("Real time avg:   %.3f" % (sum(real_time) / num_tests))
