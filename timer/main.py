@@ -37,6 +37,7 @@ def timer(main_dir, media_dir, num_tests):
         num_frames = re.findall(r'\d+', test_string)
         output = re.findall(r'\d*[.]\d+', str(process.communicate()[1]))
 
+        print(test_string)
         print(num_frames)
         num_frames = 1
 
