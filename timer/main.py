@@ -33,7 +33,7 @@ def timer(main_dir, media_dir, num_tests):
         #     continue
 
         print(re.findall(r'\d*[.]\d+', str(process.communicate()[0])))
-        output = re.findall(r'\d*[.]\d+', str(process.communicate()[1]))
+        output = re.findall(r'\d*', str(process.communicate()[1]))
         print(output)
 
         if len(output) != 3:
