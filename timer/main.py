@@ -32,7 +32,9 @@ def timer(main_dir, media_dir, num_tests):
         # if loop_continue:
         #     continue
 
-        num_frames = str(process.communicate()[0]).partition("\n")
+        # res=test_string[test_string.find(spl_word)+len(spl_word):]
+        test_string = str(process.communicate()[0])
+        num_frames = re.findall(r'\d+', test_string)
         output = re.findall(r'\d*[.]\d+', str(process.communicate()[1]))
 
         print(num_frames)
