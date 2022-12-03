@@ -37,7 +37,7 @@ def timer(main_dir, media_dir, num_tests):
             print("Time data error: " + str(output))
             exit(-1)
 
-        num_frames = video_data[2]
+        num_frames = int(video_data[2])
 
         real_time.append(float(output[0]))
         user_time.append(float(output[1]))
