@@ -82,13 +82,13 @@ def timer(main_dir, media_dir, num_tests, max_execution_time):
 def main():
     max_time = 30
 
-    if len(sys.argv) != 5:
+    if len(sys.argv) != 5 and len(sys.argv) != 6:
         print("Invalid args: " + str(len(sys.argv)))
         exit(-1)
     elif len(sys.argv) == 6:
         max_time = int(sys.argv[5])
     else:
-        print("Program timeout unspecified, automatically set to: 30 seconds")
+        print("Program timeout limit unspecified, automatically set to: 30 seconds")
 
     lab5_dir = sys.argv[1]
     lab6_dir = sys.argv[2]
@@ -96,7 +96,7 @@ def main():
     tests = int(sys.argv[4])
 
     subprocess.run(["clear"])
-    print("\n%%%%%%%%%% Sobel Filter Data Collection %%%%%%%%%%\n")
+    print("%%%%%%%%%% Sobel Filter Data Collection %%%%%%%%%%\n")
 
     timer(lab5_dir, video_dir, tests, max_time)
     timer(lab6_dir, video_dir, tests, max_time)
