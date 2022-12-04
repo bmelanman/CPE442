@@ -4,7 +4,7 @@ import sys
 import time
 
 
-def timer(main_dir, media_dir, num_tests, max_execution_time=30):
+def timer(main_dir, media_dir, num_tests, max_execution_time):
     real_time = []
     user_time = []
     sys_time = []
@@ -69,7 +69,7 @@ def timer(main_dir, media_dir, num_tests, max_execution_time=30):
 
     print("User time avg:   %.3f" % (sum(user_time) / num_tests))
     print("Sys time avg:    %.3f" % (sum(sys_time) / num_tests))
-    print("Total time avg:  %.3f" % sum(real_time))
+    print("Total test time: %.3f" % sum(real_time))
     print("")
 
     print("Raw Data: ")
@@ -80,23 +80,29 @@ def timer(main_dir, media_dir, num_tests, max_execution_time=30):
 
 
 def main():
+    max_time = 30
+
     if len(sys.argv) != 5:
         print("Invalid args: " + str(len(sys.argv)))
         exit(-1)
+    elif len(sys.argv) == 6:
+        max_time = int(sys.argv[5])
+    else:
+        print("Program timeout unspecified, automatically set to: 30 seconds")
 
     lab5_dir = sys.argv[1]
     lab6_dir = sys.argv[2]
     video_dir = sys.argv[3]
     tests = int(sys.argv[4])
 
+    subprocess.run(["clear"])
     print("\n%%%%%%%%%% Sobel Filter Data Collection %%%%%%%%%%\n")
 
-    timer(lab5_dir, video_dir, tests)
-    timer(lab6_dir, video_dir, tests)
+    timer(lab5_dir, video_dir, tests, max_time)
+    timer(lab6_dir, video_dir, tests, max_time)
 
     print("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n")
 
 
 if __name__ == '__main__':
-    subprocess.run(["clear"])
     main()
