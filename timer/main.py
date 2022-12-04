@@ -63,6 +63,7 @@ def timer(main_dir, media_dir, num_tests, max_execution_time):
     print("")
 
     print("Video Data: ")
+    print(video_data)
     print("Name: %s" % media_dir)
     print("Resolution: %dx%d" % int(video_data[0]), int(video_data[1]))
     print("Length: %d.%d seconds" % int(video_data[3]), int(video_data[4]))
