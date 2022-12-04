@@ -25,7 +25,7 @@ def timer(main_dir, media_dir, num_tests, max_execution_time=30):
                 # Kill 'time'
                 process.kill()
                 # Kill 'main'
-                subprocess.call("kill $(pidof main)")
+                subprocess.run("kill $(pidof main)")
                 # Inform the user
                 skip_count = skip_count + 1
                 print("Number of skipped tests: " + str(skip_count))
