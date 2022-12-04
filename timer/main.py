@@ -57,7 +57,7 @@ def timer(main_dir, media_dir, num_tests, max_execution_time=30):
     if len(real_time) <= 0 or len(user_time) <= 0 or len(sys_time) <= 0:
         return
 
-    print("Number of tests: %d" % num_tests)
+    print("Number of tests: %d" % (num_tests - skip_count))
     print("")
 
     print("Frame rate avg:  %.3f" % (num_frames / (sum(real_time) / num_tests)))
