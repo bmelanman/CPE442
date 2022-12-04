@@ -104,8 +104,8 @@ def main():
     tests = int(sys.argv[4])
 
     subprocess.run(["clear"])
-    print("%%%%%%%%%% Sobel Filter Data Collection %%%%%%%%%%\n")
-    print("Compiler flags used: -Ofast -march=native")
+    print("%%%%%%%%%% Sobel Filter Data Collection %%%%%%%%%%")
+    print("Compiler flags used: -Ofast -march=native\n")
 
     timer(lab5_dir, video_dir, tests, max_time)
     timer(lab6_dir, video_dir, tests, max_time)

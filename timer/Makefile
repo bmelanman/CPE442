@@ -16,4 +16,4 @@
 	make clean -C $(LAB5DIR) && make clean -C $(LAB6DIR)
 
   fix: restore_labs
-	pip install -r ./requirements.txt 
+	pip install -r ./requirements.txt
