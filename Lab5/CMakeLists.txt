@@ -5,7 +5,7 @@ project(Lab5)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_OSX_ARCHITECTURES "arm64")
 
-add_compile_options(-Wall -pthread -Ofast)
+add_compile_options(-Wall -pthread -O0)
 
 # Get OpenCV libs
 find_package(OpenCV REQUIRED)

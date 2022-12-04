@@ -245,7 +245,8 @@ void *filter(void *threadArgs) {
 
         // If the end of the image has fewer than 8 pixels, process the remainder one pixel at a time
         // This only runs for a maximum of 7 pixels , so single pixel operation is fine
-        for (int i = gray_stop; i < gray_stop + gray_remainder_pixels; i++, orig_frame_data += 3, gray_frame_data++) {
+        for (int i = gray_stop; i < gray_stop + gray_remainder_pixels; i++,
+                orig_frame_data += 3, gray_frame_data++) {
             *gray_frame_data = (uchar) (
                     ((*orig_frame_data * B_CONST) >> 8) +
                     ((*orig_frame_data * G_CONST) >> 8) +

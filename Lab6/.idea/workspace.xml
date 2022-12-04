@@ -22,7 +22,19 @@
   <component name="ChangeListManager">
     <list default="true" id="f377c617-8cf1-4092-91fe-fd16bf49fc42" name="Changes" comment="updated">
       <change beforePath="$PROJECT_DIR$/../Lab5/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab5/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lab5/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab5/src/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Lab5/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab5/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Lab5/cmake-build-debug/CMakeFiles/Lab5.dir/compiler_depend.make" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab5/cmake-build-debug/CMakeFiles/Lab5.dir/compiler_depend.make" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Lab5/cmake-build-debug/CMakeFiles/Lab5.dir/flags.make" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab5/cmake-build-debug/CMakeFiles/Lab5.dir/flags.make" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Lab5/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab5/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Lab5/src/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab5/src/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Lab5/src/main" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Lab5/src/main 2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/src/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sobel_Tests/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Sobel_Tests/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../timer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../timer/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../timer/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/../timer/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -198,7 +210,7 @@
       <workItem from="1668496554883" duration="12149000" />
       <workItem from="1668625046942" duration="3950000" />
       <workItem from="1668642920108" duration="7114000" />
-      <workItem from="1669737336060" duration="9412000" />
+      <workItem from="1669737336060" duration="12728000" />
     </task>
     <task id="LOCAL-00001" summary="migrated to CLion">
       <created>1666414107358</created>
