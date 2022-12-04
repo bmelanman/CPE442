@@ -88,9 +88,12 @@ def main():
     video_dir = sys.argv[3]
     tests = int(sys.argv[4])
 
+    print("\n%%%%%%%%%% Sobel Filter Data Collection %%%%%%%%%%\n")
+
     timer(lab5_dir, video_dir, tests)
     timer(lab6_dir, video_dir, tests)
 
+    print("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n")
 
 if __name__ == '__main__':
     main()
