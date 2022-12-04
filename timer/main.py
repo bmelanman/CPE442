@@ -10,6 +10,7 @@ def timer(main_dir, media_dir, num_tests, max_execution_time):
     sys_time = []
     video_data = 0
     skip_count = 0
+    num_frames = 0
 
     for _ in range(num_tests):
         run_time = time.time()
@@ -56,12 +57,19 @@ def timer(main_dir, media_dir, num_tests, max_execution_time):
     if len(real_time) <= 0 or len(user_time) <= 0 or len(sys_time) <= 0:
         return
 
+    num_frames = int(video_data[2])
+
     print("Number of tests: %d" % (num_tests - skip_count))
     print("")
 
-    print(video_data)
+    print("Video Data: ")
+    print("Name: %s" % media_dir)
+    print("Resolution: %dx%d" % int(video_data[0]), int(video_data[1]))
+    print("Length: %d.%d seconds" % int(video_data[3]), int(video_data[4]))
+    print("Number of Frames: %d" % num_frames)
+    print("")
 
-    print("Frame rate avg:  %.3f" % (video_data[2] / (sum(real_time) / num_tests)))
+    print("Frame rate avg:  %.3f" % (num_frames / (sum(real_time) / num_tests)))
     print("Real time avg:   %.3f" % (sum(real_time) / num_tests))
     print("Max real time:   %.3f" % max(real_time))
     print("Min real time:   %.3f" % min(real_time))
