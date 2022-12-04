@@ -21,6 +21,9 @@
   pi: clean_all
 	$(CC) -o $(TARGET) $(TARGET).cpp $(PKG_MNG) $(CFLAGS)
 
+  test: clean_all
+	g++ -o $(TARGET) $(TARGET).cpp $(PKG_MNG) -std=c++20 -g -Wall -Ofast -march=native
+
   lib: ../lib/$(LIB).cpp
 	$(CC) -c -o $(LIB).o ../lib/$(LIB).cpp $(CFLAGS)
 

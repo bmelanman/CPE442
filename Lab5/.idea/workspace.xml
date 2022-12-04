@@ -21,8 +21,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f377c617-8cf1-4092-91fe-fd16bf49fc42" name="Changes" comment="updated">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/src/Makefile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Lab6/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab6/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Lab6/src/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab6/src/Makefile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../timer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../timer/.idea/workspace.xml" afterDir="false" />
@@ -199,7 +197,7 @@
       <workItem from="1668097137368" duration="1838000" />
       <workItem from="1668146388379" duration="227000" />
       <workItem from="1668565348603" duration="9000" />
-      <workItem from="1669915544377" duration="4699000" />
+      <workItem from="1669915544377" duration="5382000" />
     </task>
     <task id="LOCAL-00001" summary="migrated to CLion">
       <created>1666414107358</created>
