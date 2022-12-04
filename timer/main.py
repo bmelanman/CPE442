@@ -1,25 +1,27 @@
 import re
 import subprocess
 import sys
-
-import sudo
+import time
 import keyboard
 
-
-def timer(main_dir, media_dir, num_tests):
+def timer(main_dir, media_dir, num_tests, max_execution_time = 30):
     real_time = []
     user_time = []
     sys_time = []
     num_frames = 0
 
     for _ in range(num_tests):
+        run_time = time.time()
 
         # Run the code to be tested
         process = subprocess.Popen("time -p " + main_dir + "main " + media_dir, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
         # Wait for the filter to finish, check for stop if necessary
         while process.poll() is None:
-            pass
+            if (time.time() - run_time) > max_execution_time:
+                keyboard.press_and_release('ESC')
+                process.kill()
+                break
 
         # Get frame rate data
         video_data = re.findall(r'\d+', str(process.communicate()[0]))
