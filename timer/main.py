@@ -41,12 +41,12 @@ def timer(main_dir, media_dir, num_tests, max_execution_time=30):
 
         # Make sure video data was properly collected
         if len(video_data) != 5:
-            print("Video data error: " + ' '.join(video_data))
+            print("Video data error, debug info: " + ' '.join(video_data))
             continue
 
         # Make sure time data was collected
         if len(output) != 3:
-            print("Time data error: " + str(output))
+            print("Time data error, debug info: " + str(output))
             exit(-1)
 
         num_frames = int(video_data[2])
@@ -98,4 +98,5 @@ def main():
 
 
 if __name__ == '__main__':
+    subprocess.run(["clear"])
     main()
