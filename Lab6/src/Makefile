@@ -22,7 +22,7 @@
 	$(CC) -o $(TARGET) $(TARGET).cpp $(PKG_MNG) $(CFLAGS)
 
   test: clean_all
-	g++ -o $(TARGET) $(TARGET).cpp $(PKG_MNG) -std=c++20 -g -Wall -Ofast -march=native
+	g++ -o $(TARGET) $(TARGET).cpp $(PKG_MNG) -std=c++20 -g -Wall -O0
 
   lib: ../lib/$(LIB).cpp
 	$(CC) -c -o $(LIB).o ../lib/$(LIB).cpp $(CFLAGS)
