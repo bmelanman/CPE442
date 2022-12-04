@@ -2,13 +2,13 @@
   CC = g++
 
   # Package Manager for opencv4
-  PKG_MNG = `pkg-config --cflags --libs opencv4` -lpthread
+  PKG_MNG = `pkg-config --cflags --libs opencv4` -lpthread -flax-vector-conversions
 
   # Compiler flags:
   #  -g    			adds debugging information to the executable file
   #  -Wall 			turns on most, but not all, compiler warnings
   #  -std=c++11 	implements all of the major features of the C++11 standard
-  CFLAGS  = -std=c++20 -g -Wall -O3 --with-isl -floop-block
+  CFLAGS  = -std=c++20 -g -Wall -Ofast -march=native
 
   # Target executables:
   TARGET = main
@@ -19,7 +19,7 @@
   default: clean_target src compile
 
   pi: clean_all
-	$(CC) -o $(TARGET) $(TARGET).cpp $(PKG_MNG) $(CFLAGS) -flax-vector-conversions
+	$(CC) -o $(TARGET) $(TARGET).cpp $(PKG_MNG) $(CFLAGS)
 
   lib: ../lib/$(LIB).cpp
 	$(CC) -c -o $(LIB).o ../lib/$(LIB).cpp $(CFLAGS)
