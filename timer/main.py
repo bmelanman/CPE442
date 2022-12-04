@@ -2,25 +2,34 @@ import re
 import subprocess
 import sys
 import time
-import keyboard
 
-def timer(main_dir, media_dir, num_tests, max_execution_time = 30):
+
+def timer(main_dir, media_dir, num_tests, max_execution_time=30):
     real_time = []
     user_time = []
     sys_time = []
     num_frames = 0
+    skip_count = 0
 
     for _ in range(num_tests):
         run_time = time.time()
 
         # Run the code to be tested
-        process = subprocess.Popen("time -p " + main_dir + "main " + media_dir, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        process = subprocess.Popen("time -p " + main_dir + "main " + media_dir, shell=True, stdout=subprocess.PIPE,
+                                   stderr=subprocess.PIPE)
 
-        # Wait for the filter to finish, check for stop if necessary
+        # Wait for the program to finish
         while process.poll() is None:
+            # Check if the program is taking too long
             if (time.time() - run_time) > max_execution_time:
-                keyboard.press_and_release('ESC')
+                # Kill 'time'
                 process.kill()
+                # Kill 'main'
+                subprocess.call("kill $(pidof main)")
+                # Inform the user
+                skip_count = skip_count + 1
+                print("Number of skipped tests: " + str(skip_count))
+                # Continue to the next test
                 break
 
         # Get frame rate data
