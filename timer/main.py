@@ -59,6 +59,9 @@ def timer(main_dir, media_dir, num_tests, max_execution_time):
 
     num_frames = int(video_data[2])
 
+    print("Process: %s" % main_dir)
+    print("")
+
     print("Number of tests: %d" % (num_tests - skip_count))
     print("")
 
