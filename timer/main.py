@@ -54,7 +54,7 @@ def timer(main_dir, media_dir, num_tests, max_execution_time):
         user_time.append(float(output[1]))
         sys_time.append(float(output[2]))
 
-    if not any(real_time) or any(user_time) or any(sys_time) or any(video_data):
+    if not any(real_time) or not any(user_time) or not any(sys_time) or not any(video_data):
         return
 
     num_frames = int(video_data[2])
