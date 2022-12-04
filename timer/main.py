@@ -25,8 +25,7 @@ def timer(main_dir, media_dir, num_tests, max_execution_time=30):
                 # Kill 'time'
                 process.kill()
                 # Kill 'main'
-                pid = subprocess.run(["pidof", "main"], stdout=subprocess.PIPE).stdout
-                print(pid)
+                pid = re.findall(r'\d+', str(subprocess.run(["pidof", "main"], stdout=subprocess.PIPE).stdout))
                 subprocess.run(["kill", pid])
                 # Inform the user
                 skip_count = skip_count + 1
