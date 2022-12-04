@@ -2,6 +2,7 @@ import re
 import subprocess
 import sys
 import time
+import sudo
 
 
 def timer(main_dir, media_dir, num_tests, max_execution_time=30):
@@ -25,7 +26,7 @@ def timer(main_dir, media_dir, num_tests, max_execution_time=30):
                 # Kill 'time'
                 process.kill()
                 # Kill 'main'
-                subprocess.run("kill $(pidof main)")
+                sudo.run_as_sudo("bryce", "kill $(pidof main)")
                 # Inform the user
                 skip_count = skip_count + 1
                 print("Number of skipped tests: " + str(skip_count))
