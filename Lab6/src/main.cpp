@@ -7,8 +7,7 @@
 *              speed of the video is dependant on the
 *              time it takes to process each frame.
 *
-* Author: Bryce Melander
-* Co-Authors: Blase Parker, Johnathan Espiritu
+* Authors: Bryce Melander, Blase Parker, Johnathan Espiritu
 *
 * Revisions: V4.1
 **********************************************************/

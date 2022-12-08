@@ -23,6 +23,8 @@
     <list default="true" id="f377c617-8cf1-4092-91fe-fd16bf49fc42" name="Changes" comment="updated">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Lab6/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab6/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Lab6/src/main" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Lab6/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab6/src/main.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../timer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../timer/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -85,9 +87,9 @@
     </key>
   </component>
   <component name="RunManager" selected="Makefile Target.clean (1)">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
     <configuration name="time_test" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="-p $CMakeCurrentProductFile$ coffee_10.mp4" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" WORKING_DIR="file://$PROJECT_DIR$/../Media" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Lab5" TARGET_NAME="Lab5" CONFIG_NAME="Debug" RUN_PATH="/usr/bin/time">
@@ -198,6 +200,7 @@
       <workItem from="1668146388379" duration="227000" />
       <workItem from="1668565348603" duration="9000" />
       <workItem from="1669915544377" duration="5981000" />
+      <workItem from="1670382861212" duration="90000" />
     </task>
     <task id="LOCAL-00001" summary="migrated to CLion">
       <created>1666414107358</created>
