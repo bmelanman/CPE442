@@ -53,10 +53,10 @@ RM = /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/brycemelander/Documents/GitHub/CPE442/Lab5
+CMAKE_SOURCE_DIR = /Users/brycemelander/Code/GitHub/CPE442/Lab5
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/brycemelander/Documents/GitHub/CPE442/Lab5/cmake-build-debug
+CMAKE_BINARY_DIR = /Users/brycemelander/Code/GitHub/CPE442/Lab5/cmake-build-debug
 
 # Include any dependencies generated for this target.
 include CMakeFiles/Lab5.dir/depend.make
@@ -72,30 +72,30 @@ include CMakeFiles/Lab5.dir/flags.make
 CMakeFiles/Lab5.dir/src/main.cpp.o: CMakeFiles/Lab5.dir/flags.make
 CMakeFiles/Lab5.dir/src/main.cpp.o: ../src/main.cpp
 CMakeFiles/Lab5.dir/src/main.cpp.o: CMakeFiles/Lab5.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/brycemelander/Documents/GitHub/CPE442/Lab5/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/Lab5.dir/src/main.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Lab5.dir/src/main.cpp.o -MF CMakeFiles/Lab5.dir/src/main.cpp.o.d -o CMakeFiles/Lab5.dir/src/main.cpp.o -c /Users/brycemelander/Documents/GitHub/CPE442/Lab5/src/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/brycemelander/Code/GitHub/CPE442/Lab5/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/Lab5.dir/src/main.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Lab5.dir/src/main.cpp.o -MF CMakeFiles/Lab5.dir/src/main.cpp.o.d -o CMakeFiles/Lab5.dir/src/main.cpp.o -c /Users/brycemelander/Code/GitHub/CPE442/Lab5/src/main.cpp
 
 CMakeFiles/Lab5.dir/src/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Lab5.dir/src/main.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/brycemelander/Documents/GitHub/CPE442/Lab5/src/main.cpp > CMakeFiles/Lab5.dir/src/main.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/brycemelander/Code/GitHub/CPE442/Lab5/src/main.cpp > CMakeFiles/Lab5.dir/src/main.cpp.i
 
 CMakeFiles/Lab5.dir/src/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Lab5.dir/src/main.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/brycemelander/Documents/GitHub/CPE442/Lab5/src/main.cpp -o CMakeFiles/Lab5.dir/src/main.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/brycemelander/Code/GitHub/CPE442/Lab5/src/main.cpp -o CMakeFiles/Lab5.dir/src/main.cpp.s
 
 CMakeFiles/Lab5.dir/lib/pthread_barrier.cpp.o: CMakeFiles/Lab5.dir/flags.make
 CMakeFiles/Lab5.dir/lib/pthread_barrier.cpp.o: ../lib/pthread_barrier.cpp
 CMakeFiles/Lab5.dir/lib/pthread_barrier.cpp.o: CMakeFiles/Lab5.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/brycemelander/Documents/GitHub/CPE442/Lab5/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Lab5.dir/lib/pthread_barrier.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Lab5.dir/lib/pthread_barrier.cpp.o -MF CMakeFiles/Lab5.dir/lib/pthread_barrier.cpp.o.d -o CMakeFiles/Lab5.dir/lib/pthread_barrier.cpp.o -c /Users/brycemelander/Documents/GitHub/CPE442/Lab5/lib/pthread_barrier.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/brycemelander/Code/GitHub/CPE442/Lab5/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Lab5.dir/lib/pthread_barrier.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Lab5.dir/lib/pthread_barrier.cpp.o -MF CMakeFiles/Lab5.dir/lib/pthread_barrier.cpp.o.d -o CMakeFiles/Lab5.dir/lib/pthread_barrier.cpp.o -c /Users/brycemelander/Code/GitHub/CPE442/Lab5/lib/pthread_barrier.cpp
 
 CMakeFiles/Lab5.dir/lib/pthread_barrier.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Lab5.dir/lib/pthread_barrier.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/brycemelander/Documents/GitHub/CPE442/Lab5/lib/pthread_barrier.cpp > CMakeFiles/Lab5.dir/lib/pthread_barrier.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/brycemelander/Code/GitHub/CPE442/Lab5/lib/pthread_barrier.cpp > CMakeFiles/Lab5.dir/lib/pthread_barrier.cpp.i
 
 CMakeFiles/Lab5.dir/lib/pthread_barrier.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Lab5.dir/lib/pthread_barrier.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/brycemelander/Documents/GitHub/CPE442/Lab5/lib/pthread_barrier.cpp -o CMakeFiles/Lab5.dir/lib/pthread_barrier.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/brycemelander/Code/GitHub/CPE442/Lab5/lib/pthread_barrier.cpp -o CMakeFiles/Lab5.dir/lib/pthread_barrier.cpp.s
 
 # Object files for target Lab5
 Lab5_OBJECTS = \
@@ -165,7 +165,7 @@ Lab5: /opt/homebrew/lib/libopencv_photo.4.6.0.dylib
 Lab5: /opt/homebrew/lib/libopencv_imgproc.4.6.0.dylib
 Lab5: /opt/homebrew/lib/libopencv_core.4.6.0.dylib
 Lab5: CMakeFiles/Lab5.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/brycemelander/Documents/GitHub/CPE442/Lab5/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable Lab5"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/brycemelander/Code/GitHub/CPE442/Lab5/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable Lab5"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Lab5.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -177,6 +177,6 @@ CMakeFiles/Lab5.dir/clean:
 .PHONY : CMakeFiles/Lab5.dir/clean
 
 CMakeFiles/Lab5.dir/depend:
-	cd /Users/brycemelander/Documents/GitHub/CPE442/Lab5/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/brycemelander/Documents/GitHub/CPE442/Lab5 /Users/brycemelander/Documents/GitHub/CPE442/Lab5 /Users/brycemelander/Documents/GitHub/CPE442/Lab5/cmake-build-debug /Users/brycemelander/Documents/GitHub/CPE442/Lab5/cmake-build-debug /Users/brycemelander/Documents/GitHub/CPE442/Lab5/cmake-build-debug/CMakeFiles/Lab5.dir/DependInfo.cmake --color=$(COLOR)
+	cd /Users/brycemelander/Code/GitHub/CPE442/Lab5/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/brycemelander/Code/GitHub/CPE442/Lab5 /Users/brycemelander/Code/GitHub/CPE442/Lab5 /Users/brycemelander/Code/GitHub/CPE442/Lab5/cmake-build-debug /Users/brycemelander/Code/GitHub/CPE442/Lab5/cmake-build-debug /Users/brycemelander/Code/GitHub/CPE442/Lab5/cmake-build-debug/CMakeFiles/Lab5.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/Lab5.dir/depend
 
